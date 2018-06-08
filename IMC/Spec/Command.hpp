@@ -20,8 +20,8 @@
 // IMC XML MD5: 522ff971d12877ebe15aff467ba253d4                            *
 //***************************************************************************
 
-#ifndef IMC_GPIOSTATESET_HPP_INCLUDED_
-#define IMC_GPIOSTATESET_HPP_INCLUDED_
+#ifndef IMC_COMMAND_HPP_INCLUDED_
+#define IMC_COMMAND_HPP_INCLUDED_
 
 // ISO C++ 98 headers.
 #include <ostream>
@@ -40,52 +40,79 @@
 
 namespace IMC
 {
-  //! Set GPIO State.
-  class GpioStateSet: public Message
+  //! Command To Follow.
+  class Command: public Message
   {
   public:
-    //! Name.
-    std::string name;
-    //! Value.
-    uint8_t value;
+    //! Flags.
+    enum FlagsBits
+    {
+      //! Use Speed Reference in meters per second.
+      FLAG_SPEED_METERS_PS = 0x01,
+      //! Use Speed Reference in revolutions per minute.
+      FLAG_SPEED_RPM = 0x02,
+      //! Use Z Reference as depth.
+      FLAG_DEPTH = 0x04,
+      //! Use Z Reference as altitude.
+      FLAG_ALTITUDE = 0x08,
+      //! Use Heading Reference.
+      FLAG_HEADING = 0x10,
+      //! Use Heading Rate Reference.
+      FLAG_HEADING_RATE = 0x20,
+      //! Flag Maneuver Completion.
+      FLAG_MANDONE = 0x80
+    };
+
+    //! Flags.
+    uint8_t flags;
+    //! Speed Reference.
+    float speed;
+    //! Z Reference.
+    float z;
+    //! Heading Reference.
+    float heading;
 
     static uint16_t
     getIdStatic(void)
     {
-      return 2002;
+      return 497;
     }
 
-    static GpioStateSet*
+    static Command*
     cast(Message* msg__)
     {
-      return (GpioStateSet*)msg__;
+      return (Command*)msg__;
     }
 
-    GpioStateSet(void)
+    Command(void)
     {
-      m_header.mgid = GpioStateSet::getIdStatic();
+      m_header.mgid = Command::getIdStatic();
       clear();
     }
 
-    GpioStateSet*
+    Command*
     clone(void) const
     {
-      return new GpioStateSet(*this);
+      return new Command(*this);
     }
 
     void
     clear(void)
     {
-      name.clear();
-      value = 0;
+      flags = 0;
+      speed = 0;
+      z = 0;
+      heading = 0;
     }
 
     bool
     fieldsEqual(const Message& msg__) const
     {
-      const IMC::GpioStateSet& other__ = static_cast<const GpioStateSet&>(msg__);
-      if (name != other__.name) return false;
-      if (value != other__.value) return false;
+      const IMC::Command& other__ = static_cast<const Command&>(msg__);
+      if (flags != other__.flags) return false;
+      if (speed != other__.speed) return false;
+      if (z != other__.z) return false;
+      if (heading != other__.heading) return false;
       return true;
     }
 
@@ -93,8 +120,10 @@ namespace IMC
     serializeFields(uint8_t* bfr__) const
     {
       uint8_t* ptr__ = bfr__;
-      ptr__ += IMC::serialize(name, ptr__);
-      ptr__ += IMC::serialize(value, ptr__);
+      ptr__ += IMC::serialize(flags, ptr__);
+      ptr__ += IMC::serialize(speed, ptr__);
+      ptr__ += IMC::serialize(z, ptr__);
+      ptr__ += IMC::serialize(heading, ptr__);
       return ptr__;
     }
 
@@ -102,8 +131,10 @@ namespace IMC
     deserializeFields(const uint8_t* bfr__, size_t size__)
     {
       const uint8_t* start__ = bfr__;
-      bfr__ += IMC::deserialize(name, bfr__, size__);
-      bfr__ += IMC::deserialize(value, bfr__, size__);
+      bfr__ += IMC::deserialize(flags, bfr__, size__);
+      bfr__ += IMC::deserialize(speed, bfr__, size__);
+      bfr__ += IMC::deserialize(z, bfr__, size__);
+      bfr__ += IMC::deserialize(heading, bfr__, size__);
       return bfr__ - start__;
     }
 
@@ -111,52 +142,38 @@ namespace IMC
     reverseDeserializeFields(const uint8_t* bfr__, size_t size__)
     {
       const uint8_t* start__ = bfr__;
-      bfr__ += IMC::reverseDeserialize(name, bfr__, size__);
-      bfr__ += IMC::deserialize(value, bfr__, size__);
+      bfr__ += IMC::deserialize(flags, bfr__, size__);
+      bfr__ += IMC::reverseDeserialize(speed, bfr__, size__);
+      bfr__ += IMC::reverseDeserialize(z, bfr__, size__);
+      bfr__ += IMC::reverseDeserialize(heading, bfr__, size__);
       return bfr__ - start__;
     }
 
     uint16_t
     getId(void) const
     {
-      return GpioStateSet::getIdStatic();
+      return Command::getIdStatic();
     }
 
     const char*
     getName(void) const
     {
-      return "GpioStateSet";
+      return "Command";
     }
 
     size_t
     getFixedSerializationSize(void) const
     {
-      return 1;
-    }
-
-    size_t
-    getVariableSerializationSize(void) const
-    {
-      return IMC::getSerializationSize(name);
-    }
-
-    double
-    getValueFP(void) const
-    {
-      return static_cast<double>(value);
-    }
-
-    void
-    setValueFP(double val)
-    {
-      value = static_cast<uint8_t>(val);
+      return 13;
     }
 
     void
     fieldsToJSON(std::ostream& os__, unsigned nindent__) const
     {
-      IMC::toJSON(os__, "name", name, nindent__);
-      IMC::toJSON(os__, "value", value, nindent__);
+      IMC::toJSON(os__, "flags", flags, nindent__);
+      IMC::toJSON(os__, "speed", speed, nindent__);
+      IMC::toJSON(os__, "z", z, nindent__);
+      IMC::toJSON(os__, "heading", heading, nindent__);
     }
   };
 }

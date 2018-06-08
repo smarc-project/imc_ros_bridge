@@ -20,8 +20,8 @@
 // IMC XML MD5: 522ff971d12877ebe15aff467ba253d4                            *
 //***************************************************************************
 
-#ifndef IMC_GPIOSTATESET_HPP_INCLUDED_
-#define IMC_GPIOSTATESET_HPP_INCLUDED_
+#ifndef IMC_FOLLOWCOMMAND_HPP_INCLUDED_
+#define IMC_FOLLOWCOMMAND_HPP_INCLUDED_
 
 // ISO C++ 98 headers.
 #include <ostream>
@@ -37,55 +37,60 @@
 #include <IMC/Base/Serialization.hpp>
 #include <IMC/Spec/Enumerations.hpp>
 #include <IMC/Spec/Bitfields.hpp>
+#include <IMC/Spec/Maneuver.hpp>
 
 namespace IMC
 {
-  //! Set GPIO State.
-  class GpioStateSet: public Message
+  //! Follow Command Maneuver.
+  class FollowCommand: public Maneuver
   {
   public:
-    //! Name.
-    std::string name;
-    //! Value.
-    uint8_t value;
+    //! Controlling Source.
+    uint16_t control_src;
+    //! Controlling Entity.
+    uint8_t control_ent;
+    //! Reference Update Timeout.
+    float timeout;
 
     static uint16_t
     getIdStatic(void)
     {
-      return 2002;
+      return 496;
     }
 
-    static GpioStateSet*
+    static FollowCommand*
     cast(Message* msg__)
     {
-      return (GpioStateSet*)msg__;
+      return (FollowCommand*)msg__;
     }
 
-    GpioStateSet(void)
+    FollowCommand(void)
     {
-      m_header.mgid = GpioStateSet::getIdStatic();
+      m_header.mgid = FollowCommand::getIdStatic();
       clear();
     }
 
-    GpioStateSet*
+    FollowCommand*
     clone(void) const
     {
-      return new GpioStateSet(*this);
+      return new FollowCommand(*this);
     }
 
     void
     clear(void)
     {
-      name.clear();
-      value = 0;
+      control_src = 0;
+      control_ent = 0;
+      timeout = 0;
     }
 
     bool
     fieldsEqual(const Message& msg__) const
     {
-      const IMC::GpioStateSet& other__ = static_cast<const GpioStateSet&>(msg__);
-      if (name != other__.name) return false;
-      if (value != other__.value) return false;
+      const IMC::FollowCommand& other__ = static_cast<const FollowCommand&>(msg__);
+      if (control_src != other__.control_src) return false;
+      if (control_ent != other__.control_ent) return false;
+      if (timeout != other__.timeout) return false;
       return true;
     }
 
@@ -93,8 +98,9 @@ namespace IMC
     serializeFields(uint8_t* bfr__) const
     {
       uint8_t* ptr__ = bfr__;
-      ptr__ += IMC::serialize(name, ptr__);
-      ptr__ += IMC::serialize(value, ptr__);
+      ptr__ += IMC::serialize(control_src, ptr__);
+      ptr__ += IMC::serialize(control_ent, ptr__);
+      ptr__ += IMC::serialize(timeout, ptr__);
       return ptr__;
     }
 
@@ -102,8 +108,9 @@ namespace IMC
     deserializeFields(const uint8_t* bfr__, size_t size__)
     {
       const uint8_t* start__ = bfr__;
-      bfr__ += IMC::deserialize(name, bfr__, size__);
-      bfr__ += IMC::deserialize(value, bfr__, size__);
+      bfr__ += IMC::deserialize(control_src, bfr__, size__);
+      bfr__ += IMC::deserialize(control_ent, bfr__, size__);
+      bfr__ += IMC::deserialize(timeout, bfr__, size__);
       return bfr__ - start__;
     }
 
@@ -111,52 +118,36 @@ namespace IMC
     reverseDeserializeFields(const uint8_t* bfr__, size_t size__)
     {
       const uint8_t* start__ = bfr__;
-      bfr__ += IMC::reverseDeserialize(name, bfr__, size__);
-      bfr__ += IMC::deserialize(value, bfr__, size__);
+      bfr__ += IMC::reverseDeserialize(control_src, bfr__, size__);
+      bfr__ += IMC::deserialize(control_ent, bfr__, size__);
+      bfr__ += IMC::reverseDeserialize(timeout, bfr__, size__);
       return bfr__ - start__;
     }
 
     uint16_t
     getId(void) const
     {
-      return GpioStateSet::getIdStatic();
+      return FollowCommand::getIdStatic();
     }
 
     const char*
     getName(void) const
     {
-      return "GpioStateSet";
+      return "FollowCommand";
     }
 
     size_t
     getFixedSerializationSize(void) const
     {
-      return 1;
-    }
-
-    size_t
-    getVariableSerializationSize(void) const
-    {
-      return IMC::getSerializationSize(name);
-    }
-
-    double
-    getValueFP(void) const
-    {
-      return static_cast<double>(value);
-    }
-
-    void
-    setValueFP(double val)
-    {
-      value = static_cast<uint8_t>(val);
+      return 7;
     }
 
     void
     fieldsToJSON(std::ostream& os__, unsigned nindent__) const
     {
-      IMC::toJSON(os__, "name", name, nindent__);
-      IMC::toJSON(os__, "value", value, nindent__);
+      IMC::toJSON(os__, "control_src", control_src, nindent__);
+      IMC::toJSON(os__, "control_ent", control_ent, nindent__);
+      IMC::toJSON(os__, "timeout", timeout, nindent__);
     }
   };
 }

@@ -17,7 +17,7 @@
 //***************************************************************************
 // Automatically generated.                                                 *
 //***************************************************************************
-// IMC XML MD5: 6ce3702ce15845d52f703d618b715907                            *
+// IMC XML MD5: 522ff971d12877ebe15aff467ba253d4                            *
 //***************************************************************************
 
 #ifndef IMC_MACROS_HPP_INCLUDED_
@@ -425,6 +425,12 @@
 #define IMC_FOLLOWPOINT (494)
 //! Alignment Maneuver Identifier.
 #define IMC_ALIGNMENT (495)
+//! Follow Command Maneuver Identifier.
+#define IMC_FOLLOWCOMMAND (496)
+//! Command To Follow Identifier.
+#define IMC_COMMAND (497)
+//! Follow Command State Identifier.
+#define IMC_FOLLOWCOMMANDSTATE (498)
 //! Vehicle State Identifier.
 #define IMC_VEHICLESTATE (500)
 //! Vehicle Command Identifier.

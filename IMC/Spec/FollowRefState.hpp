@@ -17,7 +17,7 @@
 //***************************************************************************
 // Automatically generated.                                                 *
 //***************************************************************************
-// IMC XML MD5: 6ce3702ce15845d52f703d618b715907                            *
+// IMC XML MD5: 522ff971d12877ebe15aff467ba253d4                            *
 //***************************************************************************
 
 #ifndef IMC_FOLLOWREFSTATE_HPP_INCLUDED_
@@ -70,7 +70,11 @@ namespace IMC
       //! Near in the horizontal plane.
       PROX_XY_NEAR = 0x02,
       //! Near in the vertical plane.
-      PROX_Z_NEAR = 0x04
+      PROX_Z_NEAR = 0x04,
+      //! Unreachable in the horizontal plane.
+      PROX_XY_UNREACHABLE = 0x08,
+      //! Unreachable in the vertical plane.
+      PROX_Z_UNREACHABLE = 0x10
     };
 
     //! Controlling Source.

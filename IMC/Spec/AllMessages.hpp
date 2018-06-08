@@ -17,7 +17,7 @@
 //***************************************************************************
 // Automatically generated.                                                 *
 //***************************************************************************
-// IMC XML MD5: 6ce3702ce15845d52f703d618b715907                            *
+// IMC XML MD5: 522ff971d12877ebe15aff467ba253d4                            *
 //***************************************************************************
 
 #ifndef IMC_ALLMESSAGES_HPP_INCLUDED_
@@ -224,6 +224,9 @@
 #include <IMC/Spec/AutonomousSection.hpp>
 #include <IMC/Spec/FollowPoint.hpp>
 #include <IMC/Spec/Alignment.hpp>
+#include <IMC/Spec/FollowCommand.hpp>
+#include <IMC/Spec/Command.hpp>
+#include <IMC/Spec/FollowCommandState.hpp>
 #include <IMC/Spec/VehicleState.hpp>
 #include <IMC/Spec/VehicleCommand.hpp>
 #include <IMC/Spec/MonitorEntityState.hpp>
