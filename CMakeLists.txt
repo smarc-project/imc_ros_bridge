@@ -7,11 +7,11 @@ project(imc_ros_bridge)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED)
+find_package(catkin REQUIRED COMPONENTS std_msgs sensor_msgs geometry_msgs nav_msgs roscpp message_runtime)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
-
+#add_subdirectory(external)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -112,14 +112,23 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
-# ${catkin_INCLUDE_DIRS}
+  include
+  external/imc-cxx
+  ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/imc_ros_bridge.cpp
-# )
+add_library(ros_to_imc_heartbeat
+  src/ros_to_imc/Heartbeat.cpp
+)
+
+add_library(ros_to_imc_gpsfix
+  src/ros_to_imc/GpsFix.cpp
+)
+
+add_library(imc_to_ros_goto
+  src/imc_to_ros/Goto.cpp
+)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -130,6 +139,8 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/imc_ros_bridge_node.cpp)
+add_executable(ros_to_imc_node src/ros_to_imc_node.cpp)
+add_executable(imc_to_ros_node src/imc_to_ros_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -142,9 +153,29 @@ include_directories(
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(${PROJECT_NAME}_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(ros_to_imc_heartbeat
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(ros_to_imc_gpsfix
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(imc_to_ros_goto
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(ros_to_imc_node
+  ros_to_imc_heartbeat
+  ros_to_imc_gpsfix
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(imc_to_ros_node
+  imc_to_ros_goto
+  ${catkin_LIBRARIES}
+)
+
 
 #############
 ## Install ##
