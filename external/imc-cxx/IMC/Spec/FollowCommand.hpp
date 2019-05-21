@@ -1,0 +1,155 @@
+//***************************************************************************
+// Copyright 2017 OceanScan - Marine Systems & Technology, Lda.             *
+//***************************************************************************
+// Licensed under the Apache License, Version 2.0 (the "License");          *
+// you may not use this file except in compliance with the License.         *
+// You may obtain a copy of the License at                                  *
+//                                                                          *
+// http://www.apache.org/licenses/LICENSE-2.0                               *
+//                                                                          *
+// Unless required by applicable law or agreed to in writing, software      *
+// distributed under the License is distributed on an "AS IS" BASIS,        *
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. *
+// See the License for the specific language governing permissions and      *
+// limitations under the License.                                           *
+//***************************************************************************
+// Author: Ricardo Martins                                                  *
+//***************************************************************************
+// Automatically generated.                                                 *
+//***************************************************************************
+// IMC XML MD5: 522ff971d12877ebe15aff467ba253d4                            *
+//***************************************************************************
+
+#ifndef IMC_FOLLOWCOMMAND_HPP_INCLUDED_
+#define IMC_FOLLOWCOMMAND_HPP_INCLUDED_
+
+// ISO C++ 98 headers.
+#include <ostream>
+#include <string>
+#include <vector>
+
+// IMC headers.
+#include <IMC/Base/Config.hpp>
+#include <IMC/Base/Message.hpp>
+#include <IMC/Base/InlineMessage.hpp>
+#include <IMC/Base/MessageList.hpp>
+#include <IMC/Base/JSON.hpp>
+#include <IMC/Base/Serialization.hpp>
+#include <IMC/Spec/Enumerations.hpp>
+#include <IMC/Spec/Bitfields.hpp>
+#include <IMC/Spec/Maneuver.hpp>
+
+namespace IMC
+{
+  //! Follow Command Maneuver.
+  class FollowCommand: public Maneuver
+  {
+  public:
+    //! Controlling Source.
+    uint16_t control_src;
+    //! Controlling Entity.
+    uint8_t control_ent;
+    //! Reference Update Timeout.
+    float timeout;
+
+    static uint16_t
+    getIdStatic(void)
+    {
+      return 496;
+    }
+
+    static FollowCommand*
+    cast(Message* msg__)
+    {
+      return (FollowCommand*)msg__;
+    }
+
+    FollowCommand(void)
+    {
+      m_header.mgid = FollowCommand::getIdStatic();
+      clear();
+    }
+
+    FollowCommand*
+    clone(void) const
+    {
+      return new FollowCommand(*this);
+    }
+
+    void
+    clear(void)
+    {
+      control_src = 0;
+      control_ent = 0;
+      timeout = 0;
+    }
+
+    bool
+    fieldsEqual(const Message& msg__) const
+    {
+      const IMC::FollowCommand& other__ = static_cast<const FollowCommand&>(msg__);
+      if (control_src != other__.control_src) return false;
+      if (control_ent != other__.control_ent) return false;
+      if (timeout != other__.timeout) return false;
+      return true;
+    }
+
+    uint8_t*
+    serializeFields(uint8_t* bfr__) const
+    {
+      uint8_t* ptr__ = bfr__;
+      ptr__ += IMC::serialize(control_src, ptr__);
+      ptr__ += IMC::serialize(control_ent, ptr__);
+      ptr__ += IMC::serialize(timeout, ptr__);
+      return ptr__;
+    }
+
+    size_t
+    deserializeFields(const uint8_t* bfr__, size_t size__)
+    {
+      const uint8_t* start__ = bfr__;
+      bfr__ += IMC::deserialize(control_src, bfr__, size__);
+      bfr__ += IMC::deserialize(control_ent, bfr__, size__);
+      bfr__ += IMC::deserialize(timeout, bfr__, size__);
+      return bfr__ - start__;
+    }
+
+    size_t
+    reverseDeserializeFields(const uint8_t* bfr__, size_t size__)
+    {
+      const uint8_t* start__ = bfr__;
+      bfr__ += IMC::reverseDeserialize(control_src, bfr__, size__);
+      bfr__ += IMC::deserialize(control_ent, bfr__, size__);
+      bfr__ += IMC::reverseDeserialize(timeout, bfr__, size__);
+      return bfr__ - start__;
+    }
+
+    uint16_t
+    getId(void) const
+    {
+      return FollowCommand::getIdStatic();
+    }
+
+    const char*
+    getName(void) const
+    {
+      return "FollowCommand";
+    }
+
+    size_t
+    getFixedSerializationSize(void) const
+    {
+      return 7;
+    }
+
+    void
+    fieldsToJSON(std::ostream& os__, unsigned nindent__) const
+    {
+      IMC::toJSON(os__, "control_src", control_src, nindent__);
+      IMC::toJSON(os__, "control_ent", control_ent, nindent__);
+      IMC::toJSON(os__, "timeout", timeout, nindent__);
+    }
+  };
+}
+
+#endif
