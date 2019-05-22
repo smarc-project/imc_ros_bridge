@@ -5,6 +5,7 @@
 #include <imc_ros_bridge/imc_ros_bridge_server.h>
 #include <imc_ros_bridge/ros_to_imc/Heartbeat.h>
 #include <imc_ros_bridge/ros_to_imc/GpsFix.h>
+#include <imc_ros_bridge/ros_to_imc/Goto.h>
 
 using namespace std;
 
@@ -29,6 +30,7 @@ int main(int argc, char** argv)
 
     ros_to_imc::BridgeServer<std_msgs::Empty, IMC::Heartbeat> heartbeat_server(ros_node, tcp_client_, "/heartbeat");
     ros_to_imc::BridgeServer<sensor_msgs::NavSatFix, IMC::GpsFix> gpsfix_server(ros_node, tcp_client_, "/gps_fix");
+    ros_to_imc::BridgeServer<geometry_msgs::Pose, IMC::Goto> goto_server(ros_node, tcp_client_, "/goto_input");
 
     ros::spin();
 

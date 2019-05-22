@@ -126,6 +126,10 @@ add_library(ros_to_imc_gpsfix
   src/ros_to_imc/GpsFix.cpp
 )
 
+add_library(ros_to_imc_goto
+  src/ros_to_imc/Goto.cpp
+)
+
 add_library(imc_to_ros_goto
   src/imc_to_ros/Goto.cpp
 )
@@ -169,6 +173,10 @@ target_link_libraries(ros_to_imc_gpsfix
   ${catkin_LIBRARIES}
 )
 
+target_link_libraries(ros_to_imc_goto
+  ${catkin_LIBRARIES}
+)
+
 target_link_libraries(imc_to_ros_goto
   ${catkin_LIBRARIES}
 )
@@ -181,6 +189,7 @@ target_link_libraries(imc_handle
 target_link_libraries(ros_to_imc_node
   ros_to_imc_heartbeat
   ros_to_imc_gpsfix
+  ros_to_imc_goto
   imc_handle
   imc_factory
   ${Boost_LIBRARIES}

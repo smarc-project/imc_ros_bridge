@@ -2,18 +2,31 @@
 
 #include <functional>
 
-IMCHandle::IMCHandle(const std::string& tcp_addr, const std::string& tcp_port) : tcp_client_(std::bind(&IMCHandle::tcp_callback, this, std::placeholders::_1))
+void try_callback(const IMC::Message* imc_msg)
 {
-    tcp_client_.setServer(tcp_addr, tcp_port);
+    ROS_INFO("Got callback!");
+    std::cout << "Got callback with id: " << imc_msg->getId() << std::endl;
+}
+
+IMCHandle::IMCHandle(const std::string& tcp_addr, const std::string& tcp_port) //: tcp_client_(std::bind(&IMCHandle::tcp_callback, this, std::placeholders::_1))
+{
+
+}
+
+void IMCHandle::start(const std::string& tcp_addr, const std::string& tcp_port)
+{
+    //tcp_client_ = new ros_imc_broker::TcpLink(std::bind(&IMCHandle::tcp_callback, this, std::placeholders::_1));
+    tcp_client_ = new ros_imc_broker::TcpLink(&try_callback);
+    tcp_client_->setServer(tcp_addr, tcp_port);
 
     //! TCP client thread.
-    tcp_client_thread_ = boost::thread(boost::ref(tcp_client_));
+    tcp_client_thread_ = new boost::thread(boost::ref(*tcp_client_));
 }
 
 IMCHandle::~IMCHandle()
 {
-    tcp_client_thread_.interrupt();
-    tcp_client_thread_.join();
+    tcp_client_thread_->interrupt();
+    tcp_client_thread_->join();
 }
 
 void IMCHandle::tcp_subscribe(uint16_t uid, std::function<void(const IMC::Message*)> callback)
@@ -23,5 +36,6 @@ void IMCHandle::tcp_subscribe(uint16_t uid, std::function<void(const IMC::Messag
 
 void IMCHandle::tcp_callback(const IMC::Message* msg)
 {
+    std::cout << "Got callback with id: " << msg->getId() << std::endl;
     callbacks.at(msg->getId())(msg);
 }
