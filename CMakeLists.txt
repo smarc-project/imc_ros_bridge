@@ -10,7 +10,7 @@ project(imc_ros_bridge)
 find_package(catkin REQUIRED COMPONENTS std_msgs sensor_msgs geometry_msgs nav_msgs roscpp message_runtime)
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
+find_package(Boost REQUIRED COMPONENTS system thread)
 #add_subdirectory(external)
 
 ## Uncomment this if the package has a setup.py. This macro ensures
@@ -130,6 +130,10 @@ add_library(imc_to_ros_goto
   src/imc_to_ros/Goto.cpp
 )
 
+add_library(imc_factory
+  external/imc-cxx/IMC/Base/Factory.cpp
+)
+
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
@@ -140,7 +144,7 @@ add_library(imc_to_ros_goto
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/imc_ros_bridge_node.cpp)
 add_executable(ros_to_imc_node src/ros_to_imc_node.cpp)
-add_executable(imc_to_ros_node src/imc_to_ros_node.cpp)
+#add_executable(imc_to_ros_node src/imc_to_ros_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -168,13 +172,15 @@ target_link_libraries(imc_to_ros_goto
 target_link_libraries(ros_to_imc_node
   ros_to_imc_heartbeat
   ros_to_imc_gpsfix
+  imc_factory
+  ${Boost_LIBRARIES}
   ${catkin_LIBRARIES}
 )
 
-target_link_libraries(imc_to_ros_node
-  imc_to_ros_goto
-  ${catkin_LIBRARIES}
-)
+#target_link_libraries(imc_to_ros_node
+#  imc_to_ros_goto
+#  ${catkin_LIBRARIES}
+#)
 
 
 #############

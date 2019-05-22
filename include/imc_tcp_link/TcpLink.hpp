@@ -26,6 +26,7 @@
 
 // Boost headers.
 #include <boost/asio.hpp>
+#include <boost/thread/thread.hpp>
 
 // IMC headers.
 #include <IMC/Base/Parser.hpp>

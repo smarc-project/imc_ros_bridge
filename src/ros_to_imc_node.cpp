@@ -2,10 +2,16 @@
 #include <ros/ros.h>
 #include <iostream>
 
-#include <imc_ros_bridge/ros_to_imc/Heartbeat.cpp>
-#include <imc_ros_bridge/ros_to_imc/GpsFix.cpp>
+#include <imc_ros_bridge/imc_ros_bridge_server.h>
+#include <imc_ros_bridge/ros_to_imc/Heartbeat.h>
+#include <imc_ros_bridge/ros_to_imc/GpsFix.h>
 
 using namespace std;
+
+void imc_callback(const IMC::Message* msg)
+{
+
+}
 
 int main(int argc, char** argv)
 {
@@ -15,7 +21,7 @@ int main(int argc, char** argv)
     std::string tcp_addr;
     std::string tcp_port;
 
-    ros_imc_broker::TcpLink tcp_client_(boost::bind(&Broker::sendToRosBus, this, _1));
+    ros_imc_broker::TcpLink tcp_client_(&imc_callback);
     tcp_client_.setServer(tcp_addr, tcp_port);
 
     //! TCP client thread.

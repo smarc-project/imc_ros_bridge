@@ -1,3 +1,6 @@
+#ifndef IMC_ROS_BRIDGE_SERVER_H
+#define IMC_ROS_BRIDGE_SERVER_H
+
 #include <imc_tcp_link/TcpLink.hpp>
 
 namespace ros_to_imc {
@@ -11,18 +14,22 @@ bool convert(const ROS_MSG& ros_msg, IMC_MSG& imc_msg)
 template <typename ROS_MSG, typename IMC_MSG>
 class BridgeServer {
 
+private:
+
     ros::Subscriber ros_sub;
     ros_imc_broker::TcpLink& tcp_client_;
 
-    ConversionServer(ros::NodeHandle& ros_node, ros_imc_broker::TcpLink& tcp_client_, const std::string& ros_topic, unsigned char uid=0) : tcp_client_(tcp_client_)
+public:
+
+    BridgeServer(ros::NodeHandle& ros_node, ros_imc_broker::TcpLink& tcp_client_, const std::string& ros_topic) : tcp_client_(tcp_client_)
     {
-        ros_sub = ros_node.subscribe(ros_topic, 10, &ConversionServer::conversion_callback, this);
+        ros_sub = ros_node.subscribe(ros_topic, 10, &BridgeServer::conversion_callback, this);
     }
 
-    void conversion_callback(const ROSMSG& ros_msg)
+    void conversion_callback(const ROS_MSG& ros_msg)
     {
-        IMCMSG imc_msg;
-        bool success = convert(ros_msg, imc_msg, uid);
+        IMC_MSG imc_msg;
+        bool success = convert(ros_msg, imc_msg);
         if (success) {
             tcp_client_.write(&imc_msg);
         }
@@ -43,6 +50,7 @@ bool convert(const IMC_MSG& imc_msg, ROS_MSG& ros_msg)
     return false;
 }
 
+/*
 template <typename IMC_MSG, typename ROS_MSG>
 class BridgeServer {
 
@@ -64,5 +72,8 @@ class BridgeServer {
     }
 
 }
+*/
 
 } // namespace imc_to_ros
+
+#endif // IMC_ROS_BRIDGE_SERVER_H
