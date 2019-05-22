@@ -1,0 +1,30 @@
+#include <ros/ros.h>
+#include <iostream>
+
+#include <imc_tcp_link/imc_handle.h>
+#include <imc_ros_bridge/imc_ros_bridge_server.h>
+#include <imc_ros_bridge/imc_to_ros/Goto.h>
+
+using namespace std;
+
+void imc_callback(const IMC::Message* msg)
+{
+
+}
+
+int main(int argc, char** argv)
+{
+    ros::init(argc, argv, "ros_to_imc_node");
+    ros::NodeHandle ros_node;
+
+    std::string tcp_addr = "127.0.0.1";
+    std::string tcp_port = "6001";
+
+    IMCHandle imc_handle(tcp_addr, tcp_port);
+
+    imc_to_ros::BridgeServer<IMC::Goto, geometry_msgs::Pose> goto_server(imc_handle, ros_node, "/goto_waypoint");
+
+    ros::spin();
+
+    return 0;
+}

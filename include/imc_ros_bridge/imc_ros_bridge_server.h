@@ -1,7 +1,7 @@
 #ifndef IMC_ROS_BRIDGE_SERVER_H
 #define IMC_ROS_BRIDGE_SERVER_H
 
-#include <imc_tcp_link/TcpLink.hpp>
+#include <imc_tcp_link/imc_handle.h>
 
 namespace ros_to_imc {
 
@@ -50,29 +50,34 @@ bool convert(const IMC_MSG& imc_msg, ROS_MSG& ros_msg)
     return false;
 }
 
-/*
 template <typename IMC_MSG, typename ROS_MSG>
 class BridgeServer {
 
-    ros::Publisher ros_pub;
-    unsigned char uid;
+private:
 
-    ConversionServer(UavNode& uav_node, ros::NodeHandle& ros_node, const std::string& ros_topic, unsigned char uid=255) : uav_sub(uav_node), uid(uid)
+    ros::Publisher ros_pub;
+
+public:
+
+    BridgeServer(IMCHandle& imc_handle, ros::NodeHandle& ros_node, const std::string& ros_topic)
     {
-        ros_pub = ros_node.advertise<ROSMSG>(ros_topic, 10);
+        ros_pub = ros_node.advertise<ROS_MSG>(ros_topic, 10);
+        imc_handle.tcp_subscribe(IMC_MSG::getIdStatic(), std::bind(&BridgeServer::conversion_callback, this, std::placeholders::_1));
     }
 
-    void conversion_callback(const ReceivedDataStructure& uav_msg) const
+    void conversion_callback(const IMC::Message* imc_msg) const
     {
-        ROSMSG ros_msg;
-        bool success = convert(uav_msg, ros_msg, uid);
+        ROS_MSG ros_msg;
+        bool success = convert(static_cast<const IMC_MSG&>(*imc_msg), ros_msg);
         if (success) {
             ros_pub.publish(ros_msg);
         }
+        else {
+            ROS_WARN("There was an error trying to convert imc type %s", imc_msg->getName());
+        }
     }
 
-}
-*/
+};
 
 } // namespace imc_to_ros
 
