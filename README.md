@@ -10,7 +10,7 @@ A simple `catkin_make` should do.
 
 The command
 ```
-roslaunch imc_ros_bridge bridge.launch
+roslaunch imc_ros_bridge bridge.launch server_addr:=127.0.0.1 server_port:=6001
 ```
 will launch the `imc_to_ros_node` and `ros_to_imc_node` nodes.
 
