@@ -17,11 +17,12 @@ class BridgeServer {
 private:
 
     ros::Subscriber ros_sub;
-    ros_imc_broker::TcpLink& tcp_client_;
+    //ros_imc_broker::TcpLink& tcp_client_;
+    IMCHandle& imc_handle;
 
 public:
 
-    BridgeServer(ros::NodeHandle& ros_node, ros_imc_broker::TcpLink& tcp_client_, const std::string& ros_topic) : tcp_client_(tcp_client_)
+    BridgeServer(ros::NodeHandle& ros_node, IMCHandle& imc_handle, const std::string& ros_topic) : imc_handle(imc_handle)
     {
         ros_sub = ros_node.subscribe(ros_topic, 10, &BridgeServer::conversion_callback, this);
     }
@@ -31,7 +32,8 @@ public:
         IMC_MSG imc_msg;
         bool success = convert(ros_msg, imc_msg);
         if (success) {
-            tcp_client_.write(&imc_msg);
+            //tcp_client_.write(&imc_msg);
+            imc_handle.write(imc_msg);
         }
         else {
             ROS_WARN("There was an error trying to convert imc type %s", imc_msg.getName());

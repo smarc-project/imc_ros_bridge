@@ -16,7 +16,6 @@ int main(int argc, char** argv)
     std::string tcp_port = "6001";
 
     IMCHandle imc_handle(tcp_addr, tcp_port);
-    imc_handle.start(tcp_addr, tcp_port);
 
     imc_to_ros::BridgeServer<IMC::Goto, geometry_msgs::Pose> goto_server(imc_handle, ros_node, "/goto_waypoint");
 

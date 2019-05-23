@@ -27,7 +27,7 @@ public:
     void write(const IMC_MSG& imc_msg)
     {
         //tcp_client_.write(imc_msg);
-        tcp_client_->write(imc_msg);
+        tcp_client_->write(&imc_msg);
     }
 
 };

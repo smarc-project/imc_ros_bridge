@@ -9,11 +9,6 @@
 
 using namespace std;
 
-void imc_callback(const IMC::Message* msg)
-{
-
-}
-
 int main(int argc, char** argv)
 {
     ros::init(argc, argv, "ros_to_imc_node");
@@ -22,21 +17,13 @@ int main(int argc, char** argv)
     std::string tcp_addr = "127.0.0.1";
     std::string tcp_port = "6001";
 
-    ros_imc_broker::TcpLink tcp_client_(&imc_callback);
-    tcp_client_.setServer(tcp_addr, tcp_port);
+    IMCHandle imc_handle(tcp_addr, tcp_port);
 
-    //! TCP client thread.
-    boost::thread tcp_client_thread_(boost::ref(tcp_client_));
-
-    ros_to_imc::BridgeServer<std_msgs::Empty, IMC::Heartbeat> heartbeat_server(ros_node, tcp_client_, "/heartbeat");
-    ros_to_imc::BridgeServer<sensor_msgs::NavSatFix, IMC::GpsFix> gpsfix_server(ros_node, tcp_client_, "/gps_fix");
-    ros_to_imc::BridgeServer<geometry_msgs::Pose, IMC::Goto> goto_server(ros_node, tcp_client_, "/goto_input");
+    ros_to_imc::BridgeServer<std_msgs::Empty, IMC::Heartbeat> heartbeat_server(ros_node, imc_handle, "/heartbeat");
+    ros_to_imc::BridgeServer<sensor_msgs::NavSatFix, IMC::GpsFix> gpsfix_server(ros_node, imc_handle, "/gps_fix");
+    ros_to_imc::BridgeServer<geometry_msgs::Pose, IMC::Goto> goto_server(ros_node, imc_handle, "/goto_input");
 
     ros::spin();
-
-    // clean up the thread
-    tcp_client_thread_.interrupt();
-    tcp_client_thread_.join();
 
     return 0;
 }
