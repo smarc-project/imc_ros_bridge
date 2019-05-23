@@ -28,6 +28,13 @@ If successful, run it with `./neptus.sh`. Open the comm monitor by clicking `Com
 In the status panel, click the button with the IMC logo (with hover text `Start IMC comms`) to start up IMC.
 Go to the all messages panel to see the messages that you publish from ROS.
 
+You can publish e.g. the `/heartbeat` message in ROS and see that it appears in the all messages panel (see "existing conversions" below):
+```
+rostopic pub /heartbeat std_msgs/Empty "{}" --once
+```
+I have not figured out how to check if the other direction works yet, feel free to investigate this! The IMC Message Sender
+seems to broadcast only over UDP, but we just subscribe to TCP so that doesn't work. I might be wrong on this though.
+
 ## Existing conversions
 
 ### ros_to_imc
