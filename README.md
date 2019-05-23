@@ -41,3 +41,56 @@ Go to the all messages panel to see the messages that you publish from ROS.
 * `IMC::Goto` -> `geometry_msgs/Pose` on topic `/goto_waypoint`
 
 ## Creating new conversions
+
+For each conversion in either direction, you need to create a new library
+that contains a specialized `convert` function for the types you want to convert.
+You then need to add a `BridgeServer` to the nodes, see details below.
+
+### ros_to_imc
+
+Check out examples in the `include/imc_ros_bridge/ros_to_imc` and `src/ros_to_imc` folders
+for more examples. All conversions specialize the `convert` function like this:
+
+```cpp
+namespace ros_to_imc {
+template <>
+bool convert(const sensor_msgs::NavSatFix& ros_msg, IMC::GpsFix& imc_msg)
+{
+    imc_msg.lat = ros_msg.latitude;
+    imc_msg.lon = ros_msg.longitude;
+    imc_msg.height = ros_msg.altitude;
+
+    return true;
+}
+}
+```
+
+And they also add the bridge server to the `ros_to_imc_node` like this:
+```cpp
+ros_to_imc::BridgeServer<sensor_msgs::NavSatFix, IMC::GpsFix> gpsfix_server(ros_node, imc_handle, "/gps_fix");
+```
+And link the convert libary into `ros_to_imc_node` in the `CMakeLists.txt` file.
+
+### imc_to_ros
+
+Check out examples in the `include/imc_ros_bridge/imc_to_ros` and `src/imc_to_ros` folders
+for more examples. All conversions specialize the `convert` function like this:
+
+```cpp
+namespace imc_to_ros {
+template <>
+bool convert(const IMC::Goto& imc_msg, geometry_msgs::Pose& ros_msg)
+{
+    ros_msg.position.x = imc_msg.lon;
+    ros_msg.position.y = imc_msg.lat;
+    ros_msg.position.z = imc_msg.z;
+    return true;
+}
+}
+```
+
+And they also add the bridge server to the `imc_to_ros_node` like this:
+```cpp
+imc_to_ros::BridgeServer<IMC::Goto, geometry_msgs::Pose> goto_server(imc_handle, ros_node, "/goto_waypoint");
+```
+And link the convert libary into `imc_to_ros_node` in the `CMakeLists.txt` file.
