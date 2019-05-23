@@ -1,0 +1,16 @@
+<launch>
+
+  <arg name="server_addr" default="127.0.0.1"/>
+  <arg name="server_port" default="6001"/>
+
+  <node pkg="imc_ros_bridge" type="ros_to_imc_node" name="ros_to_imc_node" output="screen">
+    <param name="server_addr" value="$(arg server_addr)"/>
+    <param name="server_port" value="$(arg server_port)" type="str"/>
+  </node>
+
+  <node pkg="imc_ros_bridge" type="imc_to_ros_node" name="imc_to_ros_node" output="screen">
+    <param name="server_addr" value="$(arg server_addr)"/>
+    <param name="server_port" value="$(arg server_port)" type="str"/>
+  </node>
+
+</launch>

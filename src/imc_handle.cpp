@@ -15,8 +15,8 @@ IMCHandle::IMCHandle(const std::string& tcp_addr, const std::string& tcp_port) /
 
 void IMCHandle::start(const std::string& tcp_addr, const std::string& tcp_port)
 {
-    //tcp_client_ = new ros_imc_broker::TcpLink(std::bind(&IMCHandle::tcp_callback, this, std::placeholders::_1));
-    tcp_client_ = new ros_imc_broker::TcpLink(&try_callback);
+    tcp_client_ = new ros_imc_broker::TcpLink(std::bind(&IMCHandle::tcp_callback, this, std::placeholders::_1));
+    //tcp_client_ = new ros_imc_broker::TcpLink(&try_callback);
     tcp_client_->setServer(tcp_addr, tcp_port);
 
     //! TCP client thread.
@@ -36,6 +36,12 @@ void IMCHandle::tcp_subscribe(uint16_t uid, std::function<void(const IMC::Messag
 
 void IMCHandle::tcp_callback(const IMC::Message* msg)
 {
-    std::cout << "Got callback with id: " << msg->getId() << std::endl;
-    callbacks.at(msg->getId())(msg);
+    uint16_t uid = msg->getId();
+    if (callbacks.count(uid) > 0) {
+        ROS_INFO("Got callback with id: %u", uid);
+        callbacks.at(uid)(msg);
+    }
+    else {
+        ROS_INFO("Got tcp message with no configure callback, msgid: %u!", uid);
+    }
 }

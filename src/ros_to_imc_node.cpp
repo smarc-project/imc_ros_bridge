@@ -14,8 +14,11 @@ int main(int argc, char** argv)
     ros::init(argc, argv, "ros_to_imc_node");
     ros::NodeHandle ros_node;
 
-    std::string tcp_addr = "127.0.0.1";
-    std::string tcp_port = "6001";
+    std::string tcp_addr;
+    std::string tcp_port;
+
+    ros::param::param<std::string>("~server_addr", tcp_addr, "127.0.0.1");
+    ros::param::param<std::string>("~server_port", tcp_port, "6001");
 
     IMCHandle imc_handle(tcp_addr, tcp_port);
 
