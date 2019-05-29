@@ -138,6 +138,10 @@ add_library(imc_factory
   external/imc-cxx/IMC/Base/Factory.cpp
 )
 
+add_library(udp_link
+  src/udp_link.cpp
+)
+
 add_library(imc_handle
   src/imc_handle.cpp
 )
@@ -181,6 +185,11 @@ target_link_libraries(imc_to_ros_goto
   ${catkin_LIBRARIES}
 )
 
+target_link_libraries(udp_link
+  imc_factory
+  ${Boost_LIBRARIES}
+)
+
 target_link_libraries(imc_handle
   imc_factory
   ${Boost_LIBRARIES}
@@ -199,6 +208,7 @@ target_link_libraries(ros_to_imc_node
 target_link_libraries(imc_to_ros_node
   imc_to_ros_goto
   imc_handle
+  udp_link
   ${catkin_LIBRARIES}
 )
 

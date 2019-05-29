@@ -5,7 +5,14 @@
 #include <imc_ros_bridge/imc_ros_bridge_server.h>
 #include <imc_ros_bridge/imc_to_ros/Goto.h>
 
+#include <imc_udp_link/udp_link.h>
+
 using namespace std;
+
+void callback(IMC::Message* message)
+{
+    cout << "Got messages with id: " << message->getId() << endl;
+}
 
 int main(int argc, char** argv)
 {
@@ -17,6 +24,8 @@ int main(int argc, char** argv)
 
     ros::param::param<std::string>("~server_addr", tcp_addr, "127.0.0.1");
     ros::param::param<std::string>("~server_port", tcp_port, "6001");
+
+    UDPLink(&callback, tcp_addr, tcp_port);
 
     IMCHandle imc_handle(tcp_addr, tcp_port);
 
