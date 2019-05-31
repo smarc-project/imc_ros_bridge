@@ -22,6 +22,7 @@ private:
 
     boost::asio::io_service io_service;
     udp::socket socket{io_service};
+    udp::socket out_socket{io_service};
     boost::array<char, 1024> recv_buffer;
     udp::endpoint remote_endpoint;
     std::function<void (IMC::Message*)> recv_handler_;
