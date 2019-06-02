@@ -4,6 +4,7 @@
 #include <boost/asio.hpp>
 #include <boost/array.hpp>
 #include <boost/bind.hpp>
+#include <boost/thread.hpp>
 #include <thread>
 #include <iostream>
 
@@ -20,13 +21,17 @@ class UDPLink {
 
 private:
 
+    std::string addr;
+    std::string port;
+
     boost::asio::io_service io_service;
     udp::socket socket{io_service};
-    udp::socket out_socket{io_service};
+    udp::socket multicast_socket{io_service};
     boost::array<char, 1024> recv_buffer;
     udp::endpoint remote_endpoint;
     std::function<void (IMC::Message*)> recv_handler_;
     IMC::Parser parser_;
+    boost::thread run_thread;
 
     std::vector<int> announce_ports{30100, 30101, 30102, 30103, 30104};
 
@@ -39,7 +44,13 @@ public:
 
     void wait();
 
-    void announce(const std::string& addr);
+    void announce();
+
+    void publish_heartbeat();
+
+    void publish(IMC::Message& msg);
+
+    void publish_multicast(IMC::Message& msg, const std::string& multicast_addr);
 
     void handle_receive(const boost::system::error_code& error, size_t bytes_transferred);
 
