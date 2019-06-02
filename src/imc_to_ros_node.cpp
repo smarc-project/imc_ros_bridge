@@ -28,12 +28,6 @@ int main(int argc, char** argv)
 
     UDPLink udp_link(&callback, tcp_addr, tcp_port);
 
-    auto announce_callback = [&](const ros::TimerEvent&) { udp_link.announce(); };
-    auto heartbeat_callback = [&](const ros::TimerEvent&) { udp_link.publish_heartbeat(); };
-
-    ros::Timer announce_timer = ros_node.createTimer(ros::Duration(10.), announce_callback);
-    ros::Timer heartbeat_timer = ros_node.createTimer(ros::Duration(1.), heartbeat_callback);
-
     ros::spin();
 
     /*

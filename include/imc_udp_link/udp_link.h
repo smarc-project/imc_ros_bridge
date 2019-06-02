@@ -44,10 +44,6 @@ public:
 
     void wait();
 
-    void announce();
-
-    void publish_heartbeat();
-
     void publish(IMC::Message& msg);
 
     void publish_multicast(IMC::Message& msg, const std::string& multicast_addr);

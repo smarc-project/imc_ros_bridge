@@ -1,6 +1,4 @@
 #include <imc_udp_link/udp_link.h>
-#include <IMC/Spec/Announce.hpp>
-#include <IMC/Spec/Heartbeat.hpp>
 
 #include <boost/lexical_cast.hpp>
 #include <ros/ros.h>
@@ -20,7 +18,6 @@ UDPLink::UDPLink(std::function<void (IMC::Message*)> recv_handler,
     wait();
 
     //auto work = std::make_shared<boost::asio::io_service::work>(io_service);
-    announce();
 
     run_thread = boost::thread(boost::bind(&boost::asio::io_service::run, &io_service)); 
 }
@@ -36,27 +33,6 @@ void handler(const boost::system::error_code& error, size_t bytes_transferred)
 {
 }
 
-void UDPLink::announce()
-{
-    string announce_addr = "224.0.75.69";
-
-    IMC::Announce msg;
-    msg.sys_name = "lauv-xplore-1-idiot";
-    msg.sys_type = 0; // 30; // lauv-xplore-1
-    msg.owner = 0; // do not know what this is
-    msg.lat = 5.;
-    msg.lon = 10.;
-    msg.height = -1.;
-    //msg.services = "imc+info://0.0.0.0/version/5.4.11/;imc+udp://127.0.0.1:6002/;";
-    msg.services = "imc+udp://" + addr + ":" + port + "/;";
-    publish_multicast(msg, announce_addr);
-}
-
-void UDPLink::publish_heartbeat()
-{
-    IMC::Heartbeat msg;
-    publish(msg);
-}
 
 void UDPLink::publish(IMC::Message& msg)
 {

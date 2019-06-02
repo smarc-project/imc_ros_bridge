@@ -192,6 +192,7 @@ target_link_libraries(udp_link
 
 target_link_libraries(imc_handle
   imc_factory
+  udp_link
   ${Boost_LIBRARIES}
 )
 
@@ -199,8 +200,8 @@ target_link_libraries(ros_to_imc_node
   ros_to_imc_heartbeat
   ros_to_imc_gpsfix
   ros_to_imc_goto
+  imc_to_ros_goto
   imc_handle
-  imc_factory
   ${Boost_LIBRARIES}
   ${catkin_LIBRARIES}
 )

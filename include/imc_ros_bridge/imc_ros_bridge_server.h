@@ -1,6 +1,7 @@
 #ifndef IMC_ROS_BRIDGE_SERVER_H
 #define IMC_ROS_BRIDGE_SERVER_H
 
+#include <ros/ros.h>
 #include <imc_tcp_link/imc_handle.h>
 
 namespace ros_to_imc {
