@@ -50,6 +50,7 @@ namespace imc_to_ros {
 template <typename IMC_MSG, typename ROS_MSG>
 bool convert(const IMC_MSG& imc_msg, ROS_MSG& ros_msg)
 {
+    std::cout << "Default convert !" << std::endl;
     return false;
 }
 

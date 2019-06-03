@@ -56,7 +56,7 @@ see [this link](https://www.lsts.pt/neptus/manual/trunk/elements.html#systems-li
 
 For each conversion in either direction, you need to create a new library
 that contains a specialized `convert` function for the types you want to convert.
-You then need to add a `BridgeServer` to the nodes, see details below.
+You then need to add a `BridgeServer` to the node, see details below.
 
 ### ros_to_imc
 
@@ -77,7 +77,7 @@ bool convert(const sensor_msgs::NavSatFix& ros_msg, IMC::GpsFix& imc_msg)
 }
 ```
 
-And they also add the bridge server to the `ros_to_imc_node` like this:
+And they also add the bridge server to the `bridge_node` like this:
 ```cpp
 ros_to_imc::BridgeServer<sensor_msgs::NavSatFix, IMC::GpsFix> gpsfix_server(ros_node, imc_handle, "/gps_fix");
 ```
@@ -101,7 +101,7 @@ bool convert(const IMC::Goto& imc_msg, geometry_msgs::Pose& ros_msg)
 }
 ```
 
-And they also add the bridge server to the `imc_to_ros_node` like this:
+And they also add the bridge server to the `bridge_node` like this:
 ```cpp
 imc_to_ros::BridgeServer<IMC::Goto, geometry_msgs::Pose> goto_server(imc_handle, ros_node, "/goto_waypoint");
 ```

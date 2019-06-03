@@ -109,6 +109,9 @@ catkin_package(
 ## Build ##
 ###########
 
+# THINGS TO DO WHEN ADDING NEW MESSAGES (0/3)
+
+# 1/3
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
@@ -120,6 +123,10 @@ include_directories(
 ## Declare a C++ library
 add_library(ros_to_imc_heartbeat
   src/ros_to_imc/Heartbeat.cpp
+)
+
+add_library(imc_to_ros_heartbeat
+  src/imc_to_ros/Heartbeat.cpp
 )
 
 add_library(ros_to_imc_gpsfix
@@ -167,8 +174,13 @@ add_executable(bridge_node src/bridge_node.cpp)
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
+# 2/3
 ## Specify libraries to link a library or executable target against
 target_link_libraries(ros_to_imc_heartbeat
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(imc_to_ros_heartbeat
   ${catkin_LIBRARIES}
 )
 
@@ -195,8 +207,10 @@ target_link_libraries(imc_handle
   ${Boost_LIBRARIES}
 )
 
+# 3/3
 target_link_libraries(bridge_node
   ros_to_imc_heartbeat
+  imc_to_ros_heartbeat
   ros_to_imc_gpsfix
   ros_to_imc_goto
   imc_to_ros_goto

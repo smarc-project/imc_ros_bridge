@@ -33,6 +33,7 @@ int main(int argc, char** argv)
     ros_to_imc::BridgeServer<geometry_msgs::Pose, IMC::Goto> goto_server_dummy(ros_node, imc_handle, "/goto_input");
 
     imc_to_ros::BridgeServer<IMC::Goto, geometry_msgs::Pose> goto_server(imc_handle, ros_node, "/goto_waypoint");
+    imc_to_ros::BridgeServer<IMC::Heartbeat, std_msgs::Empty> imc_heartbeat_server(imc_handle, ros_node, "/imc_heartbeat");
 
     auto announce_callback = [&](const ros::TimerEvent&) { imc_handle.announce(); };
     auto heartbeat_callback = [&](const ros::TimerEvent&) { imc_handle.publish_heartbeat(); };
