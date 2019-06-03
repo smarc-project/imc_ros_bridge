@@ -13,7 +13,7 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-    ros::init(argc, argv, "ros_to_imc_node");
+    ros::init(argc, argv, "imc_bridge");
     ros::NodeHandle ros_node;
 
     std::string tcp_addr;
