@@ -8,6 +8,7 @@
 #include <imc_ros_bridge/ros_to_imc/Goto.h>
 
 #include <imc_ros_bridge/imc_to_ros/Goto.h>
+#include <imc_ros_bridge/imc_to_ros/Heartbeat.h>
 
 using namespace std;
 

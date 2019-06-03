@@ -49,7 +49,8 @@ void IMCHandle::announce()
 
     IMC::Announce msg;
     msg.sys_name = sys_name;
-    msg.sys_type = 2;
+    // 0=CCU, 1=HUMANSENSOR, 2 = UUV, 3 = ASV, 4=UAV, 5=UGV, 6=STATICSENSOR
+    msg.sys_type = 4; // AUV = UAV, I guess?
     msg.owner = 0;
     msg.lat = 5.;
     msg.lon = 10.;

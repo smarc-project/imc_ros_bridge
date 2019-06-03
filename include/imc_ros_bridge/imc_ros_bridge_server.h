@@ -9,6 +9,7 @@ namespace ros_to_imc {
 template <typename ROS_MSG, typename IMC_MSG>
 bool convert(const ROS_MSG& ros_msg, IMC_MSG& imc_msg)
 {
+    static_assert(sizeof(IMC_MSG) == -1 || sizeof(ROS_MSG) == -1, "ERROR: You need to supply a convert specialization for the ROS -> IMC msg types provided");
     return false;
 }
 
@@ -50,7 +51,7 @@ namespace imc_to_ros {
 template <typename IMC_MSG, typename ROS_MSG>
 bool convert(const IMC_MSG& imc_msg, ROS_MSG& ros_msg)
 {
-    std::cout << "Default convert !" << std::endl;
+    static_assert(sizeof(IMC_MSG) == -1 || sizeof(ROS_MSG) == -1, "ERROR: You need to supply a convert specialization for the IMC -> ROS msg types provided");
     return false;
 }
 
