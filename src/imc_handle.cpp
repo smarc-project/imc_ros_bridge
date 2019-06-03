@@ -48,9 +48,9 @@ void IMCHandle::announce()
     std::string announce_addr = "224.0.75.69";
 
     IMC::Announce msg;
-    msg.sys_name = "lauv-xplore-1-idiot";
-    msg.sys_type = 0; // 30; // lauv-xplore-1
-    msg.owner = 0; // do not know what this is
+    msg.sys_name = sys_name;
+    msg.sys_type = imc_id;
+    msg.owner = 0;
     msg.lat = 5.;
     msg.lon = 10.;
     msg.height = -1.;
