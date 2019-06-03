@@ -16,6 +16,8 @@ will launch the `imc_bridge` node.
 
 ## Trying with Neptus
 
+These instructions have been tested for Ubuntu 16.04 and 18.04. For 18.04, you
+may have to comment a line in a jdk file to get it running (TODO: check path to file).
 First, install dependencies: `sudo apt install openjdk-8-jdk-headless ant-optional`.
 
 Then clone and build neptus:
