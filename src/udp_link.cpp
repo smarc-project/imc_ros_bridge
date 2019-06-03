@@ -13,6 +13,8 @@ UDPLink::UDPLink(std::function<void (IMC::Message*)> recv_handler,
     socket.set_option(udp::socket::reuse_address(true));
     socket.bind(udp::endpoint(address::from_string(addr), boost::lexical_cast<int>(port)));
 
+    should_shutdown = false;
+
     multicast_socket.open(boost::asio::ip::udp::v4());
 
     wait();
@@ -25,6 +27,7 @@ UDPLink::UDPLink(std::function<void (IMC::Message*)> recv_handler,
 UDPLink::~UDPLink()
 {
     //multicast_socket.shutdown();
+    should_shutdown = true;
     multicast_socket.close();
     run_thread.join();
 }
@@ -92,5 +95,7 @@ void UDPLink::handle_receive(const boost::system::error_code& error, size_t byte
         }
     }
 
-    wait();
+    if (!should_shutdown) {
+        wait();
+    }
 }

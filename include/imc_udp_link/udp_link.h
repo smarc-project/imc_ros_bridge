@@ -35,6 +35,8 @@ private:
 
     std::vector<int> announce_ports{30100, 30101, 30102, 30103, 30104};
 
+    bool should_shutdown;
+
 public:
 
     UDPLink(std::function<void (IMC::Message*)> recv_handler,
