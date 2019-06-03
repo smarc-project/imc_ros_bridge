@@ -49,7 +49,7 @@ void IMCHandle::announce()
 
     IMC::Announce msg;
     msg.sys_name = sys_name;
-    msg.sys_type = imc_id;
+    msg.sys_type = 0;
     msg.owner = 0;
     msg.lat = 5.;
     msg.lon = 10.;
