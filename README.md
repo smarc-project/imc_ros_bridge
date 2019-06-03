@@ -32,8 +32,10 @@ You can publish e.g. the `/heartbeat` message in ROS and see that it appears in 
 ```
 rostopic pub /heartbeat std_msgs/Empty "{}" --once
 ```
-I have not figured out how to check if the other direction works yet, feel free to investigate this! The IMC Message Sender
-seems to broadcast only over UDP, but we just subscribe to TCP so that doesn't work. I might be wrong on this though.
+
+If you go to the systems list panel, you should also see the ROS auv displayed as a cyan panel.
+This indicates that neptus can communicate with the auv. Any other color indicates som problem,
+see [this link](https://www.lsts.pt/neptus/manual/trunk/elements.html#systems-list).
 
 ## Existing conversions
 
