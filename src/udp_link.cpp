@@ -3,6 +3,10 @@
 #include <boost/lexical_cast.hpp>
 #include <ros/ros.h>
 
+// for debugging only
+#include <sstream>
+#define bytes_to_u16(MSB,LSB) (((unsigned int) ((unsigned char) MSB)) & 255)<<8 | (((unsigned char) LSB)&255)
+
 using namespace std;
 
 UDPLink::UDPLink(std::function<void (IMC::Message*)> recv_handler,
@@ -85,12 +89,28 @@ void UDPLink::handle_receive(const boost::system::error_code& error, size_t byte
         return;
     }
 
-    std::cout << "Received by udp: '" << std::string(recv_buffer.begin(), recv_buffer.begin()+bytes_transferred) << "' (" << error.message() << ")\n";
+    std::cout << "Received by udp: '" << std::string(recv_buffer.begin(), recv_buffer.begin()+bytes_transferred) << "' (" << error.message() << ") ";
+    std::cout << bytes_transferred << " bytes transferred" << std::endl;
+    
+    // attempt to read the datagram header. bytes 18-19 have size info.
+//    char buf[2];
+//   buf[0] = recv_buffer[18];
+//    buf[1] = recv_buffer[19];
+//    unsigned int num_bytes = buf[0] | buf[1] << 8;
+//    std::cout << "(" << num_bytes << ") bytes should have been received according to UDP header." << std::endl;
+    // it seems like the socket does not return the whole package (as evidenced by bytes_transferred being smaller than what wireshark captures).
+    // so we are only receiving the payload here.
 
     for (size_t i = 0; i < bytes_transferred; ++i) {
         IMC::Message* m = parser_.parse(recv_buffer[i]);
         if (m) {
             recv_handler_(m);
+            
+            // debugging the rows plan being sent over UDP and then no handler receiving it
+            std::stringstream ostr;
+            m->fieldsToJSON(ostr, 2);
+            std::cout << ostr.str() << std::endl;
+            
             delete m;
         }
     }

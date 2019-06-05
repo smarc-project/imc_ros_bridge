@@ -9,6 +9,8 @@
 
 #include <imc_ros_bridge/imc_to_ros/Goto.h>
 #include <imc_ros_bridge/imc_to_ros/Heartbeat.h>
+#include <imc_ros_bridge/imc_to_ros/Abort.h>
+#include <imc_ros_bridge/imc_to_ros/PlanDB.h>
 
 using namespace std;
 
@@ -33,8 +35,14 @@ int main(int argc, char** argv)
     ros_to_imc::BridgeServer<sensor_msgs::NavSatFix, IMC::GpsFix> gpsfix_server(ros_node, imc_handle, "/gps_fix");
     ros_to_imc::BridgeServer<geometry_msgs::Pose, IMC::Goto> goto_server_dummy(ros_node, imc_handle, "/goto_input");
 
+    // 450
     imc_to_ros::BridgeServer<IMC::Goto, geometry_msgs::Pose> goto_server(imc_handle, ros_node, "/goto_waypoint");
+    // 150
     imc_to_ros::BridgeServer<IMC::Heartbeat, std_msgs::Empty> imc_heartbeat_server(imc_handle, ros_node, "/imc_heartbeat");
+    // 550
+    imc_to_ros::BridgeServer<IMC::Abort, std_msgs::Empty> abort_server(imc_handle, ros_node, "/abort");
+    // 556
+    imc_to_ros::BridgeServer<IMC::PlanDB, std_msgs::String> plandb_server(imc_handle, ros_node, "/plan_db");
 
     auto announce_callback = [&](const ros::TimerEvent&) { imc_handle.announce(); };
     auto heartbeat_callback = [&](const ros::TimerEvent&) { imc_handle.publish_heartbeat(); };

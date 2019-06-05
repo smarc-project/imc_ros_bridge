@@ -153,6 +153,15 @@ add_library(imc_handle
   src/imc_handle.cpp
 )
 
+add_library(imc_to_ros_abort
+  src/imc_to_ros/Abort.cpp
+)
+
+add_library(imc_to_ros_plandb
+  src/imc_to_ros/PlanDB.cpp
+)
+
+
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
@@ -196,6 +205,15 @@ target_link_libraries(imc_to_ros_goto
   ${catkin_LIBRARIES}
 )
 
+target_link_libraries(imc_to_ros_abort
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(imc_to_ros_plandb
+  ${catkin_LIBRARIES}
+)
+
+
 target_link_libraries(udp_link
   imc_factory
   ${Boost_LIBRARIES}
@@ -214,6 +232,8 @@ target_link_libraries(bridge_node
   ros_to_imc_gpsfix
   ros_to_imc_goto
   imc_to_ros_goto
+  imc_to_ros_abort
+  imc_to_ros_plandb
   imc_handle
   ${Boost_LIBRARIES}
   ${catkin_LIBRARIES}

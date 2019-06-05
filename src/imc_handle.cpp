@@ -40,6 +40,11 @@ void IMCHandle::tcp_callback(const IMC::Message* msg)
     }
     else {
         ROS_INFO("Got tcp message with no configure callback, msgid: %u!", uid);
+	// lets just print the whole message in json format if we can't parse it yet.
+	std::cout << msg->getName() << std::endl;
+	// (ostream, indent)
+	msg->fieldsToJSON(std::cout, 1);
+	std::cout << std::endl;
     }
 }
 
