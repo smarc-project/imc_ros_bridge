@@ -13,6 +13,7 @@
 #include <imc_ros_bridge/imc_to_ros/Heartbeat.h>
 #include <imc_ros_bridge/imc_to_ros/Abort.h>
 #include <imc_ros_bridge/imc_to_ros/PlanDB.h>
+#include <imc_ros_bridge/imc_to_ros/PlanControl.h>
 
 
 using namespace std;
@@ -48,6 +49,7 @@ int main(int argc, char** argv)
     imc_to_ros::BridgeServer<IMC::Abort, std_msgs::Empty> abort_server(imc_handle, ros_node, "/abort");
     // 556
     imc_to_ros::BridgeServer<IMC::PlanDB, std_msgs::String> plandb_server(imc_handle, ros_node, "/plan_db");
+    imc_to_ros::BridgeServer<IMC::PlanControl, imc_ros_bridge::PlanControl> plancontrol_server(imc_handle, ros_node, "/plan_control");
 
     auto announce_callback = [&](const ros::TimerEvent&) { imc_handle.announce(); };
     auto heartbeat_callback = [&](const ros::TimerEvent&) { imc_handle.publish_heartbeat(); };

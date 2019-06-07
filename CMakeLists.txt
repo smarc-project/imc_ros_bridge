@@ -43,11 +43,10 @@ find_package(Boost REQUIRED COMPONENTS system thread)
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+add_message_files(
+  FILES
+  PlanControl.msg
+)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -64,10 +63,13 @@ find_package(Boost REQUIRED COMPONENTS system thread)
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  geometry_msgs
+  nav_msgs
+  sensor_msgs
+  std_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -165,6 +167,10 @@ add_library(ros_to_imc_gpsnavdata
   src/ros_to_imc/GpsNavData.cpp
 )
 
+add_library(imc_to_ros_plancontrol
+  src/imc_to_ros/PlanControl.cpp
+)
+
 add_library(ros_to_imc_estimatedstate
   src/ros_to_imc/EstimatedState.cpp
 )
@@ -221,6 +227,10 @@ target_link_libraries(imc_to_ros_plandb
   ${catkin_LIBRARIES}
 )
 
+target_link_libraries(imc_to_ros_plancontrol
+  ${catkin_LIBRARIES}
+)
+
 target_link_libraries(ros_to_imc_gpsnavdata
   ${catkin_LIBRARIES}
 )
@@ -249,6 +259,7 @@ target_link_libraries(bridge_node
   imc_to_ros_goto
   imc_to_ros_abort
   imc_to_ros_plandb
+  imc_to_ros_plancontrol
   ros_to_imc_gpsnavdata
   ros_to_imc_estimatedstate
   imc_handle
