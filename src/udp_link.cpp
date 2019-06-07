@@ -44,6 +44,7 @@ void handler(const boost::system::error_code& error, size_t bytes_transferred)
 void UDPLink::publish(IMC::Message& msg)
 {
     msg.setSource(30);
+    msg.setSourceEntity(32);
     msg.setDestination(0);
     msg.setTimeStamp(ros::Time::now().toSec());
 
@@ -57,6 +58,7 @@ void UDPLink::publish(IMC::Message& msg)
 void UDPLink::publish_multicast(IMC::Message& msg, const string& multicast_addr)
 {
     msg.setSource(30);
+    msg.setSourceEntity(32);
     msg.setDestination(0);
     msg.setTimeStamp(ros::Time::now().toSec());
 

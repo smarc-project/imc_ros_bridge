@@ -19,6 +19,8 @@ private:
 
     // we might need multiple for every message in the future, let's start here
     std::map<uint16_t, std::function<void(const IMC::Message*)> > callbacks;
+    
+    double lat;
 
 public:
 

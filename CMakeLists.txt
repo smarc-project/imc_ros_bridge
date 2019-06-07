@@ -161,6 +161,14 @@ add_library(imc_to_ros_plandb
   src/imc_to_ros/PlanDB.cpp
 )
 
+add_library(ros_to_imc_gpsnavdata
+  src/ros_to_imc/GpsNavData.cpp
+)
+
+add_library(ros_to_imc_estimatedstate
+  src/ros_to_imc/EstimatedState.cpp
+)
+
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -213,6 +221,13 @@ target_link_libraries(imc_to_ros_plandb
   ${catkin_LIBRARIES}
 )
 
+target_link_libraries(ros_to_imc_gpsnavdata
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(ros_to_imc_estimatedstate
+  ${catkin_LIBRARIES}
+)
 
 target_link_libraries(udp_link
   imc_factory
@@ -234,6 +249,8 @@ target_link_libraries(bridge_node
   imc_to_ros_goto
   imc_to_ros_abort
   imc_to_ros_plandb
+  ros_to_imc_gpsnavdata
+  ros_to_imc_estimatedstate
   imc_handle
   ${Boost_LIBRARIES}
   ${catkin_LIBRARIES}

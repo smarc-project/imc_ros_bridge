@@ -27,8 +27,8 @@ private:
     boost::asio::io_service io_service;
     udp::socket socket{io_service};
     udp::socket multicast_socket{io_service};
-    // 16Kib
-    boost::array<char, 131072> recv_buffer;
+    // 32KiB in bits. Max UDP packet size.
+    boost::array<char, 262144> recv_buffer;
     udp::endpoint remote_endpoint;
     std::function<void (IMC::Message*)> recv_handler_;
     IMC::Parser parser_;
