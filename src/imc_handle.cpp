@@ -18,6 +18,7 @@ IMCHandle::IMCHandle(const std::string& tcp_addr, const std::string& tcp_port,
       tcp_addr(tcp_addr), tcp_port(tcp_port),
       sys_name(sys_name), imc_id(imc_id)
 {
+    lat = 0.0;
     announce();
 }
 
@@ -40,6 +41,12 @@ void IMCHandle::tcp_callback(const IMC::Message* msg)
     }
     else {
         ROS_INFO("Got tcp message with no configure callback, msgid: %u!", uid);
+	// lets just print the whole message in json format if we can't parse it yet.
+	std::cout << "Message name: " << msg->getName() << std::endl << "Message JSON:" << std::endl;
+	// (ostream, indent)
+	msg->fieldsToJSON(std::cout, 4);
+	std::cout << std::endl;
+    std::cout << "---------------------" << std::endl;
     }
 }
 
@@ -49,11 +56,15 @@ void IMCHandle::announce()
 
     IMC::Announce msg;
     msg.sys_name = sys_name;
-    msg.sys_type = 0;
+    // 0=CCU, 1=HUMANSENSOR, 2 = UUV, 3 = ASV, 4=UAV, 5=UGV, 6=STATICSENSOR
+    msg.sys_type = 2; // UUV = Unmanned underwater veh.
     msg.owner = 0;
-    msg.lat = 5.;
-    msg.lon = 10.;
-    msg.height = -1.;
+    // dont put location info here, this is only updated once
+    // use EstimatedState for continous updates of location.
+    //lat +=0.01;
+    //msg.lat = lat;
+    //msg.lon = 0.7;
+    //msg.height = -1.;
     //msg.services = "imc+info://0.0.0.0/version/5.4.11/;imc+udp://127.0.0.1:6002/;";
     msg.services = "imc+udp://" + tcp_addr + ":" + tcp_port + "/;";
     udp_link.publish_multicast(msg, announce_addr);

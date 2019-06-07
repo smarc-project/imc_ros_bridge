@@ -109,6 +109,9 @@ catkin_package(
 ## Build ##
 ###########
 
+# THINGS TO DO WHEN ADDING NEW MESSAGES (0/3)
+
+# 1/3
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
@@ -120,6 +123,10 @@ include_directories(
 ## Declare a C++ library
 add_library(ros_to_imc_heartbeat
   src/ros_to_imc/Heartbeat.cpp
+)
+
+add_library(imc_to_ros_heartbeat
+  src/imc_to_ros/Heartbeat.cpp
 )
 
 add_library(ros_to_imc_gpsfix
@@ -146,6 +153,23 @@ add_library(imc_handle
   src/imc_handle.cpp
 )
 
+add_library(imc_to_ros_abort
+  src/imc_to_ros/Abort.cpp
+)
+
+add_library(imc_to_ros_plandb
+  src/imc_to_ros/PlanDB.cpp
+)
+
+add_library(ros_to_imc_gpsnavdata
+  src/ros_to_imc/GpsNavData.cpp
+)
+
+add_library(ros_to_imc_estimatedstate
+  src/ros_to_imc/EstimatedState.cpp
+)
+
+
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
@@ -167,8 +191,13 @@ add_executable(bridge_node src/bridge_node.cpp)
 ## same as for the library above
 # add_dependencies(${PROJECT_NAME}_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
+# 2/3
 ## Specify libraries to link a library or executable target against
 target_link_libraries(ros_to_imc_heartbeat
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(imc_to_ros_heartbeat
   ${catkin_LIBRARIES}
 )
 
@@ -184,6 +213,22 @@ target_link_libraries(imc_to_ros_goto
   ${catkin_LIBRARIES}
 )
 
+target_link_libraries(imc_to_ros_abort
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(imc_to_ros_plandb
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(ros_to_imc_gpsnavdata
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(ros_to_imc_estimatedstate
+  ${catkin_LIBRARIES}
+)
+
 target_link_libraries(udp_link
   imc_factory
   ${Boost_LIBRARIES}
@@ -195,11 +240,17 @@ target_link_libraries(imc_handle
   ${Boost_LIBRARIES}
 )
 
+# 3/3
 target_link_libraries(bridge_node
   ros_to_imc_heartbeat
+  imc_to_ros_heartbeat
   ros_to_imc_gpsfix
   ros_to_imc_goto
   imc_to_ros_goto
+  imc_to_ros_abort
+  imc_to_ros_plandb
+  ros_to_imc_gpsnavdata
+  ros_to_imc_estimatedstate
   imc_handle
   ${Boost_LIBRARIES}
   ${catkin_LIBRARIES}

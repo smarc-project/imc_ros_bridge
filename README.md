@@ -56,7 +56,7 @@ see [this link](https://www.lsts.pt/neptus/manual/trunk/elements.html#systems-li
 
 For each conversion in either direction, you need to create a new library
 that contains a specialized `convert` function for the types you want to convert.
-You then need to add a `BridgeServer` to the nodes, see details below.
+You then need to add a `BridgeServer` to the node, see details below.
 
 ### ros_to_imc
 
@@ -77,7 +77,7 @@ bool convert(const sensor_msgs::NavSatFix& ros_msg, IMC::GpsFix& imc_msg)
 }
 ```
 
-And they also add the bridge server to the `ros_to_imc_node` like this:
+And they also add the bridge server to the `bridge_node` like this:
 ```cpp
 ros_to_imc::BridgeServer<sensor_msgs::NavSatFix, IMC::GpsFix> gpsfix_server(ros_node, imc_handle, "/gps_fix");
 ```
@@ -101,8 +101,30 @@ bool convert(const IMC::Goto& imc_msg, geometry_msgs::Pose& ros_msg)
 }
 ```
 
-And they also add the bridge server to the `imc_to_ros_node` like this:
+And they also add the bridge server to the `bridge_node` like this:
 ```cpp
 imc_to_ros::BridgeServer<IMC::Goto, geometry_msgs::Pose> goto_server(imc_handle, ros_node, "/goto_waypoint");
 ```
 And link the convert libary into `imc_to_ros_node` in the `CMakeLists.txt` file.
+
+### Adding SAM to Neptus
+
+Link `sam_files/00-sam-auv.nvcl` into `.../neptus/vehicle-defs/` and `sam_files/sam` folder into `.../neptus/vehicle_files`.
+This will add SAM to the list of vehicles available in the list, with SAM's visuals.
+
+
+### Moving SAM around
+
+Using the console (opened by going to Vehicles -> SAM\_AUV -> console) generate a plan (In the console window: Tools -> Generate plan). Select the plan on the right section of the console and click the blue arrow towards the top. This will create and send out a JSON formatted plan to the ros topic `/plan_db`. Parse this JSON, and control SAM.
+
+In order to see the updated pose of SAM in the Neptus console, publish to the ros topic `/estimated_state`. Currently only lat, lon, altitude are used. The update rate on the Neptus console is about once every 1-2 seconds, be patient.
+
+### Emergency
+
+From the Neptus console, the big red ABORT button can be used to send an empty message to the ros topic `/abort`. Probably a good idea to subscribe to this topic.
+
+
+
+
+
+
