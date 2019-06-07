@@ -3,10 +3,6 @@
 #include <boost/lexical_cast.hpp>
 #include <ros/ros.h>
 
-// for debugging only
-#include <sstream>
-#define bytes_to_u16(MSB,LSB) (((unsigned int) ((unsigned char) MSB)) & 255)<<8 | (((unsigned char) LSB)&255)
-
 using namespace std;
 
 UDPLink::UDPLink(std::function<void (IMC::Message*)> recv_handler,
@@ -107,12 +103,6 @@ void UDPLink::handle_receive(const boost::system::error_code& error, size_t byte
         IMC::Message* m = parser_.parse(recv_buffer[i]);
         if (m) {
             recv_handler_(m);
-            
-            // debugging the rows plan being sent over UDP and then no handler receiving it
-            std::stringstream ostr;
-            m->fieldsToJSON(ostr, 2);
-            std::cout << ostr.str() << std::endl;
-            
             delete m;
         }
     }
