@@ -1,5 +1,4 @@
 #include <imc_ros_bridge/imc_to_ros/PlanControl.h>
-#include <sstream>
 
 namespace imc_to_ros {
 
