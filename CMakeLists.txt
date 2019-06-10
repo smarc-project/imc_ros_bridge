@@ -7,7 +7,7 @@ add_compile_options(-std=c++11)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-find_package(catkin REQUIRED COMPONENTS std_msgs sensor_msgs geometry_msgs nav_msgs roscpp message_runtime)
+find_package(catkin REQUIRED COMPONENTS std_msgs sensor_msgs geometry_msgs nav_msgs roscpp message_runtime message_generation)
 
 ## System dependencies are found with CMake's conventions
 find_package(Boost REQUIRED COMPONENTS system thread)
@@ -43,11 +43,11 @@ find_package(Boost REQUIRED COMPONENTS system thread)
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
+add_message_files(
+  FILES
+  PlanControl.msg
+  PlanControlState.msg
+)
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -64,10 +64,13 @@ find_package(Boost REQUIRED COMPONENTS system thread)
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs  # Or other packages containing msgs
-# )
+generate_messages(
+  DEPENDENCIES
+  geometry_msgs
+  nav_msgs
+  sensor_msgs
+  std_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -101,7 +104,7 @@ find_package(Boost REQUIRED COMPONENTS system thread)
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES imc_ros_bridge
-#  CATKIN_DEPENDS other_catkin_pkg
+ CATKIN_DEPENDS message_runtime
 #  DEPENDS system_lib
 )
 
@@ -165,6 +168,14 @@ add_library(ros_to_imc_gpsnavdata
   src/ros_to_imc/GpsNavData.cpp
 )
 
+add_library(imc_to_ros_plancontrol
+  src/imc_to_ros/PlanControl.cpp
+)
+
+add_library(ros_to_imc_plancontrolstate
+  src/ros_to_imc/PlanControlState.cpp
+)
+
 add_library(ros_to_imc_estimatedstate
   src/ros_to_imc/EstimatedState.cpp
 )
@@ -173,7 +184,9 @@ add_library(ros_to_imc_estimatedstate
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(imc_to_ros_plancontrol imc_ros_bridge_generate_messages_cpp)
+add_dependencies(ros_to_imc_plancontrolstate imc_ros_bridge_generate_messages_cpp)
+
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
@@ -221,6 +234,14 @@ target_link_libraries(imc_to_ros_plandb
   ${catkin_LIBRARIES}
 )
 
+target_link_libraries(imc_to_ros_plancontrol
+  ${catkin_LIBRARIES}
+)
+
+target_link_libraries(ros_to_imc_plancontrolstate
+  ${catkin_LIBRARIES}
+)
+
 target_link_libraries(ros_to_imc_gpsnavdata
   ${catkin_LIBRARIES}
 )
@@ -249,6 +270,8 @@ target_link_libraries(bridge_node
   imc_to_ros_goto
   imc_to_ros_abort
   imc_to_ros_plandb
+  imc_to_ros_plancontrol
+  ros_to_imc_plancontrolstate
   ros_to_imc_gpsnavdata
   ros_to_imc_estimatedstate
   imc_handle
