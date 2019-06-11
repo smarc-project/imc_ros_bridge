@@ -44,13 +44,20 @@ see [this link](https://www.lsts.pt/neptus/manual/trunk/elements.html#systems-li
 
 ### ros_to_imc
 
-* `std_msgs/Empty` on topic `/heartbeat` -> `IMC::Heartbeat`
-* `sensor_msgs/NavSatFix` on topic `/gps_fix` -> `IMC::GpsFix`
-* `geometry_msgs/Pose` on topic `/goto_input` -> `IMC::Goto`
+* `std_msgs::Empty` on topic `/heartbeat` -> `IMC::Heartbeat`
+* `sensor_msgs::NavSatFix` on topic `/gps_fix` -> `IMC::GpsFix`
+* `geometry_msgs::Pose` on topic `/goto_input` -> `IMC::Goto`
+* `sensor_msgs::NavSatFix` on topic `/gps_nav_data` -> `IMC::GpsNavData`
+* `sensor_msgs::NavSatFix` on topic `/estimated_state` -> `IMC::EstimatedState`
+* `imc_ros_bridge::PlanControlState` on topic `plan_control_state` -> `IMC::PlanControlState`
 
 ### imc_to_ros
 
-* `IMC::Goto` -> `geometry_msgs/Pose` on topic `/goto_waypoint`
+* `IMC::Goto` -> `geometry_msgs::Pose` on topic `/goto_waypoint`
+* `IMC::Abort` -> `std_msgs::Empty` on topic `/abort`
+* `IMC::Heartbeat` -> `std_msgs::Empty` on topic `/imc_heartbeat`
+* `IMC::PlanDB` -> `std_msgs::String` on topic `/plan_db` (JSON)
+* `IMC::Plancontrol` -> `imc_ros_bridge::PlanControl` on topic `/plan_control`
 
 ## Creating new conversions
 
@@ -111,7 +118,7 @@ And link the convert libary into `imc_to_ros_node` in the `CMakeLists.txt` file.
 
 ### Adding SAM to Neptus
 
-Link `sam_files/00-sam-auv.nvcl` into `.../neptus/vehicle-defs/` and `sam_files/sam` folder into `.../neptus/vehicle_files`.
+Copy `sam_files/00-sam-auv.nvcl` into `.../neptus/vehicle-defs/` and `sam_files/sam` folder into `.../neptus/vehicle_files`.
 This will add SAM to the list of vehicles available in the list, with SAM's visuals.
 
 
@@ -119,11 +126,11 @@ This will add SAM to the list of vehicles available in the list, with SAM's visu
 
 Using the console (opened by going to Vehicles -> SAM\_AUV -> console) generate a plan (In the console window: Tools -> Generate plan). Select the plan on the right section of the console and click the blue arrow towards the top. This will create and send out a JSON formatted plan to the ros topic `/plan_db`. Parse this JSON, and control SAM.
 
-In order to see the updated pose of SAM in the Neptus console, publish to the ros topic `/estimated_state`. Currently only lat, lon, altitude are used. The update rate on the Neptus console is about once every 1-2 seconds, be patient.
+In order to see the updated pose of SAM in the Neptus console, publish to the ros topic `/estimated_state`. Currently only lat, lon, altitude are used. The update rate on the Neptus console can be about once every 1-2 seconds, be patient.
 
 ### Emergency
 
-From the Neptus console, the big red ABORT button can be used to send an empty message to the ros topic `/abort`. Probably a good idea to subscribe to this topic.
+From the Neptus console, the big red ABORT button can be used to send an empty message to the ros topic `/abort`. Probably a good idea to subscribe to this topic. Disregard the errors that pop out in the Neptus console.
 
 
 
