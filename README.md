@@ -107,6 +107,8 @@ imc_to_ros::BridgeServer<IMC::Goto, geometry_msgs::Pose> goto_server(imc_handle,
 ```
 And link the convert libary into `imc_to_ros_node` in the `CMakeLists.txt` file.
 
+## Neptus-SAM AUV Integration
+
 ### Adding SAM to Neptus
 
 Link `sam_files/00-sam-auv.nvcl` into `.../neptus/vehicle-defs/` and `sam_files/sam` folder into `.../neptus/vehicle_files`.
