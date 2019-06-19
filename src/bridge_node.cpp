@@ -54,7 +54,7 @@ int main(int argc, char** argv)
     ros_to_imc::BridgeServer<geometry_msgs::Pose, IMC::Goto> goto_server_dummy(ros_node, imc_handle, "/goto_input");
     ros_to_imc::BridgeServer<sensor_msgs::NavSatFix, IMC::GpsNavData> gpsnavdata_server(ros_node, imc_handle, "/gps_nav_data");
     ros_to_imc::BridgeServer<sensor_msgs::NavSatFix, IMC::EstimatedState> estimatedstate_server(ros_node, imc_handle, "/estimated_state");
-    ros_to_imc::BridgeServer<imc_ros_bridge::PlanControlState, IMC::PlanControlState> plancontrolstate_server(ros_node, imc_handle, "/plan_cotrol_state");
+    ros_to_imc::BridgeServer<imc_ros_bridge::PlanControlState, IMC::PlanControlState> plancontrolstate_server(ros_node, imc_handle, "/plan_control_state");
 
     // 450
     imc_to_ros::BridgeServer<IMC::Goto, geometry_msgs::Pose> goto_server(imc_handle, ros_node, "/goto_waypoint");
