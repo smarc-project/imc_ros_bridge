@@ -50,6 +50,9 @@ private:
     std::vector<int> announce_ports{30100, 30101, 30102, 30103, 30104};
 
     bool should_shutdown;
+    
+    int imc_src = 4;
+    int imc_src_ent = 32;
 
 public:
 

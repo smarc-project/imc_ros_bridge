@@ -35,6 +35,7 @@ UDPLink::UDPLink(std::function<void (IMC::Message*)> recv_handler,
     //auto work = std::make_shared<boost::asio::io_service::work>(io_service);
 
     run_thread = boost::thread(boost::bind(&boost::asio::io_service::run, &io_service)); 
+
 }
 
 UDPLink::~UDPLink()
@@ -52,8 +53,8 @@ void handler(const boost::system::error_code& error, size_t bytes_transferred)
 
 void UDPLink::publish(IMC::Message& msg)
 {
-    msg.setSource(30);
-    msg.setSourceEntity(32);
+    msg.setSource(imc_src);
+    msg.setSourceEntity(imc_src_ent);
     msg.setDestination(0);
     msg.setTimeStamp(ros::Time::now().toSec());
 
@@ -66,8 +67,8 @@ void UDPLink::publish(IMC::Message& msg)
 
 void UDPLink::publish_multicast(IMC::Message& msg, const string& multicast_addr)
 {
-    msg.setSource(30);
-    msg.setSourceEntity(32);
+    msg.setSource(imc_src);
+    msg.setSourceEntity(imc_src_ent);
     msg.setDestination(0);
     msg.setTimeStamp(ros::Time::now().toSec());
 
