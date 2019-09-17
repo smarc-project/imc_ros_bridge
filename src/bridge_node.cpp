@@ -44,27 +44,27 @@ int main(int argc, char** argv)
 
     ros::param::param<std::string>("~server_addr", tcp_addr, "127.0.0.1");
     ros::param::param<std::string>("~server_port", tcp_port, "6002");
-    ros::param::param<std::string>("~sys_name", sys_name, "sam-auv-1");
+    ros::param::param<std::string>("~system_name", sys_name, "imc_ros_bridge");
     ros::param::param<int>("~imc_id", imc_id, 30);
 
     IMCHandle imc_handle(tcp_addr, tcp_port, sys_name, imc_id);
 
-    ros_to_imc::BridgeServer<std_msgs::Empty, IMC::Heartbeat> heartbeat_server(ros_node, imc_handle, "/heartbeat");
-    ros_to_imc::BridgeServer<sensor_msgs::NavSatFix, IMC::GpsFix> gpsfix_server(ros_node, imc_handle, "/gps_fix");
-    ros_to_imc::BridgeServer<geometry_msgs::Pose, IMC::Goto> goto_server_dummy(ros_node, imc_handle, "/goto_input");
-    ros_to_imc::BridgeServer<sensor_msgs::NavSatFix, IMC::GpsNavData> gpsnavdata_server(ros_node, imc_handle, "/gps_nav_data");
-    ros_to_imc::BridgeServer<sensor_msgs::NavSatFix, IMC::EstimatedState> estimatedstate_server(ros_node, imc_handle, "/estimated_state");
-    ros_to_imc::BridgeServer<imc_ros_bridge::PlanControlState, IMC::PlanControlState> plancontrolstate_server(ros_node, imc_handle, "/plan_control_state");
+    ros_to_imc::BridgeServer<std_msgs::Empty, IMC::Heartbeat> heartbeat_server(ros_node, imc_handle, sys_name+"/heartbeat");
+    ros_to_imc::BridgeServer<sensor_msgs::NavSatFix, IMC::GpsFix> gpsfix_server(ros_node, imc_handle, sys_name+"/gps_fix");
+    ros_to_imc::BridgeServer<geometry_msgs::Pose, IMC::Goto> goto_server_dummy(ros_node, imc_handle, sys_name+"/goto_input");
+    ros_to_imc::BridgeServer<sensor_msgs::NavSatFix, IMC::GpsNavData> gpsnavdata_server(ros_node, imc_handle, sys_name+"/gps_nav_data");
+    ros_to_imc::BridgeServer<sensor_msgs::NavSatFix, IMC::EstimatedState> estimatedstate_server(ros_node, imc_handle, sys_name+"/estimated_state");
+    ros_to_imc::BridgeServer<imc_ros_bridge::PlanControlState, IMC::PlanControlState> plancontrolstate_server(ros_node, imc_handle, sys_name+"/plan_control_state");
 
     // 450
-    imc_to_ros::BridgeServer<IMC::Goto, geometry_msgs::Pose> goto_server(imc_handle, ros_node, "/goto_waypoint");
+    imc_to_ros::BridgeServer<IMC::Goto, geometry_msgs::Pose> goto_server(imc_handle, ros_node, sys_name+"/goto_waypoint");
     // 150
-    imc_to_ros::BridgeServer<IMC::Heartbeat, std_msgs::Empty> imc_heartbeat_server(imc_handle, ros_node, "/imc_heartbeat");
+    imc_to_ros::BridgeServer<IMC::Heartbeat, std_msgs::Empty> imc_heartbeat_server(imc_handle, ros_node, sys_name+"/imc_heartbeat");
     // 550
-    imc_to_ros::BridgeServer<IMC::Abort, std_msgs::Empty> abort_server(imc_handle, ros_node, "/abort");
+    imc_to_ros::BridgeServer<IMC::Abort, std_msgs::Empty> abort_server(imc_handle, ros_node, sys_name+"/abort");
     // 556
-    imc_to_ros::BridgeServer<IMC::PlanDB, std_msgs::String> plandb_server(imc_handle, ros_node, "/plan_db");
-    imc_to_ros::BridgeServer<IMC::PlanControl, imc_ros_bridge::PlanControl> plancontrol_server(imc_handle, ros_node, "/plan_control");
+    imc_to_ros::BridgeServer<IMC::PlanDB, std_msgs::String> plandb_server(imc_handle, ros_node, sys_name+"/plan_db");
+    imc_to_ros::BridgeServer<IMC::PlanControl, imc_ros_bridge::PlanControl> plancontrol_server(imc_handle, ros_node, sys_name+"/plan_control");
 
     auto announce_callback = [&](const ros::TimerEvent&) { imc_handle.announce(); };
     auto heartbeat_callback = [&](const ros::TimerEvent&) { imc_handle.publish_heartbeat(); };
