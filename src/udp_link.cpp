@@ -19,8 +19,8 @@
 using namespace std;
 
 UDPLink::UDPLink(std::function<void (IMC::Message*)> recv_handler,
-        const std::string& addr, const std::string& port)
-    : recv_handler_(recv_handler), addr(addr), port(port)
+        const std::string& addr, const std::string& port, int imc_src)
+    : recv_handler_(recv_handler), addr(addr), port(port), imc_src(imc_src)
 {
     socket.open(udp::v4());
     socket.set_option(udp::socket::reuse_address(true));
@@ -54,7 +54,7 @@ void handler(const boost::system::error_code& error, size_t bytes_transferred)
 void UDPLink::publish(IMC::Message& msg)
 {
     msg.setSource(imc_src);
-    msg.setSourceEntity(imc_src_ent);
+    msg.setSourceEntity(imc_src);
     msg.setDestination(0);
     msg.setTimeStamp(ros::Time::now().toSec());
 
@@ -68,7 +68,7 @@ void UDPLink::publish(IMC::Message& msg)
 void UDPLink::publish_multicast(IMC::Message& msg, const string& multicast_addr)
 {
     msg.setSource(imc_src);
-    msg.setSourceEntity(imc_src_ent);
+    msg.setSourceEntity(imc_src);
     msg.setDestination(0);
     msg.setTimeStamp(ros::Time::now().toSec());
 

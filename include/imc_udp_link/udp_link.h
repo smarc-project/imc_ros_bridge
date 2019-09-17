@@ -57,7 +57,8 @@ private:
 public:
 
     UDPLink(std::function<void (IMC::Message*)> recv_handler,
-            const std::string& addr, const std::string& port);
+            const std::string& addr, const std::string& port,
+            int imc_src);
 
     ~UDPLink();
 
