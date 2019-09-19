@@ -114,13 +114,18 @@ imc_to_ros::BridgeServer<IMC::Goto, geometry_msgs::Pose> goto_server(imc_handle,
 ```
 And link the convert libary into `imc_to_ros_node` in the `CMakeLists.txt` file.
 
-## Neptus-SAM AUV Integration
+## Neptus-AUV Integration
 
-### Adding SAM to Neptus
+### Adding a vehicle to Neptus
 
-Copy `sam_files/00-sam-auv.nvcl` into `.../neptus/vehicle-defs/` and `sam_files/sam` folder into `.../neptus/vehicle_files`.
-This will add SAM to the list of vehicles available in the list, with SAM's visuals.
+Copy `neptus_vehicle_definitions/sam_files/00-sam-auv.nvcl` into `.../neptus/vehicle-defs/` and `neptus_vehicle_definitions/sam_files/sam` folder into `.../neptus/vehicle_files`.
+This will add SAM to the list of vehicles available in the list, with SAM's visuals. This vehicle has id 30.
 
+Also do the same thing with `imc_ros_bridge` instead of `sam_files` to get a generic vehicle. The `imc_ros_bridge` fake vehicle has id 4.
+
+When starting the `imc_ros_brdige` node, be careful to set the `imc_id` parameter to the correct one, otherwise the bridge will not receive data from the respective console window. Do not forget to select the correct vehicle in the console window either. 
+
+The `.nvcl` file contains the id of the vehicle you are adding. This field should be changed to whatever imc id you might want to use. It also must match the `imc_id` used by the bridge node.
 
 ### Moving SAM around
 

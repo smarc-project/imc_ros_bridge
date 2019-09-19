@@ -2,8 +2,8 @@
 
   <arg name="server_addr" default="127.0.0.1"/>
   <arg name="server_port" default="6002"/>
-  <arg name="imc_system_name" default="sam-auv-1"/>
-  <arg name="imc_id" default="30"/>
+  <arg name="imc_system_name" default="imc_ros_bridge"/>
+  <arg name="imc_id" default="4"/>
 
   <node pkg="imc_ros_bridge" type="bridge_node" name="imc_bridge" output="screen">
     <param name="server_addr" value="$(arg server_addr)"/>
