@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<system xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="..\src\schemas\neptus-vehicle.xsd">
+    <properties>
+        <id>LOLO_AUV</id>
+        <name>LOLO_AUV</name>
+        <type>AUV</type>
+        <appearance>
+            <x-size>3</x-size>
+            <y-size>1</y-size>
+            <z-size>1</z-size>
+            <top-image-2D>../vehicles-files/sam/sam_top.png</top-image-2D>
+            <side-image-2D>../vehicles-files/sam/sam_side.png</side-image-2D>
+            <presentation-image-2D>../vehicles-files/lolo/lolo_pres.png</presentation-image-2D>
+            <model-3D>../vehicles-files/adamastor/adamastor.j3d</model-3D>
+            <icon-color>
+                <r>235</r>
+                <g>192</g>
+                <b>52</b>
+            </icon-color>
+        </appearance>
+        <coordinate-system-label>SNAME</coordinate-system-label>
+    </properties>
+    <feasibleManeuvers>
+        <maneuver>
+            <Goto kind="automatic">
+                <finalPoint type="pointType">
+                    <point>
+                        <id>GotoDestination</id>
+                        <name>GotoDestination</name>
+                        <coordinate>
+                            <latitude>0N</latitude>
+                            <longitude>0E</longitude>
+                            <depth>60</depth>
+                        </coordinate>
+                    </point>
+                    <radiusTolerance>5</radiusTolerance>
+                </finalPoint>
+                <velocity tolerance="10" type="float" unit="m/s">1.0</velocity>
+                <trajectoryTolerance>
+                    <radiusTolerance type="float">1</radiusTolerance>
+                </trajectoryTolerance>
+                <annotation>
+                    <documentation>No documentation available</documentation>
+                    <implementation-class>pt.lsts.neptus.mp.maneuvers.Goto</implementation-class>
+                </annotation>
+            </Goto>
+        </maneuver>
+        <maneuver>
+            <CoverArea kind="automatic">
+                <annotation>
+                    <documentation>Cover an area</documentation>
+                    <implementation-class>pt.lsts.neptus.mp.maneuvers.CoverArea</implementation-class>
+                </annotation>
+            </CoverArea>
+        </maneuver>
+        <maneuver>
+            <Loiter kind="automatic">
+                <basePoint type="pointType">
+                    <point>
+                        <id>LoiterLoc</id>
+                        <name>LoiterLoc</name>
+                        <coordinate>
+                            <latitude>0N</latitude>
+                            <longitude>0E</longitude>
+                            <depth>60</depth>
+                        </coordinate>
+                    </point>
+                    <radiusTolerance>5</radiusTolerance>
+                </basePoint>
+                <duration>30</duration>
+                <trajectory>
+                    <radius type="float">10</radius>
+                    <radiusTolerance type="float">5</radiusTolerance>
+                    <type>Circular</type>
+                    <length type="float">50</length>
+                    <bearing type="float">0</bearing>
+                    <direction>Clockwise</direction>
+                </trajectory>
+                <velocity type="float" unit="RPM" tolerance="5">900</velocity>
+                <annotation>
+                    <documentation>Loiter over a point</documentation>
+                    <implementation-class>pt.lsts.neptus.mp.maneuvers.Loiter</implementation-class>
+                </annotation>
+            </Loiter>
+        </maneuver>
+        <maneuver>
+            <StationKeeping kind="automatic">
+                    <basePoint type="pointType">
+                        <point>
+                            <id>SKLoc</id>
+                            <name>SKLoc</name>
+                            <coordinate>
+                                <latitude>0N</latitude>
+                                <longitude>0E</longitude>
+                                <depth>60</depth>
+                            </coordinate>
+                        </point>
+                        <radiusTolerance>5</radiusTolerance>
+                    </basePoint>
+                    <duration>0</duration>
+                    <trajectory>
+                        <radius type="float">10</radius>
+                    </trajectory>
+                    <speed type="float" unit="RPM" tolerance="5">900</speed>
+                    <annotation>
+                        <documentation>Station Keeping</documentation>
+                        <implementation-class>pt.lsts.neptus.mp.maneuvers.StationKeeping</implementation-class>
+                    </annotation>
+            </StationKeeping>
+        </maneuver>
+        <maneuver>
+            <Elevator>
+                <finalPoint type="pointType">
+                    <point>
+                        <id>Elevator-Point</id>
+                        <coordinate>
+                            <latitude>0N</latitude>
+                            <longitude>0E</longitude>
+                            <depth>0</depth>
+                        </coordinate>
+                    </point>
+                    <radiusTolerance>0</radiusTolerance>
+                </finalPoint>
+                <startZ>2</startZ>
+                <startZUnits>DEPTH</startZUnits>
+                <pitch>30</pitch>
+                <radius>10</radius>
+                <duration>0</duration>
+                <speed unit="RPM">1000.0</speed>
+                <annotation>
+                    <documentation>No documentation available</documentation>
+                    <implementation-class>pt.lsts.neptus.mp.maneuvers.Elevator</implementation-class>
+                </annotation>
+            </Elevator>
+        </maneuver>
+
+        
+    </feasibleManeuvers>
+    <communication-means>
+        <comm-mean>
+            <name>ethernet</name>
+            <type>ethernet</type>
+            <host-address>10.0.10.120</host-address>
+            <protocols>imc</protocols>
+            <latency value="100M" unit="bps"/>
+            <protocols-args>
+                <imc>
+                    <port>6002</port>
+                    <port-tcp>6002</port-tcp>
+                    <udp-on>true</udp-on>
+                    <tcp-on>true</tcp-on>
+                    <imc-id>00:05</imc-id>
+                </imc>
+            </protocols-args>
+        </comm-mean>
+    </communication-means>
+    <configuration-files>
+	</configuration-files>
+    <consoles>
+        <console name="LoLo">
+            <xml-file>../conf/consoles/lauv.ncon</xml-file>
+        </console>
+    </consoles>
+</system>
