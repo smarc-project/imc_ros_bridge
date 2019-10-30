@@ -25,7 +25,6 @@ Then clone and build neptus:
 ```
 git clone https://github.com/LSTS/neptus.git
 cd neptus
-(sudo apt install openjdk-8-jdk ant)
 ant
 ```
 If successful, run it with `./neptus.sh`. Open the comm monitor by clicking `Communications > IMC Comm. Monitor`.
