@@ -115,27 +115,32 @@ imc_to_ros::BridgeServer<IMC::Goto, geometry_msgs::Pose> goto_server(imc_handle,
 And link the convert libary into `imc_to_ros_node` in the `CMakeLists.txt` file.
 
 ## Neptus-AUV Integration
+For some vehicle named `$VEHICLE`.
 
 ### Adding a vehicle to Neptus
 
-Copy `neptus_vehicle_definitions/sam_files/00-sam-auv.nvcl` into `.../neptus/vehicle-defs/` and `neptus_vehicle_definitions/sam_files/sam` folder into `.../neptus/vehicle_files`.
-This will add SAM to the list of vehicles available in the list, with SAM's visuals. This vehicle has id 30.
+An arbitrary integer `$NUMBER` is used by Neptus as a convention to group together similar vehicles. 
 
-Also do the same thing with `imc_ros_bridge` instead of `sam_files` to get a generic vehicle. The `imc_ros_bridge` fake vehicle has id 4.
+Copy `neptus_vehicle_definitions/$VEHICLE_files/$NUMBER-$VEHICLE.nvcl` into `.../neptus/vehicle-defs/` and `neptus_vehicle_definitions/$VEHICLE_files/$VEHICLE` folder into `.../neptus/vehicle_files/`.
+This will add `$VEHICLE` to the list of vehicles available in Neptus' list, with `$VEHICLE`'s visuals. 
 
-When starting the `imc_ros_brdige` node, be careful to set the `imc_id` parameter to the correct one, otherwise the bridge will not receive data from the respective console window. Do not forget to select the correct vehicle in the console window either. 
+Also do the same thing with `imc_ros_bridge` to get a generic vehicle. The `imc_ros_bridge` fake vehicle has id 4.
 
-The `.nvcl` file contains the id of the vehicle you are adding. This field should be changed to whatever imc id you might want to use. It also must match the `imc_id` used by the bridge node.
+When starting the `imc_ros_brdige` node, be careful to set the `imc_id` parameter to the correct one, otherwise the bridge will not receive data from the respective console window. Do not forget to select the correct vehicle in the console window (top right, drop down menu) either. 
 
-### Moving SAM around
+The `.nvcl` file contains the id of the vehicle you are adding. You can find the `imc-id` field under `<communication-means> -> <comm-mean> -> <protocols-args> -> <imc>`. This field should be changed to whatever imc id you might want to use. It also must match the `imc_id` parameter used by the bridge node.
 
-Using the console (opened by going to Vehicles -> SAM\_AUV -> console) generate a plan (In the console window: Tools -> Generate plan). Select the plan on the right section of the console and click the blue arrow towards the top. This will create and send out a JSON formatted plan to the ros topic `/plan_db`. Parse this JSON, and control SAM.
+For advanced uses of the `.nvcl` file, consult Neptus documentation.
 
-In order to see the updated pose of SAM in the Neptus console, publish to the ros topic `/estimated_state`. Currently only lat, lon, altitude are used. The update rate on the Neptus console can be about once every 1-2 seconds, be patient.
+### Moving a vehicle around
+
+Using the console (opened by going to Vehicles -> `$VEHICLE` -> click console button) generate a plan (In the console window: Tools -> Generate plan or use the plan tool on the left). Select the plan on the right section of the console and click the blue arrow (upload button) towards the top. This will create and send out a JSON formatted plan to the ros topic `/plan_db`. Parse this JSON on the vehicle, and control `$VEHICLE`.
+
+In order to see the updated pose of $VEHICLE in the Neptus console, publish to the ros topic `/estimated_state`. Currently only lat, lon, altitude are used. The update rate on the Neptus console can be about once every 1-2 seconds, be patient.
 
 ### Emergency
 
-From the Neptus console, the big red ABORT button can be used to send an empty message to the ros topic `/abort`. Probably a good idea to subscribe to this topic. Disregard the errors that pop out in the Neptus console.
+From the Neptus console, the big red ABORT button can be used to send an empty message to the ros topic `/abort`. Probably a good idea to subscribe to this topic. Disregard the errors that pop out in the Neptus console due to missing acoustic transponders and such.
 
 
 
