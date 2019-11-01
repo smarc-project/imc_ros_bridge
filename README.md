@@ -116,6 +116,7 @@ And link the convert libary into `imc_to_ros_node` in the `CMakeLists.txt` file.
 
 ## Neptus-AUV Integration
 For some vehicle named `$VEHICLE`.
+In this repo, we have three vehicles available: `sam-auv`, `lolo-auv` and `imc_ros_bridge`.
 
 ### Adding a vehicle to Neptus
 
@@ -124,7 +125,7 @@ An arbitrary integer `$NUMBER` is used by Neptus as a convention to group togeth
 Copy `neptus_vehicle_definitions/$VEHICLE_files/$NUMBER-$VEHICLE.nvcl` into `.../neptus/vehicle-defs/` and `neptus_vehicle_definitions/$VEHICLE_files/$VEHICLE` folder into `.../neptus/vehicle_files/`.
 This will add `$VEHICLE` to the list of vehicles available in Neptus' list, with `$VEHICLE`'s visuals. 
 
-Also do the same thing with `imc_ros_bridge` to get a generic vehicle. The `imc_ros_bridge` fake vehicle has id 4.
+Do the same thing with `imc_ros_bridge` to get a generic vehicle. The `imc_ros_bridge` fake vehicle has id 4.
 
 When starting the `imc_ros_brdige` node, be careful to set the `imc_id` parameter to the correct one, otherwise the bridge will not receive data from the respective console window. Do not forget to select the correct vehicle in the console window (top right, drop down menu) either. 
 
