@@ -139,6 +139,8 @@ Using the console (opened by going to Vehicles -> `$VEHICLE` -> click console bu
 
 In order to see the updated pose of $VEHICLE in the Neptus console, publish to the ros topic `/estimated_state`. Currently only lat, lon, altitude are used. The update rate on the Neptus console can be about once every 1-2 seconds, be patient.
 
+See [this tutorial](https://github.com/smarc-project/smarc_scenarios/tree/master/bts_tutorial) for a demo that uses this bridge as part of a full planning -> execution pipeline in simulation. 
+
 ### Emergency
 
 From the Neptus console, the big red ABORT button can be used to send an empty message to the ros topic `/abort`. Probably a good idea to subscribe to this topic. Disregard the errors that pop out in the Neptus console due to missing acoustic transponders and such.
