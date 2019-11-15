@@ -31,7 +31,7 @@ bool convert(const geometry_msgs::Pose& ros_msg, IMC::EstimatedState& imc_msg)
     double roll, pitch, yaw;
     tf2::Matrix3x3(quat_tf).getRPY(roll, pitch, yaw);
     
-    imc_msg.phi = yaw;
+    imc_msg.psi = M_PI/2. - yaw;
     
     
     return true;
