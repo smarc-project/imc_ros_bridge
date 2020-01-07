@@ -47,6 +47,7 @@ add_message_files(
   FILES
   PlanControl.msg
   PlanControlState.msg
+  VehicleState.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -180,6 +181,10 @@ add_library(ros_to_imc_estimatedstate
   src/ros_to_imc/EstimatedState.cpp
 )
 
+add_library(ros_to_imc_vehiclestate
+  src/ros_to_imc/VehicleState.cpp
+)
+
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -250,6 +255,10 @@ target_link_libraries(ros_to_imc_estimatedstate
   ${catkin_LIBRARIES}
 )
 
+target_link_libraries(ros_to_imc_vehiclestate
+  ${catkin_LIBRARIES}
+)
+
 target_link_libraries(udp_link
   imc_factory
   ${Boost_LIBRARIES}
@@ -274,6 +283,7 @@ target_link_libraries(bridge_node
   ros_to_imc_plancontrolstate
   ros_to_imc_gpsnavdata
   ros_to_imc_estimatedstate
+  ros_to_imc_vehiclestate
   imc_handle
   ${Boost_LIBRARIES}
   ${catkin_LIBRARIES}
