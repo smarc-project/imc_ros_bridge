@@ -191,6 +191,7 @@ add_library(ros_to_imc_vehiclestate
 ## either from message generation or dynamic reconfigure
 add_dependencies(imc_to_ros_plancontrol imc_ros_bridge_generate_messages_cpp)
 add_dependencies(ros_to_imc_plancontrolstate imc_ros_bridge_generate_messages_cpp)
+add_dependencies(ros_to_imc_vehiclestate imc_ros_bridge_generate_messages_cpp)
 
 
 ## Declare a C++ executable
