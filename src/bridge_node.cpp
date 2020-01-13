@@ -38,17 +38,19 @@ int main(int argc, char** argv)
     ros::init(argc, argv, "imc_bridge");
     ros::NodeHandle ros_node;
 
-    std::string tcp_addr;
-    std::string tcp_port;
+    std::string client_addr;
+    std::string server_tcp_addr;
+    std::string server_tcp_port;
     std::string sys_name;
     int imc_id;
 
-    ros::param::param<std::string>("~server_addr", tcp_addr, "127.0.0.1");
-    ros::param::param<std::string>("~server_port", tcp_port, "6002");
+    ros::param::param<std::string>("~client_addr", client_addr, "127.0.0.1");
+    ros::param::param<std::string>("~server_addr", server_tcp_addr, "127.0.0.1");
+    ros::param::param<std::string>("~server_port", server_tcp_port, "6002");
     ros::param::param<std::string>("~system_name", sys_name, "imc_ros_bridge");
     ros::param::param<int>("~imc_id", imc_id, 30);
 
-    IMCHandle imc_handle(tcp_addr, tcp_port, sys_name, imc_id);
+    IMCHandle imc_handle(server_tcp_addr, server_tcp_port, client_addr, sys_name, imc_id);
 
     ros_to_imc::BridgeServer<std_msgs::Empty, IMC::Heartbeat> heartbeat_server(ros_node, imc_handle, sys_name+"/heartbeat");
     ros_to_imc::BridgeServer<sensor_msgs::NavSatFix, IMC::GpsFix> gpsfix_server(ros_node, imc_handle, sys_name+"/gps_fix");

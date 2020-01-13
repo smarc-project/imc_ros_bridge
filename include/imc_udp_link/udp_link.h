@@ -1,13 +1,13 @@
 /* Copyright 2019 The SMaRC project (https://smarc.se/)
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -34,8 +34,8 @@ class UDPLink {
 
 private:
 
-    std::string addr;
-    std::string port;
+    std::string server_addr;
+    std::string server_port;
 
     boost::asio::io_service io_service;
     udp::socket socket{io_service};
@@ -50,21 +50,21 @@ private:
     std::vector<int> announce_ports{30100, 30101, 30102, 30103, 30104};
 
     bool should_shutdown;
-    
+
     int imc_src = 4;
     int imc_src_ent = 32;
 
 public:
 
     UDPLink(std::function<void (IMC::Message*)> recv_handler,
-            const std::string& addr, const std::string& port,
+            const std::string& server_addr, const std::string& server_port,
             int imc_src);
 
     ~UDPLink();
 
     void wait();
 
-    void publish(IMC::Message& msg);
+    void publish(IMC::Message& msg, const std::string& address);
 
     void publish_multicast(IMC::Message& msg, const std::string& multicast_addr);
 

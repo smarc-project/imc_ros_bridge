@@ -1,13 +1,13 @@
 /* Copyright 2019 The SMaRC project (https://smarc.se/)
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
- * 
+ *
  * 1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
- * 
+ *
  * 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
- * 
+ *
  * 3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
@@ -24,11 +24,13 @@ void try_callback(const IMC::Message* imc_msg)
     std::cout << "Got callback with id: " << imc_msg->getId() << std::endl;
 }
 
-IMCHandle::IMCHandle(const std::string& tcp_addr, const std::string& tcp_port,
+IMCHandle::IMCHandle(const std::string& server_tcp_addr, const std::string& server_tcp_port,
+                     const std::string& client_addr,
                      const std::string& sys_name, int imc_id)
     : udp_link(std::bind(&IMCHandle::tcp_callback, this, std::placeholders::_1),
-               tcp_addr, tcp_port, imc_id),
-      tcp_addr(tcp_addr), tcp_port(tcp_port),
+               server_tcp_addr, server_tcp_port, imc_id),
+      client_addr(client_addr),
+      server_tcp_addr(server_tcp_addr), server_tcp_port(server_tcp_port),
       sys_name(sys_name), imc_id(imc_id)
 {
     lat = 0.0;
@@ -65,7 +67,8 @@ void IMCHandle::tcp_callback(const IMC::Message* msg)
 
 void IMCHandle::announce()
 {
-    std::string announce_addr = "224.0.75.69";
+    //std::string announce_addr = "224.0.75.69";
+    //std::string announce_addr = "192.168.1.160";
 
     IMC::Announce msg;
     msg.sys_name = sys_name;
@@ -79,12 +82,12 @@ void IMCHandle::announce()
     //msg.lon = 0.7;
     //msg.height = -1.;
     //msg.services = "imc+info://0.0.0.0/version/5.4.11/;imc+udp://127.0.0.1:6002/;";
-    msg.services = "imc+udp://" + tcp_addr + ":" + tcp_port + "/;";
-    udp_link.publish_multicast(msg, announce_addr);
+    msg.services = "imc+udp://" + server_tcp_addr + ":" + server_tcp_port + "/;";
+    udp_link.publish_multicast(msg, client_addr);
 }
 
 void IMCHandle::publish_heartbeat()
 {
     IMC::Heartbeat msg;
-    udp_link.publish(msg);
+    udp_link.publish(msg, client_addr);
 }
