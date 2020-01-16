@@ -21,8 +21,8 @@ namespace ros_to_imc {
 template <>
 bool convert(const geometry_msgs::Pose& ros_msg, IMC::EstimatedState& imc_msg)
 {
-    imc_msg.lat = ros_msg.position.y;
-    imc_msg.lon = ros_msg.position.x;
+    imc_msg.lat = ros_msg.position.x;
+    imc_msg.lon = ros_msg.position.y;
 
     // convert quaternion to euler (phi,theta,psi) rot over (x,y,z)
     tf2::Quaternion quat_tf;
