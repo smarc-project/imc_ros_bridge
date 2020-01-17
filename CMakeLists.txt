@@ -48,6 +48,7 @@ add_message_files(
   PlanControl.msg
   PlanControlState.msg
   VehicleState.msg
+  SonarData.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -185,6 +186,9 @@ add_library(ros_to_imc_vehiclestate
   src/ros_to_imc/VehicleState.cpp
 )
 
+add_library(ros_to_imc_sonardata
+  src/ros_to_imc/SonarData.cpp
+)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -192,6 +196,7 @@ add_library(ros_to_imc_vehiclestate
 add_dependencies(imc_to_ros_plancontrol imc_ros_bridge_generate_messages_cpp)
 add_dependencies(ros_to_imc_plancontrolstate imc_ros_bridge_generate_messages_cpp)
 add_dependencies(ros_to_imc_vehiclestate imc_ros_bridge_generate_messages_cpp)
+add_dependencies(ros_to_imc_sonardata imc_ros_bridge_generate_messages_cpp)
 
 
 ## Declare a C++ executable
@@ -260,6 +265,10 @@ target_link_libraries(ros_to_imc_vehiclestate
   ${catkin_LIBRARIES}
 )
 
+target_link_libraries(ros_to_imc_sonardata
+  ${catkin_LIBRARIES}
+)
+
 target_link_libraries(udp_link
   imc_factory
   ${Boost_LIBRARIES}
@@ -285,6 +294,7 @@ target_link_libraries(bridge_node
   ros_to_imc_gpsnavdata
   ros_to_imc_estimatedstate
   ros_to_imc_vehiclestate
+  ros_to_imc_sonardata
   imc_handle
   ${Boost_LIBRARIES}
   ${catkin_LIBRARIES}

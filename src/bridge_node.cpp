@@ -23,6 +23,7 @@
 #include <imc_ros_bridge/ros_to_imc/EstimatedState.h>
 #include <imc_ros_bridge/ros_to_imc/PlanControlState.h>
 #include <imc_ros_bridge/ros_to_imc/VehicleState.h>
+#include <imc_ros_bridge/ros_to_imc/SonarData.h>
 
 #include <imc_ros_bridge/imc_to_ros/Goto.h>
 #include <imc_ros_bridge/imc_to_ros/Heartbeat.h>
@@ -59,6 +60,7 @@ int main(int argc, char** argv)
     ros_to_imc::BridgeServer<geometry_msgs::Pose, IMC::EstimatedState> estimatedstate_server(ros_node, imc_handle, sys_name+"/estimated_state");
     ros_to_imc::BridgeServer<imc_ros_bridge::PlanControlState, IMC::PlanControlState> plancontrolstate_server(ros_node, imc_handle, sys_name+"/plan_control_state");
     ros_to_imc::BridgeServer<imc_ros_bridge::VehicleState, IMC::VehicleState> vehiclestate_server(ros_node, imc_handle, sys_name+"/vehicle_state");
+    ros_to_imc::BridgeServer<imc_ros_bridge::SonarData, IMC::SonarData> sonar_server(ros_node, imc_handle, sys_name+"/sonar_data");
 
     // 450
     imc_to_ros::BridgeServer<IMC::Goto, geometry_msgs::Pose> goto_server(imc_handle, ros_node, sys_name+"/goto_waypoint");

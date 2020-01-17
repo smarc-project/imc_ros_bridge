@@ -11,17 +11,27 @@
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef ROS_TO_IMC_VEHICLESTATE_H
-#define ROS_TO_IMC_VEHICLESTATE_H
-
-#include <imc_ros_bridge/imc_ros_bridge_server.h>
-#include "imc_ros_bridge/VehicleState.h"
-#include <IMC/Spec/VehicleState.hpp>
+#include <imc_ros_bridge/ros_to_imc/SonarData.h>
 
 namespace ros_to_imc {
 
 template <>
-bool convert(const imc_ros_bridge::VehicleState& ros_msg, IMC::VehicleState& imc_msg);
+bool convert(const imc_ros_bridge::SonarData& ros_msg, IMC::SonarData& imc_msg)
+{
 
-} // namespace ros_to_imc
-#endif // ROS_TO_IMC_VEHICLESTATE_H
+    imc_msg.type = ros_msg.type;
+    imc_msg.frequency = ros_msg.frequency;
+    imc_msg.min_range = ros_msg.min_range;
+    imc_msg.max_range = ros_msg.max_range;
+    imc_msg.bits_per_point = ros_msg.bits_per_point;
+    imc_msg.scale_factor = ros_msg.scale_factor;
+    for(unsigned int i=0;i<ros_msg.data.size();i++) {
+      //imc_msg.data = ros_msg.data;
+      imc_msg.data.push_back(ros_msg.data[i]);
+    }
+
+
+    return true;
+}
+
+} // namespace imc_to_ros
