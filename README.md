@@ -20,6 +20,7 @@ These instructions have been tested for Ubuntu 16.04 and 18.04. For 18.04, you
 may have to comment a line in a jdk file to get it running (TODO: check path to file).
 
 First, install dependencies: `sudo apt install openjdk-8-jdk-headless ant-optional`.
+(On Ubuntu 18.04, this will also install openjdk-11-jre-headless package, remove it manually and make sure that `apt list --installed | grep jre` only shows one jre.)
 
 Then clone and build neptus:
 ```
