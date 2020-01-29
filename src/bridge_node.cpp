@@ -57,7 +57,7 @@ int main(int argc, char** argv)
     ros_to_imc::BridgeServer<sensor_msgs::NavSatFix, IMC::GpsFix> gpsfix_server(ros_node, imc_handle, sys_name+"/gps_fix");
     ros_to_imc::BridgeServer<geometry_msgs::Pose, IMC::Goto> goto_server_dummy(ros_node, imc_handle, sys_name+"/goto_input");
     ros_to_imc::BridgeServer<sensor_msgs::NavSatFix, IMC::GpsNavData> gpsnavdata_server(ros_node, imc_handle, sys_name+"/gps_nav_data");
-    ros_to_imc::BridgeServer<geometry_msgs::Pose, IMC::EstimatedState> estimatedstate_server(ros_node, imc_handle, sys_name+"/estimated_state");
+    ros_to_imc::BridgeServer<imc_ros_bridge::EstimatedState, IMC::EstimatedState> estimatedstate_server(ros_node, imc_handle, sys_name+"/estimated_state");
     ros_to_imc::BridgeServer<imc_ros_bridge::PlanControlState, IMC::PlanControlState> plancontrolstate_server(ros_node, imc_handle, sys_name+"/plan_control_state");
     ros_to_imc::BridgeServer<imc_ros_bridge::VehicleState, IMC::VehicleState> vehiclestate_server(ros_node, imc_handle, sys_name+"/vehicle_state");
     ros_to_imc::BridgeServer<imc_ros_bridge::SonarData, IMC::SonarData> sonar_server(ros_node, imc_handle, sys_name+"/sonar_data");

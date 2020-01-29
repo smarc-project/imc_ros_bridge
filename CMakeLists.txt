@@ -48,6 +48,7 @@ add_message_files(
   PlanControl.msg
   PlanControlState.msg
   VehicleState.msg
+  EstimatedState.msg
   SonarData.msg
 )
 

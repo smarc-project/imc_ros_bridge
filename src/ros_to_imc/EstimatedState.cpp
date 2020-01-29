@@ -12,27 +12,32 @@
  */
 
 #include <imc_ros_bridge/ros_to_imc/EstimatedState.h>
-#include <tf2/LinearMath/Quaternion.h>
-#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
-#include <geometry_msgs/Quaternion.h>
 
 namespace ros_to_imc {
 
 template <>
-bool convert(const geometry_msgs::Pose& ros_msg, IMC::EstimatedState& imc_msg)
+bool convert(const imc_ros_bridge::EstimatedState& ros_msg, IMC::EstimatedState& imc_msg)
 {
-    imc_msg.lat = ros_msg.position.x;
-    imc_msg.lon = ros_msg.position.y;
-
-    // convert quaternion to euler (phi,theta,psi) rot over (x,y,z)
-    tf2::Quaternion quat_tf;
-    geometry_msgs::Quaternion quat_msg = ros_msg.orientation;
-    tf2::convert(quat_msg , quat_tf);
-    double roll, pitch, yaw;
-    tf2::Matrix3x3(quat_tf).getRPY(roll, pitch, yaw);
-
-    imc_msg.psi = yaw;
-
+    imc_msg.lat = ros_msg.lat;
+    imc_msg.lon = ros_msg.lon;
+    imc_msg.height = ros_msg.height;
+    imc_msg.x = ros_msg.x;
+    imc_msg.y = ros_msg.y;
+    imc_msg.z = ros_msg.z;
+    imc_msg.phi = ros_msg.phi;
+    imc_msg.theta = ros_msg.theta;
+    imc_msg.psi = ros_msg.psi;
+    imc_msg.u = ros_msg.u;
+    imc_msg.v = ros_msg.v;
+    imc_msg.w = ros_msg.w;
+    imc_msg.vx = ros_msg.vx;
+    imc_msg.vy = ros_msg.vy;
+    imc_msg.vz = ros_msg.vz;
+    imc_msg.p = ros_msg.p;
+    imc_msg.q = ros_msg.q;
+    imc_msg.r = ros_msg.r;
+    imc_msg.depth = ros_msg.depth;
+    imc_msg.alt = ros_msg.alt;
 
     return true;
 }

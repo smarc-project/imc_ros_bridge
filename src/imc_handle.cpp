@@ -14,6 +14,7 @@
 #include <imc_tcp_link/imc_handle.h>
 #include <IMC/Spec/Announce.hpp>
 #include <IMC/Spec/Heartbeat.hpp>
+#include <IMC/Spec/EntityInfo.hpp>
 
 #include <functional>
 #include <ros/ros.h>
@@ -84,6 +85,13 @@ void IMCHandle::announce()
     //msg.services = "imc+info://0.0.0.0/version/5.4.11/;imc+udp://127.0.0.1:6002/;";
     msg.services = "imc+udp://" + server_tcp_addr + ":" + server_tcp_port + "/;";
     udp_link.publish_multicast(msg, client_addr);
+
+    //TEST Publish EntityInfo
+    IMC::EntityInfo info_msg;
+    //info_msg.id = udp_link.imc_src; //What is this used for?
+    info_msg.label = sys_name;
+    udp_link.publish(info_msg, client_addr);
+
 }
 
 void IMCHandle::publish_heartbeat()
