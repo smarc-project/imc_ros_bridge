@@ -128,6 +128,12 @@ And link the convert libary into `imc_to_ros_node` in the `CMakeLists.txt` file.
 For some vehicle named `$VEHICLE`.
 In this repo, we have three vehicles available: `sam-auv`, `lolo-auv` and `imc_ros_bridge`.
 
+
+### IMPORTANT NOTE
+
+The bridge should be running on the same physical device as Neptus. This is a current limitation due to IP address shenanigans that is planned to be fixed eventually. Both for physical and simulated vehicles, Neptus and bridge must run on the same device.
+
+
 ### Adding a vehicle to Neptus
 
 An arbitrary integer `$NUMBER` is used by Neptus as a convention to group together similar vehicles. 
