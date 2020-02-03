@@ -11,6 +11,7 @@ uint16 min_range                      # Minimum Range.
 uint16 max_range                      # Maximum Range.
 uint8 bits_per_point                  # Bits Per Data Point.
 float32 scale_factor                  # Scaling Factor.
+# TODO add beamconfig
 uint8[] data                          # Data. first half of vector is left side, other half is right side of side scan
 
 #MessageList<BeamConfig> beam_config  # Beam Configuration.

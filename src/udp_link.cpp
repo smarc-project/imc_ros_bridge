@@ -24,12 +24,12 @@ std::ofstream myfile;
 using namespace std;
 
 UDPLink::UDPLink(std::function<void (IMC::Message*)> recv_handler,
-        const std::string& server_addr, const std::string& server_port, int imc_src)
-    : recv_handler_(recv_handler), server_addr(server_addr), server_port(server_port), imc_src(imc_src)
+        const std::string& bridge_addr, const std::string& bridge_port, int imc_src)
+    : recv_handler_(recv_handler), bridge_addr(bridge_addr), bridge_port(bridge_port), imc_src(imc_src)
 {
     socket.open(udp::v4());
     socket.set_option(udp::socket::reuse_address(true));
-    socket.bind(udp::endpoint(address::from_string(server_addr), boost::lexical_cast<int>(server_port)));
+    socket.bind(udp::endpoint(address::from_string(bridge_addr), boost::lexical_cast<int>(bridge_port)));
 
     should_shutdown = false;
 

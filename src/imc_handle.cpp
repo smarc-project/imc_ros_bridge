@@ -25,13 +25,13 @@ void try_callback(const IMC::Message* imc_msg)
     std::cout << "Got callback with id: " << imc_msg->getId() << std::endl;
 }
 
-IMCHandle::IMCHandle(const std::string& server_tcp_addr, const std::string& server_tcp_port,
-                     const std::string& client_addr,
+IMCHandle::IMCHandle(const std::string& bridge_tcp_addr, const std::string& bridge_tcp_port,
+                     const std::string& neptus_addr,
                      const std::string& sys_name, int imc_id)
     : udp_link(std::bind(&IMCHandle::tcp_callback, this, std::placeholders::_1),
-               server_tcp_addr, server_tcp_port, imc_id),
-      client_addr(client_addr),
-      server_tcp_addr(server_tcp_addr), server_tcp_port(server_tcp_port),
+               bridge_tcp_addr, bridge_tcp_port, imc_id),
+      neptus_addr(neptus_addr),
+      bridge_tcp_addr(bridge_tcp_addr), bridge_tcp_port(bridge_tcp_port),
       sys_name(sys_name), imc_id(imc_id)
 {
     lat = 0.0;
@@ -83,19 +83,18 @@ void IMCHandle::announce()
     //msg.lon = 0.7;
     //msg.height = -1.;
     //msg.services = "imc+info://0.0.0.0/version/5.4.11/;imc+udp://127.0.0.1:6002/;";
-    msg.services = "imc+udp://" + server_tcp_addr + ":" + server_tcp_port + "/;";
-    udp_link.publish_multicast(msg, client_addr);
+    msg.services = "imc+udp://" + bridge_tcp_addr + ":" + bridge_tcp_port + "/;";
+    udp_link.publish_multicast(msg, neptus_addr);
 
     //TEST Publish EntityInfo
     IMC::EntityInfo info_msg;
     //info_msg.id = udp_link.imc_src; //What is this used for?
     info_msg.label = sys_name;
-    udp_link.publish(info_msg, client_addr);
-
+    udp_link.publish(info_msg, neptus_addr);
 }
 
 void IMCHandle::publish_heartbeat()
 {
     IMC::Heartbeat msg;
-    udp_link.publish(msg, client_addr);
+    udp_link.publish(msg, neptus_addr);
 }

@@ -23,9 +23,9 @@ private:
 
     std::string sys_name;
     int imc_id;
-    std::string server_tcp_addr;
-    std::string server_tcp_port;
-    std::string client_addr;
+    std::string bridge_tcp_addr;
+    std::string bridge_tcp_port;
+    std::string neptus_addr;
 
     //ros_imc_broker::TcpLink* tcp_client_;
     //boost::thread* tcp_client_thread_;
@@ -38,8 +38,8 @@ private:
 
 public:
 
-    IMCHandle(const std::string& server_tcp_addr, const std::string& server_tcp_port,
-              const std::string& client_addr,
+    IMCHandle(const std::string& bridge_tcp_addr, const std::string& bridge_tcp_port,
+              const std::string& neptus_addr,
               const std::string& sys_name, int imc_id);
 
     ~IMCHandle();
@@ -57,7 +57,7 @@ public:
     {
         //tcp_client_.write(imc_msg);
         //tcp_client_->write(&imc_msg);
-        udp_link.publish(imc_msg, client_addr);
+        udp_link.publish(imc_msg, neptus_addr);
     }
 
 };

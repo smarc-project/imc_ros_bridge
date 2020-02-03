@@ -34,8 +34,8 @@ class UDPLink {
 
 private:
 
-    std::string server_addr;
-    std::string server_port;
+    std::string bridge_addr;
+    std::string bridge_port;
 
     boost::asio::io_service io_service;
     udp::socket socket{io_service};
@@ -57,7 +57,7 @@ private:
 public:
 
     UDPLink(std::function<void (IMC::Message*)> recv_handler,
-            const std::string& server_addr, const std::string& server_port,
+            const std::string& bridge_addr, const std::string& bridge_port,
             int imc_src);
 
     ~UDPLink();
