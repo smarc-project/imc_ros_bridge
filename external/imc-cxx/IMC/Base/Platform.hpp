@@ -62,6 +62,12 @@
 #  define IMC_CPU_32B           1
 #  define IMC_CPU_NAME          "arm"
 
+#elif defined(__aarch64__)
+#  define IMC_CPU_AARCH64       1
+#  define IMC_CPU_LE            1
+#  define IMC_CPU_32B           1
+#  define IMC_CPU_NAME          "aarch64"
+
 #else
 #  error unknown architecture
 
