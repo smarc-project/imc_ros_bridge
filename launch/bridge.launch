@@ -5,7 +5,6 @@
     <!--bridge addr: Address of computer running this node -->
     <!--bridge port: Port neptus sends data to. Do not change this -->
     
-  <arg name="system_name" default="$(arg robot_name)"/>
   <arg name="neptus_addr" default="127.0.0.1"/>
   <arg name="bridge_addr" default="127.0.0.1"/>
   <arg name="bridge_port" default="6002"/>
