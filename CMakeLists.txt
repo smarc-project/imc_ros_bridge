@@ -50,6 +50,12 @@ add_message_files(
   VehicleState.msg
   EstimatedState.msg
   SonarData.msg
+  DesiredHeading.msg
+  DesiredHeadingRate.msg
+  DesiredPitch.msg
+  DesiredRoll.msg
+  DesiredSpeed.msg
+  DesiredZ.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -127,69 +133,28 @@ include_directories(
 )
 
 ## Declare a C++ library
-add_library(ros_to_imc_heartbeat
-  src/ros_to_imc/Heartbeat.cpp
-)
-
-add_library(imc_to_ros_heartbeat
-  src/imc_to_ros/Heartbeat.cpp
-)
-
-add_library(ros_to_imc_gpsfix
-  src/ros_to_imc/GpsFix.cpp
-)
-
-add_library(ros_to_imc_goto
-  src/ros_to_imc/Goto.cpp
-)
-
-add_library(imc_to_ros_goto
-  src/imc_to_ros/Goto.cpp
-)
-
-add_library(imc_factory
-  external/imc-cxx/IMC/Base/Factory.cpp
-)
-
-add_library(udp_link
-  src/udp_link.cpp
-)
-
-add_library(imc_handle
-  src/imc_handle.cpp
-)
-
-add_library(imc_to_ros_abort
-  src/imc_to_ros/Abort.cpp
-)
-
-add_library(imc_to_ros_plandb
-  src/imc_to_ros/PlanDB.cpp
-)
-
-add_library(ros_to_imc_gpsnavdata
-  src/ros_to_imc/GpsNavData.cpp
-)
-
-add_library(imc_to_ros_plancontrol
-  src/imc_to_ros/PlanControl.cpp
-)
-
-add_library(ros_to_imc_plancontrolstate
-  src/ros_to_imc/PlanControlState.cpp
-)
-
-add_library(ros_to_imc_estimatedstate
-  src/ros_to_imc/EstimatedState.cpp
-)
-
-add_library(ros_to_imc_vehiclestate
-  src/ros_to_imc/VehicleState.cpp
-)
-
-add_library(ros_to_imc_sonardata
-  src/ros_to_imc/SonarData.cpp
-)
+add_library( ros_to_imc_heartbeat src/ros_to_imc/Heartbeat.cpp )
+add_library( imc_to_ros_heartbeat src/imc_to_ros/Heartbeat.cpp )
+add_library( ros_to_imc_gpsfix src/ros_to_imc/GpsFix.cpp )
+add_library( ros_to_imc_goto src/ros_to_imc/Goto.cpp )
+add_library( imc_to_ros_goto src/imc_to_ros/Goto.cpp )
+add_library( imc_factory external/imc-cxx/IMC/Base/Factory.cpp )
+add_library( udp_link src/udp_link.cpp )
+add_library( imc_handle src/imc_handle.cpp )
+add_library( imc_to_ros_abort src/imc_to_ros/Abort.cpp )
+add_library( imc_to_ros_plandb src/imc_to_ros/PlanDB.cpp )
+add_library( ros_to_imc_gpsnavdata src/ros_to_imc/GpsNavData.cpp )
+add_library( imc_to_ros_plancontrol src/imc_to_ros/PlanControl.cpp )
+add_library( ros_to_imc_plancontrolstate src/ros_to_imc/PlanControlState.cpp )
+add_library( ros_to_imc_estimatedstate src/ros_to_imc/EstimatedState.cpp )
+add_library( ros_to_imc_vehiclestate src/ros_to_imc/VehicleState.cpp )
+add_library( ros_to_imc_sonardata src/ros_to_imc/SonarData.cpp )
+add_library( ros_to_imc_DesiredHeading src/ros_to_imc/DesiredHeading.cpp )
+add_library( ros_to_imc_DesiredHeadingRate src/ros_to_imc/DesiredHeadingRate.cpp )
+add_library( ros_to_imc_DesiredPitch src/ros_to_imc/DesiredPitch.cpp )
+add_library( ros_to_imc_DesiredRoll src/ros_to_imc/DesiredRoll.cpp )
+add_library( ros_to_imc_DesiredSpeed src/ros_to_imc/DesiredSpeed.cpp )
+add_library( ros_to_imc_DesiredZ src/ros_to_imc/DesiredZ.cpp )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -199,7 +164,12 @@ add_dependencies(ros_to_imc_plancontrolstate imc_ros_bridge_generate_messages_cp
 add_dependencies(ros_to_imc_vehiclestate imc_ros_bridge_generate_messages_cpp)
 add_dependencies(ros_to_imc_sonardata imc_ros_bridge_generate_messages_cpp)
 add_dependencies(ros_to_imc_estimatedstate imc_ros_bridge_generate_messages_cpp)
-
+add_dependencies(ros_to_imc_DesiredHeading imc_ros_bridge_generate_messages_cpp)
+add_dependencies(ros_to_imc_DesiredHeadingRate imc_ros_bridge_generate_messages_cpp)
+add_dependencies(ros_to_imc_DesiredPitch imc_ros_bridge_generate_messages_cpp)
+add_dependencies(ros_to_imc_DesiredRoll imc_ros_bridge_generate_messages_cpp)
+add_dependencies(ros_to_imc_DesiredSpeed imc_ros_bridge_generate_messages_cpp)
+add_dependencies(ros_to_imc_DesiredZ imc_ros_bridge_generate_messages_cpp)
 
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
@@ -219,57 +189,25 @@ add_executable(bridge_node src/bridge_node.cpp)
 
 # 2/3
 ## Specify libraries to link a library or executable target against
-target_link_libraries(ros_to_imc_heartbeat
-  ${catkin_LIBRARIES}
-)
-
-target_link_libraries(imc_to_ros_heartbeat
-  ${catkin_LIBRARIES}
-)
-
-target_link_libraries(ros_to_imc_gpsfix
-  ${catkin_LIBRARIES}
-)
-
-target_link_libraries(ros_to_imc_goto
-  ${catkin_LIBRARIES}
-)
-
-target_link_libraries(imc_to_ros_goto
-  ${catkin_LIBRARIES}
-)
-
-target_link_libraries(imc_to_ros_abort
-  ${catkin_LIBRARIES}
-)
-
-target_link_libraries(imc_to_ros_plandb
-  ${catkin_LIBRARIES}
-)
-
-target_link_libraries(imc_to_ros_plancontrol
-  ${catkin_LIBRARIES}
-)
-
-target_link_libraries(ros_to_imc_plancontrolstate
-  ${catkin_LIBRARIES}
-)
-
-target_link_libraries(ros_to_imc_gpsnavdata
-  ${catkin_LIBRARIES}
-)
-
-target_link_libraries(ros_to_imc_estimatedstate
-  ${catkin_LIBRARIES}
-)
-
-target_link_libraries(ros_to_imc_vehiclestate
-  ${catkin_LIBRARIES}
-)
-
-target_link_libraries(ros_to_imc_sonardata
-  ${catkin_LIBRARIES}
-)
+target_link_libraries(ros_to_imc_heartbeat ${catkin_LIBRARIES})
+target_link_libraries(imc_to_ros_heartbeat ${catkin_LIBRARIES})
+target_link_libraries(ros_to_imc_gpsfix ${catkin_LIBRARIES})
+target_link_libraries(ros_to_imc_goto ${catkin_LIBRARIES})
+target_link_libraries(imc_to_ros_goto ${catkin_LIBRARIES})
+target_link_libraries(imc_to_ros_abort ${catkin_LIBRARIES})
+target_link_libraries(imc_to_ros_plandb ${catkin_LIBRARIES})
+target_link_libraries(imc_to_ros_plancontrol ${catkin_LIBRARIES})
+target_link_libraries(ros_to_imc_plancontrolstate ${catkin_LIBRARIES})
+target_link_libraries(ros_to_imc_gpsnavdata ${catkin_LIBRARIES})
+target_link_libraries(ros_to_imc_estimatedstate ${catkin_LIBRARIES})
+target_link_libraries(ros_to_imc_vehiclestate ${catkin_LIBRARIES})
+target_link_libraries(ros_to_imc_sonardata ${catkin_LIBRARIES})
+target_link_libraries(ros_to_imc_DesiredHeading ${catkin_LIBRARIES} )
+target_link_libraries(ros_to_imc_DesiredHeadingRate ${catkin_LIBRARIES} )
+target_link_libraries(ros_to_imc_DesiredPitch ${catkin_LIBRARIES} )
+target_link_libraries(ros_to_imc_DesiredRoll ${catkin_LIBRARIES} )
+target_link_libraries(ros_to_imc_DesiredSpeed ${catkin_LIBRARIES} )
+target_link_libraries(ros_to_imc_DesiredZ ${catkin_LIBRARIES} )
 
 target_link_libraries(udp_link
   imc_factory
@@ -297,6 +235,12 @@ target_link_libraries(bridge_node
   ros_to_imc_estimatedstate
   ros_to_imc_vehiclestate
   ros_to_imc_sonardata
+  ros_to_imc_DesiredHeading
+  ros_to_imc_DesiredHeadingRate
+  ros_to_imc_DesiredPitch
+  ros_to_imc_DesiredRoll
+  ros_to_imc_DesiredSpeed
+  ros_to_imc_DesiredZ
   imc_handle
   ${Boost_LIBRARIES}
   ${catkin_LIBRARIES}

@@ -24,6 +24,12 @@
 #include <imc_ros_bridge/ros_to_imc/PlanControlState.h>
 #include <imc_ros_bridge/ros_to_imc/VehicleState.h>
 #include <imc_ros_bridge/ros_to_imc/SonarData.h>
+#include <imc_ros_bridge/ros_to_imc/DesiredHeading.h>
+#include <imc_ros_bridge/ros_to_imc/DesiredHeadingRate.h>
+#include <imc_ros_bridge/ros_to_imc/DesiredPitch.h>
+#include <imc_ros_bridge/ros_to_imc/DesiredRoll.h>
+#include <imc_ros_bridge/ros_to_imc/DesiredSpeed.h>
+#include <imc_ros_bridge/ros_to_imc/DesiredZ.h>
 
 #include <imc_ros_bridge/imc_to_ros/Goto.h>
 #include <imc_ros_bridge/imc_to_ros/Heartbeat.h>
@@ -61,6 +67,12 @@ int main(int argc, char** argv)
     ros_to_imc::BridgeServer<imc_ros_bridge::PlanControlState, IMC::PlanControlState> plancontrolstate_server(ros_node, imc_handle, sys_name+"/plan_control_state");
     ros_to_imc::BridgeServer<imc_ros_bridge::VehicleState, IMC::VehicleState> vehiclestate_server(ros_node, imc_handle, sys_name+"/vehicle_state");
     ros_to_imc::BridgeServer<imc_ros_bridge::SonarData, IMC::SonarData> sonar_server(ros_node, imc_handle, sys_name+"/sonar_data");
+    ros_to_imc::BridgeServer<imc_ros_bridge::DesiredHeading, IMC::DesiredHeading> DesiredHeading_server(ros_node, imc_handle, sys_name+"/desired_heading");
+    ros_to_imc::BridgeServer<imc_ros_bridge::DesiredHeadingRate, IMC::DesiredHeadingRate> DesiredHeadingRate_server(ros_node, imc_handle, sys_name+"/desired_heading_rate");
+    ros_to_imc::BridgeServer<imc_ros_bridge::DesiredPitch, IMC::DesiredPitch> DesiredPitch_server(ros_node, imc_handle, sys_name+"/desired_pitch");
+    ros_to_imc::BridgeServer<imc_ros_bridge::DesiredRoll, IMC::DesiredRoll> DesiredRoll_server(ros_node, imc_handle, sys_name+"/desired_roll");
+    ros_to_imc::BridgeServer<imc_ros_bridge::DesiredSpeed, IMC::DesiredSpeed> DesiredSpeed_server(ros_node, imc_handle, sys_name+"/desired_speed");
+    ros_to_imc::BridgeServer<imc_ros_bridge::DesiredZ, IMC::DesiredZ> DesiredZ_server(ros_node, imc_handle, sys_name+"/desired_z");
 
     // 450
     imc_to_ros::BridgeServer<IMC::Goto, geometry_msgs::Pose> goto_server(imc_handle, ros_node, sys_name+"/goto_waypoint");
