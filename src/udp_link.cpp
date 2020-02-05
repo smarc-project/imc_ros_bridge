@@ -16,11 +16,12 @@
 #include <boost/lexical_cast.hpp>
 #include <ros/ros.h>
 
+/*
 // basic file operations
 #include <iostream>
 #include <fstream>
 std::ofstream myfile;
-
+*/
 using namespace std;
 
 UDPLink::UDPLink(std::function<void (IMC::Message*)> recv_handler,
@@ -69,10 +70,12 @@ void UDPLink::publish(IMC::Message& msg, const string& addr)
     udp::endpoint destination(address::from_string(addr), 6001);
     socket.async_send_to(boost::asio::buffer(out_buffer_, rv), destination, handler);
 
+    /*
     myfile.open ("/tmp/test.lsf", ios::out | ios::app | ios::binary);
     myfile.write(out_buffer_, rv);
     myfile.flush();
     myfile.close();
+    */
 }
 
 void UDPLink::publish_multicast(IMC::Message& msg, const string& multicast_addr)
