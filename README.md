@@ -19,7 +19,17 @@ will launch the `imc_bridge` node.
 These instructions have been tested for Ubuntu 16.04 and 18.04. For 18.04, you
 may have to comment a line in a jdk file to get it running (TODO: check path to file).
 
-First, install dependencies: `sudo apt install openjdk-8-jdk-headless ant-optional`.
+First, install dependencies: `sudo apt install openjdk-8-jdk ant-optional`.
+
+On Ubuntu 18.04, this will also install openjdk-11-jre-headless package, remove it manually and make sure that `apt list --installed | grep jre` only shows one jre.
+Additionally, if you get a "No VTK Java Packages Found" message accompanied by an error, do this: 
+
+`sudo vim /etc/java-8-openjdk/accessibility.properties`
+Comment out the following line:
+`assistive_technologies=org.GNOME.Accessibility.AtkWrapper`
+
+If you get an error that involves iced-tea, check that you have openjdk-8-jre. Not the headless version of it, Neptus needs the head.
+
 
 Then clone and build neptus:
 ```
@@ -117,6 +127,12 @@ And link the convert libary into `imc_to_ros_node` in the `CMakeLists.txt` file.
 ## Neptus-AUV Integration
 For some vehicle named `$VEHICLE`.
 In this repo, we have three vehicles available: `sam-auv`, `lolo-auv` and `imc_ros_bridge`.
+
+
+### IMPORTANT NOTE
+
+The bridge should be running on the same physical device as Neptus. This is a current limitation due to IP address shenanigans that is planned to be fixed eventually. Both for physical and simulated vehicles, Neptus and bridge must run on the same device.
+
 
 ### Adding a vehicle to Neptus
 
