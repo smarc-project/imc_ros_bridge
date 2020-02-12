@@ -21,16 +21,6 @@ may have to comment a line in a jdk file to get it running (TODO: check path to 
 
 First, install dependencies: `sudo apt install openjdk-8-jdk ant-optional`.
 
-On Ubuntu 18.04, this will also install openjdk-11-jre-headless package, remove it manually and make sure that `apt list --installed | grep jre` only shows one jre.
-Additionally, if you get a "No VTK Java Packages Found" message accompanied by an error, do this: 
-
-`sudo vim /etc/java-8-openjdk/accessibility.properties`
-Comment out the following line:
-`assistive_technologies=org.GNOME.Accessibility.AtkWrapper`
-
-If you get an error that involves iced-tea, check that you have openjdk-8-jre. Not the headless version of it, Neptus needs the head.
-
-
 Then clone and build neptus:
 ```
 git clone https://github.com/LSTS/neptus.git
@@ -49,6 +39,16 @@ rostopic pub /heartbeat std_msgs/Empty "{}" --once
 If you go to the systems list panel, you should also see the ROS auv displayed as a cyan panel.
 This indicates that neptus can communicate with the auv. Any other color indicates som problem,
 see [this link](https://www.lsts.pt/neptus/manual/trunk/elements.html#systems-list).
+
+### Troubleshooting
+On Ubuntu 18.04, you might have openjdk-11-jre-headless package, remove it manually and make sure that `apt list --installed | grep jre` only shows one jre.
+Additionally, if you get a "No VTK Java Packages Found" message accompanied by an error, do this: 
+
+`sudo vim /etc/java-8-openjdk/accessibility.properties`
+Comment out the following line:
+`assistive_technologies=org.GNOME.Accessibility.AtkWrapper`
+
+If you get an error that involves iced-tea in the Neptus terminal window when you try to open a console, check that you have openjdk-8-jre. Not the headless version of it, Neptus needs the head.
 
 ## Existing conversions
 
