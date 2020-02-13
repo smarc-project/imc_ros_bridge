@@ -50,7 +50,6 @@ int main(int argc, char** argv)
     std::string bridge_tcp_port;
     std::string sys_name;
     int imc_id;
-
     ros::param::param<std::string>("~neptus_addr", neptus_addr, "127.0.0.1");
     ros::param::param<std::string>("~bridge_addr", bridge_tcp_addr, "127.0.0.1");
     ros::param::param<std::string>("~bridge_port", bridge_tcp_port, "6002");
@@ -73,7 +72,7 @@ int main(int argc, char** argv)
     ros_to_imc::BridgeServer<imc_ros_bridge::DesiredRoll, IMC::DesiredRoll> DesiredRoll_server(ros_node, imc_handle, "desired_roll");
     ros_to_imc::BridgeServer<imc_ros_bridge::DesiredSpeed, IMC::DesiredSpeed> DesiredSpeed_server(ros_node, imc_handle, "desired_speed");
     ros_to_imc::BridgeServer<imc_ros_bridge::DesiredZ, IMC::DesiredZ> DesiredZ_server(ros_node, imc_handle, "desired_z");
-
+  
     // 450
     imc_to_ros::BridgeServer<IMC::Goto, geometry_msgs::Pose> goto_server(imc_handle, ros_node, "goto_waypoint");
     // 150
