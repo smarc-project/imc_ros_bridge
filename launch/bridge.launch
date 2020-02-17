@@ -4,9 +4,10 @@
   <arg name="server_port" default="6002"/>
   <arg name="imc_system_name" default="imc_ros_bridge"/>
   <arg name="imc_id" default="5"/>
+  <arg name="robot_name" default="sam"/>
   <!-- 4=imc_ros_bridge, 5=sam, 6=lolo -->
 
-  <node pkg="imc_ros_bridge" type="bridge_node" name="imc_bridge" output="screen">
+  <node pkg="imc_ros_bridge" type="bridge_node" name="imc_bridge" output="screen" ns="$(arg robot_name)">
     <param name="server_addr" value="$(arg server_addr)"/>
     <param name="server_port" value="$(arg server_port)" type="str"/>
     <param name="system_name" value="$(arg imc_system_name)"/>
