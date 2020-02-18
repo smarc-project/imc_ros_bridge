@@ -12,6 +12,9 @@
  */
 
 #include <imc_ros_bridge/ros_to_imc/EstimatedState.h>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
+#include <geometry_msgs/Quaternion.h>
 
 namespace ros_to_imc {
 
@@ -39,6 +42,25 @@ bool convert(const imc_ros_bridge::EstimatedState& ros_msg, IMC::EstimatedState&
     imc_msg.depth = ros_msg.depth;
     imc_msg.alt = ros_msg.alt;
 
+    return true;
+}
+
+template <>
+bool convert(const geometry_msgs::Pose& ros_msg, IMC::EstimatedState& imc_msg)
+{
+    imc_msg.lat = ros_msg.position.y;
+    imc_msg.lon = ros_msg.position.x;
+    
+    // convert quaternion to euler (phi,theta,psi) rot over (x,y,z)
+    tf2::Quaternion quat_tf;
+    geometry_msgs::Quaternion quat_msg = ros_msg.orientation;
+    tf2::convert(quat_msg , quat_tf);
+    double roll, pitch, yaw;
+    tf2::Matrix3x3(quat_tf).getRPY(roll, pitch, yaw);
+    
+    imc_msg.psi = M_PI/2. - yaw;
+    
+    
     return true;
 }
 
