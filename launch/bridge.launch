@@ -9,17 +9,17 @@
   <arg name="neptus_addr" default="127.0.0.1"/>
   <arg name="bridge_addr" default="127.0.0.1"/>
   <arg name="bridge_port" default="6002"/>
+  <arg name="node_name" default="imc_bridge"/>
   <arg name="imc_system_name" default="imc_ros_bridge"/>
   <arg name="imc_id" default="4"/>
 
   <group ns="imc">
-    <node pkg="imc_ros_bridge" type="bridge_node" name="imc_bridge" output="screen">
+    <node pkg="imc_ros_bridge" type="bridge_node" name="$(arg node_name)" output="screen">
       <param name="neptus_addr" value="$(arg neptus_addr)"/>
       <param name="bridge_addr" value="$(arg bridge_addr)"/>
       <param name="bridge_port" value="$(arg bridge_port)" type="str"/>
       <param name="system_name" value="$(arg imc_system_name)"/>
       <param name="imc_id" value="$(arg imc_id)"/>
     </node>
-
   </group>
 </launch>
