@@ -49,6 +49,7 @@ add_message_files(
   PlanControlState.msg
   VehicleState.msg
   EstimatedState.msg
+  RemoteState.msg
   SonarData.msg
   DesiredHeading.msg
   DesiredHeadingRate.msg
@@ -148,6 +149,7 @@ add_library( imc_to_ros_plancontrol src/imc_to_ros/PlanControl.cpp )
 add_library( ros_to_imc_plancontrolstate src/ros_to_imc/PlanControlState.cpp )
 add_library( ros_to_imc_estimatedstate src/ros_to_imc/EstimatedState.cpp )
 add_library( ros_to_imc_vehiclestate src/ros_to_imc/VehicleState.cpp )
+add_library( ros_to_imc_remotestate src/ros_to_imc/RemoteState.cpp )
 add_library( ros_to_imc_sonardata src/ros_to_imc/SonarData.cpp )
 add_library( ros_to_imc_DesiredHeading src/ros_to_imc/DesiredHeading.cpp )
 add_library( ros_to_imc_DesiredHeadingRate src/ros_to_imc/DesiredHeadingRate.cpp )
@@ -164,6 +166,7 @@ add_dependencies(ros_to_imc_plancontrolstate imc_ros_bridge_generate_messages_cp
 add_dependencies(ros_to_imc_vehiclestate imc_ros_bridge_generate_messages_cpp)
 add_dependencies(ros_to_imc_sonardata imc_ros_bridge_generate_messages_cpp)
 add_dependencies(ros_to_imc_estimatedstate imc_ros_bridge_generate_messages_cpp)
+add_dependencies(ros_to_imc_remotestate imc_ros_bridge_generate_messages_cpp)
 add_dependencies(ros_to_imc_DesiredHeading imc_ros_bridge_generate_messages_cpp)
 add_dependencies(ros_to_imc_DesiredHeadingRate imc_ros_bridge_generate_messages_cpp)
 add_dependencies(ros_to_imc_DesiredPitch imc_ros_bridge_generate_messages_cpp)
@@ -201,6 +204,7 @@ target_link_libraries(ros_to_imc_plancontrolstate ${catkin_LIBRARIES})
 target_link_libraries(ros_to_imc_gpsnavdata ${catkin_LIBRARIES})
 target_link_libraries(ros_to_imc_estimatedstate ${catkin_LIBRARIES})
 target_link_libraries(ros_to_imc_vehiclestate ${catkin_LIBRARIES})
+target_link_libraries(ros_to_imc_remotestate ${catkin_LIBRARIES})
 target_link_libraries(ros_to_imc_sonardata ${catkin_LIBRARIES})
 target_link_libraries(ros_to_imc_DesiredHeading ${catkin_LIBRARIES} )
 target_link_libraries(ros_to_imc_DesiredHeadingRate ${catkin_LIBRARIES} )
@@ -234,6 +238,7 @@ target_link_libraries(bridge_node
   ros_to_imc_gpsnavdata
   ros_to_imc_estimatedstate
   ros_to_imc_vehiclestate
+  ros_to_imc_remotestate
   ros_to_imc_sonardata
   ros_to_imc_DesiredHeading
   ros_to_imc_DesiredHeadingRate

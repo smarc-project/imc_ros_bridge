@@ -23,6 +23,7 @@
 #include <imc_ros_bridge/ros_to_imc/EstimatedState.h>
 #include <imc_ros_bridge/ros_to_imc/PlanControlState.h>
 #include <imc_ros_bridge/ros_to_imc/VehicleState.h>
+#include <imc_ros_bridge/ros_to_imc/RemoteState.h>
 #include <imc_ros_bridge/ros_to_imc/SonarData.h>
 #include <imc_ros_bridge/ros_to_imc/DesiredHeading.h>
 #include <imc_ros_bridge/ros_to_imc/DesiredHeadingRate.h>
@@ -65,6 +66,7 @@ int main(int argc, char** argv)
     ros_to_imc::BridgeServer<imc_ros_bridge::EstimatedState, IMC::EstimatedState> estimatedstate_server(ros_node, imc_handle, "estimated_state");
     ros_to_imc::BridgeServer<imc_ros_bridge::PlanControlState, IMC::PlanControlState> plancontrolstate_server(ros_node, imc_handle, "plan_control_state");
     ros_to_imc::BridgeServer<imc_ros_bridge::VehicleState, IMC::VehicleState> vehiclestate_server(ros_node, imc_handle, "vehicle_state");
+    ros_to_imc::BridgeServer<imc_ros_bridge::RemoteState, IMC::RemoteState> RemoteState_server(ros_node, imc_handle, "remote_state");
     ros_to_imc::BridgeServer<imc_ros_bridge::SonarData, IMC::SonarData> sonar_server(ros_node, imc_handle, "sonar_data");
     ros_to_imc::BridgeServer<imc_ros_bridge::DesiredHeading, IMC::DesiredHeading> DesiredHeading_server(ros_node, imc_handle, "desired_heading");
     ros_to_imc::BridgeServer<imc_ros_bridge::DesiredHeadingRate, IMC::DesiredHeadingRate> DesiredHeadingRate_server(ros_node, imc_handle, "desired_heading_rate");
