@@ -20,6 +20,7 @@ template <>
 bool convert(const IMC::PlanDB& imc_msg, std_msgs::String& ros_msg)
 {
     std::stringstream ostr;
+    ostr.precision(9);
     imc_msg.fieldsToJSON(ostr, 0);
     ros_msg.data = ostr.str();
     std::cout << "Ros message to send:" << std::endl;

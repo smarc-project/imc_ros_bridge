@@ -11,55 +11,25 @@
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMC_HANDLE_H
-#define IMC_HANDLE_H
+#include <imc_ros_bridge/ros_to_imc/VehicleState.h>
 
-//#include <imc_tcp_link/TcpLink.hpp>
-#include <imc_udp_link/udp_link.h>
+namespace ros_to_imc {
 
-class IMCHandle {
+template <>
+bool convert(const imc_ros_bridge::VehicleState& ros_msg, IMC::VehicleState& imc_msg)
+{
+    imc_msg.op_mode = ros_msg.op_mode;
+    imc_msg.error_count = ros_msg.error_count;
+    imc_msg.error_ents = ros_msg.error_ents;
+    imc_msg.maneuver_type = ros_msg.maneuver_type;
+    imc_msg.maneuver_stime = ros_msg.maneuver_stime;
+    imc_msg.maneuver_eta = ros_msg.maneuver_eta;
+    imc_msg.control_loops = ros_msg.control_loops;
+    imc_msg.flags = ros_msg.flags;
+    imc_msg.last_error = ros_msg.last_error;
+    imc_msg.last_error_time = ros_msg.last_error_time;
 
-private:
+    return true;
+}
 
-    std::string sys_name;
-    int imc_id;
-    std::string bridge_tcp_addr;
-    std::string bridge_tcp_port;
-    std::string neptus_addr;
-
-    //ros_imc_broker::TcpLink* tcp_client_;
-    //boost::thread* tcp_client_thread_;
-    UDPLink udp_link;
-
-    // we might need multiple for every message in the future, let's start here
-    std::map<uint16_t, std::function<void(const IMC::Message*)> > callbacks;
-
-    double lat;
-
-public:
-
-    IMCHandle(const std::string& bridge_tcp_addr, const std::string& bridge_tcp_port,
-              const std::string& neptus_addr,
-              const std::string& sys_name, int imc_id);
-
-    ~IMCHandle();
-
-    void announce();
-
-    void publish_heartbeat();
-
-    void tcp_subscribe(uint16_t uid, std::function<void(const IMC::Message*)> callback);
-
-    void tcp_callback(const IMC::Message* msg);
-
-    template <typename IMC_MSG>
-    void write(IMC_MSG& imc_msg)
-    {
-        //tcp_client_.write(imc_msg);
-        //tcp_client_->write(&imc_msg);
-        udp_link.publish(imc_msg, neptus_addr);
-    }
-
-};
-
-#endif // IMC_HANDLE_H
+} // namespace imc_to_ros
