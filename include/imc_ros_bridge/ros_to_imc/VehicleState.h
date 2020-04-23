@@ -11,55 +11,17 @@
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#ifndef IMC_HANDLE_H
-#define IMC_HANDLE_H
+#ifndef ROS_TO_IMC_VEHICLESTATE_H
+#define ROS_TO_IMC_VEHICLESTATE_H
 
-//#include <imc_tcp_link/TcpLink.hpp>
-#include <imc_udp_link/udp_link.h>
+#include <imc_ros_bridge/imc_ros_bridge_server.h>
+#include "imc_ros_bridge/VehicleState.h"
+#include <IMC/Spec/VehicleState.hpp>
 
-class IMCHandle {
+namespace ros_to_imc {
 
-private:
+template <>
+bool convert(const imc_ros_bridge::VehicleState& ros_msg, IMC::VehicleState& imc_msg);
 
-    std::string sys_name;
-    int imc_id;
-    std::string bridge_tcp_addr;
-    std::string bridge_tcp_port;
-    std::string neptus_addr;
-
-    //ros_imc_broker::TcpLink* tcp_client_;
-    //boost::thread* tcp_client_thread_;
-    UDPLink udp_link;
-
-    // we might need multiple for every message in the future, let's start here
-    std::map<uint16_t, std::function<void(const IMC::Message*)> > callbacks;
-
-    double lat;
-
-public:
-
-    IMCHandle(const std::string& bridge_tcp_addr, const std::string& bridge_tcp_port,
-              const std::string& neptus_addr,
-              const std::string& sys_name, int imc_id);
-
-    ~IMCHandle();
-
-    void announce();
-
-    void publish_heartbeat();
-
-    void tcp_subscribe(uint16_t uid, std::function<void(const IMC::Message*)> callback);
-
-    void tcp_callback(const IMC::Message* msg);
-
-    template <typename IMC_MSG>
-    void write(IMC_MSG& imc_msg)
-    {
-        //tcp_client_.write(imc_msg);
-        //tcp_client_->write(&imc_msg);
-        udp_link.publish(imc_msg, neptus_addr);
-    }
-
-};
-
-#endif // IMC_HANDLE_H
+} // namespace ros_to_imc
+#endif // ROS_TO_IMC_VEHICLESTATE_H

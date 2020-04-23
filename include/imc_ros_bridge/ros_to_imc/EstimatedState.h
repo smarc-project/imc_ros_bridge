@@ -15,14 +15,19 @@
 #define ROS_TO_IMC_ESTIMATEDSTATE_H
 
 #include <imc_ros_bridge/imc_ros_bridge_server.h>
-#include <geometry_msgs/Pose.h>
+#include "imc_ros_bridge/EstimatedState.h"
 #include <IMC/Spec/EstimatedState.hpp>
+#include <geometry_msgs/Pose.h>
 
 namespace ros_to_imc {
 
 template <>
+bool convert(const imc_ros_bridge::EstimatedState& ros_msg, IMC::EstimatedState& imc_msg);
+
+template <>
 bool convert(const geometry_msgs::Pose& ros_msg, IMC::EstimatedState& imc_msg);
+
 
 } // namespace ros_to_imc
 
-#endif // ROS_TO_IMC_HEARTBEAT_H
+#endif // ROS_TO_IMC_ESTIMATEDSTATE_H
