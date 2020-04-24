@@ -1,0 +1,26 @@
+<launch>
+
+
+    <!--Neptus addr: Address of computer running netpus -->
+    <!--bridge addr: Address of computer running this node -->
+    <!--bridge port: Port neptus sends data to -->
+  
+  <!-- Just changes some defaults to be sam-specific -->
+
+  <arg name="robot_name" default="sam"/>
+
+  <arg name="neptus_addr" default="127.0.0.1"/>
+  <arg name="bridge_addr" default="127.0.0.1"/>
+  <arg name="bridge_port" default="6002"/>
+  <arg name="node_name" default="imc_bridge"/>
+  <arg name="imc_system_name" default="sam"/>
+
+  <!-- 4=imc_ros_bridge, 5=sam, 6=lolo -->
+  <arg name="imc_id" default="5"/>
+
+
+  <include file="$(find imc_ros_bridge)/launch/bridge.launch" 
+			ns="$(arg robot_name)/imc" 
+			pass_all_args="true" />
+
+</launch>
