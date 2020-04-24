@@ -21,8 +21,8 @@
 
 void try_callback(const IMC::Message* imc_msg)
 {
-    ROS_INFO("Got callback!");
-    std::cout << "Got callback with id: " << imc_msg->getId() << std::endl;
+		ROS_INFO("Got callback!");
+		std::cout << "Got callback with id: " << imc_msg->getId() << std::endl;
 }
 
 IMCHandle::IMCHandle(const std::string& bridge_tcp_addr, const std::string& bridge_tcp_port,
@@ -52,8 +52,13 @@ void IMCHandle::tcp_callback(const IMC::Message* msg)
 {
     uint16_t uid = msg->getId();
     if (callbacks.count(uid) > 0) {
-        ROS_INFO("Got callback with id: %u", uid);
-        callbacks.at(uid)(msg);
+	// 150 is a heartbeat and we dont really care about it. just debug it.
+		if(uid == 150){
+			ROS_DEBUG("Got callback with id: %u", uid);
+		}else{
+			ROS_INFO("Got callback with id: %u", uid);
+		}
+		callbacks.at(uid)(msg);
     }
     else {
         ROS_INFO("Got tcp message with no configure callback, msgid: %u!", uid);

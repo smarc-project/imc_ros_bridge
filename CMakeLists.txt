@@ -57,6 +57,10 @@ add_message_files(
   DesiredRoll.msg
   DesiredSpeed.msg
   DesiredZ.msg
+  PlanDB.msg
+  PlanSpecification.msg
+  PlanManeuver.msg
+  Maneuver.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -161,7 +165,9 @@ add_library( ros_to_imc_DesiredZ src/ros_to_imc/DesiredZ.cpp )
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
+add_dependencies(imc_to_ros_plandb imc_ros_bridge_generate_messages_cpp)
 add_dependencies(imc_to_ros_plancontrol imc_ros_bridge_generate_messages_cpp)
+
 add_dependencies(ros_to_imc_plancontrolstate imc_ros_bridge_generate_messages_cpp)
 add_dependencies(ros_to_imc_vehiclestate imc_ros_bridge_generate_messages_cpp)
 add_dependencies(ros_to_imc_sonardata imc_ros_bridge_generate_messages_cpp)
@@ -192,14 +198,15 @@ add_executable(bridge_node src/bridge_node.cpp)
 
 # 2/3
 ## Specify libraries to link a library or executable target against
-target_link_libraries(ros_to_imc_heartbeat ${catkin_LIBRARIES})
 target_link_libraries(imc_to_ros_heartbeat ${catkin_LIBRARIES})
-target_link_libraries(ros_to_imc_gpsfix ${catkin_LIBRARIES})
-target_link_libraries(ros_to_imc_goto ${catkin_LIBRARIES})
 target_link_libraries(imc_to_ros_goto ${catkin_LIBRARIES})
 target_link_libraries(imc_to_ros_abort ${catkin_LIBRARIES})
 target_link_libraries(imc_to_ros_plandb ${catkin_LIBRARIES})
 target_link_libraries(imc_to_ros_plancontrol ${catkin_LIBRARIES})
+
+target_link_libraries(ros_to_imc_heartbeat ${catkin_LIBRARIES})
+target_link_libraries(ros_to_imc_gpsfix ${catkin_LIBRARIES})
+target_link_libraries(ros_to_imc_goto ${catkin_LIBRARIES})
 target_link_libraries(ros_to_imc_plancontrolstate ${catkin_LIBRARIES})
 target_link_libraries(ros_to_imc_gpsnavdata ${catkin_LIBRARIES})
 target_link_libraries(ros_to_imc_estimatedstate ${catkin_LIBRARIES})
@@ -226,14 +233,14 @@ target_link_libraries(imc_handle
 
 # 3/3
 target_link_libraries(bridge_node
-  ros_to_imc_heartbeat
   imc_to_ros_heartbeat
-  ros_to_imc_gpsfix
-  ros_to_imc_goto
   imc_to_ros_goto
   imc_to_ros_abort
   imc_to_ros_plandb
   imc_to_ros_plancontrol
+  ros_to_imc_heartbeat
+  ros_to_imc_gpsfix
+  ros_to_imc_goto
   ros_to_imc_plancontrolstate
   ros_to_imc_gpsnavdata
   ros_to_imc_estimatedstate

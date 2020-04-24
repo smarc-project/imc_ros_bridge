@@ -82,7 +82,8 @@ int main(int argc, char** argv)
     // 550
     imc_to_ros::BridgeServer<IMC::Abort, std_msgs::Empty> abort_server(imc_handle, ros_node, "abort");
     // 556
-    imc_to_ros::BridgeServer<IMC::PlanDB, std_msgs::String> plandb_server(imc_handle, ros_node, "plan_db");
+    // imc_to_ros::BridgeServer<IMC::PlanDB, std_msgs::String> plandb_server(imc_handle, ros_node, "plan_db");
+    imc_to_ros::BridgeServer<IMC::PlanDB, imc_ros_bridge::PlanDB> plandb_server(imc_handle, ros_node, "plan_db");
     imc_to_ros::BridgeServer<IMC::PlanControl, imc_ros_bridge::PlanControl> plancontrol_server(imc_handle, ros_node, "plan_control");
 
     auto announce_callback = [&](const ros::TimerEvent&) { imc_handle.announce(); };
