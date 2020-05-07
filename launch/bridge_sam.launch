@@ -17,6 +17,8 @@
 
   <!-- 4=imc_ros_bridge, 5=sam, 6=lolo -->
   <arg name="imc_id" default="5"/>
+  <arg name="imc_src" default="$(arg imc_id)"/>
+
 
 
   <include file="$(find imc_ros_bridge)/launch/bridge.launch" 

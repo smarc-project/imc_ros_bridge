@@ -23,6 +23,7 @@ private:
 
     std::string sys_name;
     int imc_id;
+	int imc_src;
     std::string bridge_tcp_addr;
     std::string bridge_tcp_port;
     std::string neptus_addr;
@@ -40,7 +41,7 @@ public:
 
     IMCHandle(const std::string& bridge_tcp_addr, const std::string& bridge_tcp_port,
               const std::string& neptus_addr,
-              const std::string& sys_name, int imc_id);
+              const std::string& sys_name, int imc_id, int imc_src);
 
     ~IMCHandle();
 

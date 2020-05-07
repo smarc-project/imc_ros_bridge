@@ -51,13 +51,15 @@ int main(int argc, char** argv)
     std::string bridge_tcp_port;
     std::string sys_name;
     int imc_id;
+	int imc_src;
     ros::param::param<std::string>("~neptus_addr", neptus_addr, "127.0.0.1");
     ros::param::param<std::string>("~bridge_addr", bridge_tcp_addr, "127.0.0.1");
     ros::param::param<std::string>("~bridge_port", bridge_tcp_port, "6002");
     ros::param::param<std::string>("~system_name", sys_name, "imc_ros_bridge");
     ros::param::param<int>("~imc_id", imc_id, 30);
+	ros::param::param<int>("~imc_src", imc_src, 5);
 
-    IMCHandle imc_handle(bridge_tcp_addr, bridge_tcp_port, neptus_addr, sys_name, imc_id);
+    IMCHandle imc_handle(bridge_tcp_addr, bridge_tcp_port, neptus_addr, sys_name, imc_id, imc_src);
 
     ros_to_imc::BridgeServer<std_msgs::Empty, IMC::Heartbeat> heartbeat_server(ros_node, imc_handle, "heartbeat");
     ros_to_imc::BridgeServer<sensor_msgs::NavSatFix, IMC::GpsFix> gpsfix_server(ros_node, imc_handle, "gps_fix");

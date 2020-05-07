@@ -53,12 +53,13 @@ private:
 
     int imc_src = 4;
     int imc_src_ent = 32;
+	int imc_id;
 
 public:
 
     UDPLink(std::function<void (IMC::Message*)> recv_handler,
             const std::string& bridge_addr, const std::string& bridge_port,
-            int imc_src);
+            int imc_id, int imc_src);
 
     ~UDPLink();
 

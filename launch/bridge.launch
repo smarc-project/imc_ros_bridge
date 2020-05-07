@@ -14,6 +14,7 @@
 
   <!-- 4=imc_ros_bridge, 5=sam, 6=lolo -->
   <arg name="imc_id" default="4"/>
+  <arg name="imc_src" default="$(arg imc_id)"/>
 
   <node pkg="imc_ros_bridge" type="bridge_node" name="$(arg node_name)" output="screen">
     <param name="neptus_addr" value="$(arg neptus_addr)"/>
@@ -21,6 +22,7 @@
     <param name="bridge_port" value="$(arg bridge_port)" type="str"/>
     <param name="system_name" value="$(arg imc_system_name)"/>
     <param name="imc_id" value="$(arg imc_id)"/>
+    <param name="imc_src" value="$(arg imc_src)"/>
   </node>
 
 </launch>
