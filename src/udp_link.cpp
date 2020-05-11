@@ -25,8 +25,8 @@ std::ofstream myfile;
 using namespace std;
 
 UDPLink::UDPLink(std::function<void (IMC::Message*)> recv_handler,
-        const std::string& bridge_addr, const std::string& bridge_port, int imc_src)
-    : recv_handler_(recv_handler), bridge_addr(bridge_addr), bridge_port(bridge_port), imc_src(imc_src)
+        const std::string& bridge_addr, const std::string& bridge_port, int imc_id, int imc_src)
+    : recv_handler_(recv_handler), bridge_addr(bridge_addr), bridge_port(bridge_port), imc_id(imc_id), imc_src(imc_src)
 {
     socket.open(udp::v4());
     socket.set_option(udp::socket::reuse_address(true));
@@ -60,7 +60,7 @@ void handler(const boost::system::error_code& error, size_t bytes_transferred)
 void UDPLink::publish(IMC::Message& msg, const string& addr)
 {
     msg.setSource(imc_src);
-    msg.setSourceEntity(imc_src);
+    msg.setSourceEntity(imc_id);
     msg.setDestination(0);
     msg.setTimeStamp(ros::Time::now().toSec());
 
@@ -81,7 +81,7 @@ void UDPLink::publish(IMC::Message& msg, const string& addr)
 void UDPLink::publish_multicast(IMC::Message& msg, const string& multicast_addr)
 {
     msg.setSource(imc_src);
-    msg.setSourceEntity(imc_src);
+    msg.setSourceEntity(imc_id);
     msg.setDestination(0);
     msg.setTimeStamp(ros::Time::now().toSec());
 
