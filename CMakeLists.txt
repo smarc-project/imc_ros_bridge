@@ -148,6 +148,7 @@ add_library( udp_link src/udp_link.cpp )
 add_library( imc_handle src/imc_handle.cpp )
 add_library( imc_to_ros_abort src/imc_to_ros/Abort.cpp )
 add_library( imc_to_ros_plandb src/imc_to_ros/PlanDB.cpp )
+add_library( ros_to_imc_plandb src/ros_to_imc/PlanDB.cpp )
 add_library( ros_to_imc_gpsnavdata src/ros_to_imc/GpsNavData.cpp )
 add_library( imc_to_ros_plancontrol src/imc_to_ros/PlanControl.cpp )
 add_library( ros_to_imc_plancontrolstate src/ros_to_imc/PlanControlState.cpp )
@@ -166,6 +167,7 @@ add_library( ros_to_imc_DesiredZ src/ros_to_imc/DesiredZ.cpp )
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
 add_dependencies(imc_to_ros_plandb imc_ros_bridge_generate_messages_cpp)
+add_dependencies(ros_to_imc_plandb imc_ros_bridge_generate_messages_cpp)
 add_dependencies(imc_to_ros_plancontrol imc_ros_bridge_generate_messages_cpp)
 
 add_dependencies(ros_to_imc_plancontrolstate imc_ros_bridge_generate_messages_cpp)
@@ -219,6 +221,7 @@ target_link_libraries(ros_to_imc_DesiredPitch ${catkin_LIBRARIES} )
 target_link_libraries(ros_to_imc_DesiredRoll ${catkin_LIBRARIES} )
 target_link_libraries(ros_to_imc_DesiredSpeed ${catkin_LIBRARIES} )
 target_link_libraries(ros_to_imc_DesiredZ ${catkin_LIBRARIES} )
+target_link_libraries(ros_to_imc_plandb ${catkin_LIBRARIES})
 
 target_link_libraries(udp_link
   imc_factory
@@ -238,6 +241,7 @@ target_link_libraries(bridge_node
   imc_to_ros_abort
   imc_to_ros_plandb
   imc_to_ros_plancontrol
+  ros_to_imc_plandb
   ros_to_imc_heartbeat
   ros_to_imc_gpsfix
   ros_to_imc_goto

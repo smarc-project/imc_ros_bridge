@@ -31,6 +31,7 @@
 #include <imc_ros_bridge/ros_to_imc/DesiredRoll.h>
 #include <imc_ros_bridge/ros_to_imc/DesiredSpeed.h>
 #include <imc_ros_bridge/ros_to_imc/DesiredZ.h>
+#include <imc_ros_bridge/ros_to_imc/PlanDB.h>
 
 #include <imc_ros_bridge/imc_to_ros/Goto.h>
 #include <imc_ros_bridge/imc_to_ros/Heartbeat.h>
@@ -76,6 +77,7 @@ int main(int argc, char** argv)
     ros_to_imc::BridgeServer<imc_ros_bridge::DesiredRoll, IMC::DesiredRoll> DesiredRoll_server(ros_node, imc_handle, "desired_roll");
     ros_to_imc::BridgeServer<imc_ros_bridge::DesiredSpeed, IMC::DesiredSpeed> DesiredSpeed_server(ros_node, imc_handle, "desired_speed");
     ros_to_imc::BridgeServer<imc_ros_bridge::DesiredZ, IMC::DesiredZ> DesiredZ_server(ros_node, imc_handle, "desired_z");
+    ros_to_imc::BridgeServer<imc_ros_bridge::PlanDB, IMC::PlanDB> to_imc_plandb_server(ros_node, imc_handle, "plan_db");
   
     // 450
     imc_to_ros::BridgeServer<IMC::Goto, geometry_msgs::Pose> goto_server(imc_handle, ros_node, "goto_waypoint");
@@ -84,7 +86,6 @@ int main(int argc, char** argv)
     // 550
     imc_to_ros::BridgeServer<IMC::Abort, std_msgs::Empty> abort_server(imc_handle, ros_node, "abort");
     // 556
-    // imc_to_ros::BridgeServer<IMC::PlanDB, std_msgs::String> plandb_server(imc_handle, ros_node, "plan_db");
     imc_to_ros::BridgeServer<IMC::PlanDB, imc_ros_bridge::PlanDB> plandb_server(imc_handle, ros_node, "plan_db");
     imc_to_ros::BridgeServer<IMC::PlanControl, imc_ros_bridge::PlanControl> plancontrol_server(imc_handle, ros_node, "plan_control");
 
