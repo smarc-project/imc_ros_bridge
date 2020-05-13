@@ -3,8 +3,8 @@
 
 
 # enums
-uint8 type
-uint8 op
+uint8 type #0,1,2,3 -> request, success, failure, in progress
+uint8 op # 0,1,2,3 -> start, stop, load, get
 
 # fields
 uint16 request_id
