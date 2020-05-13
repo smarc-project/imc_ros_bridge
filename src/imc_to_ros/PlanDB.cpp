@@ -11,17 +11,17 @@
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <imc_ros_bridge/imc_to_ros/PlanDB.h>
-#include <sstream>
 #include <list>
+#include <md5.h>
 
+#include <imc_ros_bridge/imc_to_ros/PlanDB.h>
 #include <imc_ros_bridge/PlanSpecification.h>
 #include <imc_ros_bridge/PlanManeuver.h>
 
 #include <IMC/Base/InlineMessage.hpp>
 #include <IMC/Base/Message.hpp>
-
 #include <IMC/Base/MessageList.hpp>
+
 #include <IMC/Spec/PlanManeuver.hpp>
 #include <IMC/Spec/PlanSpecification.hpp>
 #include <IMC/Spec/Goto.hpp>
@@ -65,6 +65,22 @@ bool convert(const IMC::PlanDB& imc_msg, imc_ros_bridge::PlanDB& ros_msg)
 			// arg.get() returns a Message*, cast that pointer to a pointer to a PlanSpec because we KNOW
 			// it is actually pointing to a real PlanSpec object, thanks to the id of the message.
 			IMC::PlanSpecification* plan_spec = (IMC::PlanSpecification*) arg.get();
+			
+			// Get its serialized form, this will be used to calculate the md5
+			// by the receiver of this message. Doing it here allows us to use the serialization
+			// as defined in IMC, because it is done in a recursive way that I really dont want to
+			// replicate on the receiving end
+			// Doing the md5 here might also be a good idea...
+			size_t serialization_size = plan_spec->getVariableSerializationSize();
+			uint8_t plan_spec_serialized[serialization_size];
+			plan_spec->serializeFields(plan_spec_serialized);
+			// std::string plan_spec_md5 = md5(std::string(plan_spec_serialized));
+			std::stringstream s;
+			s << plan_spec_serialized;
+			std::string plan_spec_md5 = md5(s.str());
+			std::cout << "md5 of plan_spec:" << plan_spec_md5 << std::endl;
+			ros_msg.plan_spec_md5 = plan_spec_md5;
+
 			// fill in the ros side
 			ros_msg.plan_spec.plan_id = plan_spec->plan_id;
 			ros_msg.plan_spec.description = plan_spec->description;
@@ -135,8 +151,8 @@ bool convert(const IMC::PlanDB& imc_msg, imc_ros_bridge::PlanDB& ros_msg)
 
 
 
-	std::cout << std::endl << "Ros message to send:" << std::endl;
-	std::cout << ros_msg << std::endl;
+	// std::cout << std::endl << "Ros message to send:" << std::endl;
+	// std::cout << ros_msg << std::endl;
 	return true;
 
 

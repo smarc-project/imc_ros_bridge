@@ -59,6 +59,8 @@ add_message_files(
   DesiredZ.msg
   PlanDB.msg
   PlanSpecification.msg
+  PlanDBInformation.msg
+  PlanDBState.msg
   PlanManeuver.msg
   Maneuver.msg
 )
@@ -134,10 +136,12 @@ catkin_package(
 include_directories(
   include
   external/imc-cxx
+  external/md5
   ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
+add_library( md5 external/md5/md5.cpp )
 add_library( ros_to_imc_heartbeat src/ros_to_imc/Heartbeat.cpp )
 add_library( imc_to_ros_heartbeat src/imc_to_ros/Heartbeat.cpp )
 add_library( ros_to_imc_gpsfix src/ros_to_imc/GpsFix.cpp )
@@ -200,6 +204,7 @@ add_executable(bridge_node src/bridge_node.cpp)
 
 # 2/3
 ## Specify libraries to link a library or executable target against
+target_link_libraries(md5 ${catkin_LIBRARIES})
 target_link_libraries(imc_to_ros_heartbeat ${catkin_LIBRARIES})
 target_link_libraries(imc_to_ros_goto ${catkin_LIBRARIES})
 target_link_libraries(imc_to_ros_abort ${catkin_LIBRARIES})
@@ -258,6 +263,7 @@ target_link_libraries(bridge_node
   ros_to_imc_DesiredSpeed
   ros_to_imc_DesiredZ
   imc_handle
+  md5
   ${Boost_LIBRARIES}
   ${catkin_LIBRARIES}
 )
