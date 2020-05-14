@@ -114,8 +114,8 @@ void UDPLink::handle_receive(const boost::system::error_code& error, size_t byte
         return;
     }
 
-    std::cout << "Received by udp: '" << std::string(recv_buffer.begin(), recv_buffer.begin()+bytes_transferred) << "' (" << error.message() << ") ";
-    std::cout << bytes_transferred << " bytes transferred" << std::endl;
+    // std::cout << "Received by udp: '" << std::string(recv_buffer.begin(), recv_buffer.begin()+bytes_transferred) << "' (" << error.message() << ") ";
+    // std::cout << bytes_transferred << " bytes transferred" << std::endl;
 
     // attempt to read the datagram header. bytes 18-19 have size info.
 //    char buf[2];
