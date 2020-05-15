@@ -8,4 +8,4 @@ uint16 change_sid
 string change_sname
 
 # this is the only thing we actually use really.
-string md5
+uint8[] md5
