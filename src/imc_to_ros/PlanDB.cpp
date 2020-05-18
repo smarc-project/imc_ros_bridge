@@ -21,24 +21,13 @@
 #include <IMC/Base/InlineMessage.hpp>
 #include <IMC/Base/Message.hpp>
 #include <IMC/Base/MessageList.hpp>
+// #include <IMC/Base/Packet.hpp> this has the IMC::serialize function in it.
 
 #include <IMC/Spec/PlanManeuver.hpp>
 #include <IMC/Spec/PlanSpecification.hpp>
 #include <IMC/Spec/Goto.hpp>
 
 namespace imc_to_ros {
-
-// template <>
-// bool convert(const IMC::PlanDB& imc_msg, std_msgs::String& ros_msg)
-// {
-    // std::stringstream ostr;
-    // ostr.precision(9);
-    // imc_msg.fieldsToJSON(ostr, 0);
-    // ros_msg.data = ostr.str();
-    // std::cout << "Ros message to send:" << std::endl;
-    // std::cout << ros_msg.data << std::endl;
-    // return true;
-// }
 
 template <>
 bool convert(const IMC::PlanDB& imc_msg, imc_ros_bridge::PlanDB& ros_msg)
@@ -50,49 +39,62 @@ bool convert(const IMC::PlanDB& imc_msg, imc_ros_bridge::PlanDB& ros_msg)
 
 	IMC::InlineMessage<IMC::Message> arg = imc_msg.arg;
 	if(arg.isNull()){
-		// arg is empty, so the plan_spec is empty too
+		// arg is empty, 
 		// maybe this is a control message or sth.
-		std::cout << "PlanDB : Arg was null" << std::endl;
 	}else{
-		ros_msg.plan_spec = imc_ros_bridge::PlanSpecification();
-
 		int arg_msg_id = arg.get()->getId();
-		std::cout << "planDB arg id:" << arg_msg_id << std::endl;
 
 		// 551 is PlanSpecification
 		if(arg_msg_id == 551){
+			ros_msg.plan_spec = imc_ros_bridge::PlanSpecification();
 			// cast it to its proper type finally
 			// arg.get() returns a Message*, cast that pointer to a pointer to a PlanSpec because we KNOW
 			// it is actually pointing to a real PlanSpec object, thanks to the id of the message.
-			IMC::PlanSpecification* plan_spec = (IMC::PlanSpecification*) arg.get();
+			const IMC::PlanSpecification* plan_spec = (IMC::PlanSpecification*) arg.get();
 
+			// MD5 OF PLAN_SPEC
+			//
+			// See this before you start here:
+			// https://github.com/LSTS/imcjava/blob/efed1384cc0cc5bacb8ce8ec7bcd536d19c91c8c/src/pt/lsts/imc/IMCMessage.java#L1592
+			//
 			// Get its serialized form, this will be used to calculate the md5
 			// Doing it here allows us to use the serialization
 			// as defined in IMC, because it is done in a recursive way that I really dont want to
 			// replicate on the receiving end
-			size_t serialization_size = plan_spec->getSerializationSize();
-			uint8_t plan_spec_serialized[serialization_size];
-			plan_spec->serializeFields(plan_spec_serialized);
-			std::stringstream s;
-			s << plan_spec_serialized;
+			// First find the size of the serialized message
+			const size_t serialization_size = plan_spec->getSerializationSize();
+			// then allocate a buffer to put the message in
+			uint8_t plan_spec_serialized[serialization_size] = {0};
 
+			// and fill it in
+			// BUT WITH WHAT?! NEITHER OF THESE CREATE THE SAME MD5 AS NEPTUS
+			// IMC::serialize(plan_spec, plan_spec_serialized);
+			// It should really be this one, since this is the function used in the Java version
+			plan_spec->serializeFields(plan_spec_serialized);
+
+			// Create an empty md5 object because we want to use the
+			// update() function which takes bytes as input
 			// Neptus requires RAW md5, not a hex version of one.
 			// that RAW data is the digest. Use that.
-			// But then, ROS messages expect std::vectors and not
-			// arrays
-			auto md5_o = MD5(s.str());
+			MD5 md5_o = MD5();
+			md5_o.update(plan_spec_serialized, serialization_size);
+			md5_o.finalize();
 			auto digest = md5_o.get_digest();
-			auto msgmd5 = std::vector<unsigned char>();
-			// digest size is fixed to 16 bytes
-			for(int i=0; i<16; i++){
-				msgmd5.push_back(digest[i]);
-			}
-			ros_msg.plan_spec_md5 = msgmd5;
 
-			// std::string plan_spec_md5 = md5(s.str());
-			// std::cout << "Plan spec md5 sent to ros:" << plan_spec_md5 << std::endl;
-			// ros_msg.plan_spec_md5 = std::vector<char>(plan_spec_md5.begin(), plan_spec_md5.end());
-			// ros_msg.plan_spec_md5 = plan_spec_md5;
+			// But then, ROS messages expect std::vectors and not arrays
+			// so we just fill it in
+			// digest size is fixed to 16
+			std::cout << "(unsigned) md5 digest of PlanSpecification:";
+			for(int i=0; i<16; i++){
+				ros_msg.plan_spec_md5.push_back(digest[i]);
+				// unsigned() because the digest has invis. characters in it.
+				// this way they just become readable ints
+				std::cout << unsigned(digest[i]);
+				std::cout << " ";
+			}
+			std::cout << std::endl;
+			// DONE WITH MD5 OF PLAN_SPEC
+
 
 			// fill in the ros side
 			ros_msg.plan_spec.plan_id = plan_spec->plan_id;
@@ -157,6 +159,10 @@ bool convert(const IMC::PlanDB& imc_msg, imc_ros_bridge::PlanDB& ros_msg)
 			}
 
 		} // msg_id=551
+		else{
+			// Not implemented
+			std::cout << "imc to ros:planDB arg not implemented! id:" << arg_msg_id << std::endl;
+		}
 	} //else
 
 
