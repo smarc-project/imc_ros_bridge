@@ -344,6 +344,11 @@ std::string MD5::hexdigest() const
  
   return std::string(buf);
 }
+
+unsigned char* MD5::get_digest()
+{
+	return digest;
+}
  
 //////////////////////////////
  

@@ -91,7 +91,7 @@ void UDPLink::publish_multicast(IMC::Message& msg, const string& multicast_addr)
     std::string message;
     for (int multicast_port : announce_ports)
     {
-        std::cout << "Writing to port: " << multicast_port << std::endl;
+		// std::cout << "Writing to port: " << multicast_port << std::endl;
         udp::endpoint destination(address::from_string(multicast_addr), multicast_port);
         multicast_socket.async_send_to(boost::asio::buffer(out_buffer_, rv), destination, handler);
     }

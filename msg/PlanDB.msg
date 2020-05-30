@@ -22,7 +22,7 @@ string plan_id
 # this part is special made for just waypoint type plan_dbs. ill handle other types later.
 # this is the Message arg in the original
 PlanSpecification plan_spec
-string plan_spec_md5
+uint8[] plan_spec_md5
 # might be other types of fields that come into 'arg'. In IMC, this arg is  a "message" type, so who knows what it can become...
 # Apparently, arg can also be a PlanDBInformation message. 
 PlanDBInformation plandb_information

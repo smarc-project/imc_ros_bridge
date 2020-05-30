@@ -21,7 +21,6 @@
 #include <IMC/Base/InlineMessage.hpp>
 #include <IMC/Base/MessageList.hpp>
 
-
 namespace ros_to_imc{
 
 template <>
@@ -36,22 +35,28 @@ bool convert(const imc_ros_bridge::PlanDB& ros_msg, IMC::PlanDB& imc_msg)
 	imc_msg.plan_id = ros_msg.plan_id;
 
 	
-	imc_ros_bridge::PlanDBInformation plan_info = ros_msg.plandb_information;
+	imc_ros_bridge::PlanDBInformation ros_plandbinfo = ros_msg.plandb_information;
 	// check if there is anything in PlanDBInformation
-	if(plan_info.plan_id != ""){
+	if(ros_plandbinfo.plan_id != ""){
 		// okay, there is some info in here that we need to send to imc
 		// this message is normally set as the 'arg' field of the imc plandb message
 		// so we need to construct that and fill it in from the ros msg.
 		IMC::PlanDBInformation plandbinfo = IMC::PlanDBInformation();
-		plandbinfo.plan_id = plan_info.plan_id;
-		plandbinfo.plan_size = plan_info.plan_size;
-		plandbinfo.change_time = plan_info.change_time;
-		plandbinfo.change_sid = plan_info.change_sid;
-		plandbinfo.change_sname = plan_info.change_sname;
-		plandbinfo.md5 = std::vector<char>(plan_info.md5.begin(), plan_info.md5.end());
+		plandbinfo.plan_id = ros_plandbinfo.plan_id;
+		plandbinfo.plan_size = ros_plandbinfo.plan_size;
+		plandbinfo.change_time = ros_plandbinfo.change_time;
+		plandbinfo.change_sid = ros_plandbinfo.change_sid;
+		plandbinfo.change_sname = ros_plandbinfo.change_sname;
+
+		// md5 is a uint8[], but IMC::plandb is a std::vector<char>
+		// so we fill that in one by one while casting our uint8s.
+		// A working system was found at 23:15 on a Friday.
+		// Very healthy. yes.
+		for(int i=0; i<ros_plandbinfo.md5.size(); i++){
+			plandbinfo.md5.push_back((char)ros_plandbinfo.md5[i]);
+		}
 
 		// arg is of type IMC::InlineMessage<>, so we gotta put our arg into it
-		// IMC::InlineMessage<IMC::PlanDBInformation> arg = IMC::InlineMessage<IMC::PlanDBInformation>();
 		imc_msg.arg.set(plandbinfo);
 		
 	}
@@ -66,19 +71,25 @@ bool convert(const imc_ros_bridge::PlanDB& ros_msg, IMC::PlanDB& imc_msg)
 		pdb_state.change_time = plan_state.change_time;
 		pdb_state.change_sid = plan_state.change_sid;
 		pdb_state.change_sname = plan_state.change_sname;
-		pdb_state.md5 = std::vector<char>(plan_state.md5.begin(), plan_state.md5.end());
+
+		for(int i=0; i<plan_state.md5.size(); i++){
+			pdb_state.md5.push_back((char)plan_state.md5[i]);
+		}
 
 		auto plans_info = IMC::MessageList<IMC::PlanDBInformation>();
 		for(int i=0; i<plan_state.plans_info.size(); i++){
 			auto plan_info = IMC::PlanDBInformation();
 			auto ros_plan_info = plan_state.plans_info[i];
 
+			// This should be a function really... 
 			plan_info.plan_id = ros_plan_info.plan_id;
 			plan_info.plan_size = ros_plan_info.plan_size;
 			plan_info.change_time = ros_plan_info.change_time;
 			plan_info.change_sid = ros_plan_info.change_sid;
 			plan_info.change_sname = ros_plan_info.change_sname;
-			plan_info.md5 = std::vector<char>(ros_plan_info.md5.begin(), ros_plan_info.md5.end());
+			for(int i=0; i<ros_plan_info.md5.size(); i++){
+				plan_info.md5.push_back((char)ros_plan_info.md5[i]);
+			}
 
 			plans_info.push_back(plan_info);
 		}
