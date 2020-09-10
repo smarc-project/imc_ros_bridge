@@ -1,4 +1,5 @@
 # imc_ros_bridge
+![CI](https://github.com/smarc-project/imc_ros_bridge/workflows/CI/badge.svg?branch=noetic-devel) [![license](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
 Minimal library for bridging ROS and IMC messages
 
