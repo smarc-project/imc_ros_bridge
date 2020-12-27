@@ -284,12 +284,9 @@ target_link_libraries(bridge_node
 # )
 
 ## Mark executables and/or libraries for installation
-# install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_node
-#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
-install(TARGETS bridge_node
+install(TARGETS bridge_node md5 ros_to_imc_heartbeat imc_to_ros_heartbeat ros_to_imc_gpsfix ros_to_imc_goto imc_to_ros_goto imc_factory udp_link imc_handle imc_to_ros_abort imc_to_ros_plandb ros_to_imc_plandb ros_to_imc_gpsnavdata imc_to_ros_plancontrol ros_to_imc_plancontrolstate ros_to_imc_estimatedstate ros_to_imc_vehiclestate ros_to_imc_remotestate ros_to_imc_sonardata ros_to_imc_DesiredHeading ros_to_imc_DesiredHeadingRate ros_to_imc_DesiredPitch ros_to_imc_DesiredRoll ros_to_imc_DesiredSpeed ros_to_imc_DesiredZ
+  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
