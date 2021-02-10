@@ -7,36 +7,45 @@ on:
 
 jobs:
   release_build:
+      strategy:
+        matrix:
+          include:
+            - distro: melodic
+              ubuntu: bionic
+              bloom: python-bloom
+            - distro: noetic
+              ubuntu: focal
+              bloom: python3-bloom
       runs-on: ubuntu-latest
       container:
-        image: rostooling/setup-ros-docker:ubuntu-bionic-ros-melodic-ros-base-latest
+        image: rostooling/setup-ros-docker:ubuntu-${{ matrix.ubuntu }}-ros-${{ matrix.distro }}-ros-base-latest
       steps:
       - uses: actions/checkout@v2
         with:
           path: '.'
-      - name: Set env
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Setup environment
+        run: |
+          rosdep update
       - name: Install deps
         run: |
           ls
-          rosdep update
-          rosdep install --from-path . --ignore-src --rosdistro melodic -y
-          sudo apt install -y python-bloom fakeroot dpkg-dev debhelper zip
+          rosdep install --from-path . --ignore-src --rosdistro ${{ matrix.distro }} -y
+          sudo apt install -y ${{ matrix.bloom }} fakeroot dpkg-dev debhelper zip
       - name: Build package
         run: |
           ls
           bloom-release  --version
-          bloom-generate rosdebian --os-name ubuntu --os-version bionic --ros-distro melodic
+          bloom-generate rosdebian --os-name ubuntu --os-version ${{ matrix.ubuntu }} --ros-distro ${{ matrix.distro }}
           fakeroot debian/rules binary
-          mv ../ros-melodic-*.deb .
-          zip bloom-release-deb.zip ros-melodic-*.deb
+          mv ../ros-${{ matrix.distro }}-*.deb .
+          zip bloom-${{ matrix.distro }}-release-deb.zip ros-${{ matrix.distro }}-*.deb
           ls
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./bloom-release-deb.zip
-          asset_name: bloom-release-deb.zip
+          file: ./bloom-${{ matrix.distro }}-release-deb.zip
+          asset_name: bloom-${{ matrix.distro }}-release-deb.zip
           tag: ${{ github.ref }}
           overwrite: true
           body: "Debian release generated using bloom"
