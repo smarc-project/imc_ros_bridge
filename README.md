@@ -23,9 +23,10 @@ may have to comment a line in a jdk file to get it running (See Troubleshooting)
 First, install dependencies: `sudo apt install openjdk-11-jdk`.
 Second, make sure there are no other Javas in your system, you might have a `jre-default` installed by default. Use `apt remove ...` to remove it (See Troubleshooting for more details).
 
-Clone and build Neptus:
+Clone and build Neptus at a known-working commit:
 ```
 git clone https://github.com/LSTS/neptus.git
+git checkout 38c7f41a9885c6b059f79b38861edb4b7b67511b
 cd neptus
 ./gradlew
 ```
@@ -37,6 +38,12 @@ As of Mar 2 2021, this will open up a map view and you should see the vehicles i
 If you go to the systems list panel (top bar: view), you should also see the ROS auv displayed as a cyan panel.
 This indicates that neptus can communicate with the auv. Any other color indicates som problem,
 see [this link](https://www.lsts.pt/neptus/manual/trunk/elements.html#systems-list).
+
+### For SMaRC Vehicles:
+Delete the `neptus/vehicle-defs` folder and copy `imc_ros_bridge/vehicle-defs` into `neptus/` instead (You could also merge the two instead of replacing). This way, in Neptus, you will (only) see SAM and LOLO as options and Neptus will know the maneuvers they are capable of.
+You will need to update these files manually if they ever change in the future.
+(As of Mar 2 2021, the vehicle-files are not used because the 'main window' of Neptus no longer exists, this might change in the future)
+
 
 ### Troubleshooting
 If Neptus does not seem to work, try these:
