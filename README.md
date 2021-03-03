@@ -17,39 +17,56 @@ will launch the `imc_bridge` node.
 
 ## Trying with Neptus
 
-These instructions have been tested for Ubuntu 16.04 and 18.04. For 18.04, you
-may have to comment a line in a jdk file to get it running (TODO: check path to file).
+These instructions have been tested for Ubuntu 16.04, 18.04, 20.04. For 18.04 and 20.04, you
+may have to comment a line in a jdk file to get it running (See Troubleshooting).
 
-First, install dependencies: `sudo apt install openjdk-8-jdk ant-optional`.
+First, install dependencies: `sudo apt install openjdk-11-jdk`.
+Second, make sure there are no other Javas in your system, you might have a `jre-default` installed by default. Use `apt remove ...` to remove it (See Troubleshooting for more details).
 
-Then clone and build neptus:
+Clone and build Neptus at a known-working commit:
 ```
 git clone https://github.com/LSTS/neptus.git
+git checkout 38c7f41a9885c6b059f79b38861edb4b7b67511b
 cd neptus
-ant
+./gradlew
 ```
-If successful, run it with `./neptus.sh`. Open the comm monitor by clicking `Communications > IMC Comm. Monitor`.
-In the status panel, click the button with the IMC logo (with hover text `Start IMC comms`) to start up IMC.
-Go to the all messages panel to see the messages that you publish from ROS.
+If successful, run it with `./neptus`.
+As of Mar 2 2021, this will open up a map view and you should see the vehicles in this map.
+(Neptus is being actively developed nowadays, so things might change, contact @KKalem if need be)
 
-You can publish e.g. the `/heartbeat` message in ROS and see that it appears in the all messages panel (see "existing conversions" below):
-```
-rostopic pub /heartbeat std_msgs/Empty "{}" --once
-```
 
-If you go to the systems list panel, you should also see the ROS auv displayed as a cyan panel.
+If you go to the systems list panel (top bar: view), you should also see the ROS auv displayed as a cyan panel.
 This indicates that neptus can communicate with the auv. Any other color indicates som problem,
 see [this link](https://www.lsts.pt/neptus/manual/trunk/elements.html#systems-list).
 
+### For SMaRC Vehicles:
+Delete the `neptus/vehicle-defs` folder and copy `imc_ros_bridge/vehicle-defs` into `neptus/` instead (You could also merge the two instead of replacing). This way, in Neptus, you will (only) see SAM and LOLO as options and Neptus will know the maneuvers they are capable of.
+You will need to update these files manually if they ever change in the future.
+(As of Mar 2 2021, the vehicle-files are not used because the 'main window' of Neptus no longer exists, this might change in the future)
+
+
 ### Troubleshooting
-On Ubuntu 18.04, you might have openjdk-11-jre-headless package, remove it manually and make sure that `apt list --installed | grep jre` only shows one jre.
-Additionally, if you get a "No VTK Java Packages Found" message accompanied by an error, do this: 
+If Neptus does not seem to work, try these:
+On Ubuntu 18.04 and 20.04, you might have `openjdk-11-jre-headless` and `default-jre` remove them with `apt remove ...` manually and make sure that `apt list --installed | grep jre` only shows one jre, it should look like this:
+```
+$ apt list --installed | grep jre
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+openjdk-8-jre-headless/focal-updates,focal-security,now 8u282-b08-0ubuntu1~20.04 amd64 [installed,automatic]
+openjdk-8-jre/focal-updates,focal-security,now 8u282-b08-0ubuntu1~20.04 amd64 [installed,automatic]
+```
+This is a known-working setup as of Mar 2 2021.
+
+
+Additionally, if you get a "No VTK Java Packages Found" message in Neptus's console AND things are not working, do this(might need to change the java version to the version you have):
 
 `sudo vim /etc/java-8-openjdk/accessibility.properties`
 Comment out the following line:
 `assistive_technologies=org.GNOME.Accessibility.AtkWrapper`
 
-If you get an error that involves iced-tea in the Neptus terminal window when you try to open a console, check that you have openjdk-8-jre. Not the headless version of it, Neptus needs the head.
+If you get an error that involves `iced-tea` in the Neptus terminal window when you try to open a console, check that you have openjdk-8-jre. Not _just_ the headless version of it, Neptus needs the head.
+
 
 ## Existing conversions
 
