@@ -5,6 +5,7 @@
 string maneuver_name
 uint16 maneuver_imc_id
 
+# 450 GOTO
 uint16 timeout
 float64 lat
 float64 lon
@@ -16,3 +17,9 @@ float32 roll
 float32 pitch
 float32 yaw
 string custom_string
+
+# 489 SAMPLE that are not in GOTO
+uint8 syringe0
+uint8 syringe1
+uint8 syringe2
+
