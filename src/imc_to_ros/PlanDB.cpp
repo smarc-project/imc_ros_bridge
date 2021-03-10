@@ -26,6 +26,7 @@
 #include <IMC/Spec/PlanManeuver.hpp>
 #include <IMC/Spec/PlanSpecification.hpp>
 #include <IMC/Spec/Goto.hpp>
+#include <IMC/Spec/Sample.hpp>
 
 namespace imc_to_ros {
 
@@ -142,7 +143,27 @@ bool convert(const IMC::PlanDB& imc_msg, imc_ros_bridge::PlanDB& ros_msg)
 						plan_maneuver.maneuver.pitch = goto_man->pitch;
 						plan_maneuver.maneuver.yaw = goto_man->yaw;
 						plan_maneuver.maneuver.custom_string = goto_man->custom;
-					} // man_id=450
+					}
+					// 489==Sample
+					else if(man_id==489){
+						IMC::Sample* sample_man = (IMC::Sample*) pm_data.get();
+						plan_maneuver.maneuver.maneuver_name = "sample";
+						plan_maneuver.maneuver.maneuver_imc_id = man_id;
+
+						plan_maneuver.maneuver.timeout = sample_man->timeout;
+						plan_maneuver.maneuver.lat = sample_man->lat;
+						plan_maneuver.maneuver.lon = sample_man->lon;
+						plan_maneuver.maneuver.z = sample_man->z;
+						plan_maneuver.maneuver.z_units = sample_man->z_units;
+						plan_maneuver.maneuver.speed = sample_man->speed;
+						plan_maneuver.maneuver.speed_units = sample_man->speed_units;
+						// hardcoded 3 syringes... in the spec! BAH!
+						plan_maneuver.maneuver.syringe0 = sample_man->syringe0;
+						plan_maneuver.maneuver.syringe1 = sample_man->syringe1;
+						plan_maneuver.maneuver.syringe2 = sample_man->syringe2;
+						plan_maneuver.maneuver.custom_string = sample_man->custom;
+
+					}
 					else{
 						std::cout << "Maneuver not implemented! id:" << man_id << std::endl;
 					}

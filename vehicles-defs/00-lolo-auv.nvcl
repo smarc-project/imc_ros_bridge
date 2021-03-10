@@ -8,10 +8,10 @@
             <x-size>3</x-size>
             <y-size>1</y-size>
             <z-size>1</z-size>
-            <top-image-2D>../vehicles-files/sam/sam_top.png</top-image-2D>
-            <side-image-2D>../vehicles-files/sam/sam_side.png</side-image-2D>
-            <presentation-image-2D>../vehicles-files/lolo/lolo_pres.png</presentation-image-2D>
-            <model-3D>../vehicles-files/adamastor/adamastor.j3d</model-3D>
+            <top-image-2D>lolo_top.png</top-image-2D>
+            <side-image-2D>lolo_side.png</side-image-2D>
+            <presentation-image-2D>lolo.png</presentation-image-2D>
+            <model-3D>lolo.obj</model-3D>
             <icon-color>
                 <r>235</r>
                 <g>192</g>
@@ -53,88 +53,111 @@
                 </annotation>
             </CoverArea>
         </maneuver>
-        <maneuver>
-            <Loiter kind="automatic">
-                <basePoint type="pointType">
-                    <point>
-                        <id>LoiterLoc</id>
-                        <name>LoiterLoc</name>
-                        <coordinate>
-                            <latitude>0N</latitude>
-                            <longitude>0E</longitude>
-                            <depth>60</depth>
-                        </coordinate>
-                    </point>
-                    <radiusTolerance>5</radiusTolerance>
-                </basePoint>
-                <duration>30</duration>
-                <trajectory>
-                    <radius type="float">10</radius>
-                    <radiusTolerance type="float">5</radiusTolerance>
-                    <type>Circular</type>
-                    <length type="float">50</length>
-                    <bearing type="float">0</bearing>
-                    <direction>Clockwise</direction>
-                </trajectory>
-                <velocity type="float" unit="RPM" tolerance="5">900</velocity>
-                <annotation>
-                    <documentation>Loiter over a point</documentation>
-                    <implementation-class>pt.lsts.neptus.mp.maneuvers.Loiter</implementation-class>
-                </annotation>
-            </Loiter>
-        </maneuver>
-        <maneuver>
-            <StationKeeping kind="automatic">
-                    <basePoint type="pointType">
-                        <point>
-                            <id>SKLoc</id>
-                            <name>SKLoc</name>
-                            <coordinate>
-                                <latitude>0N</latitude>
-                                <longitude>0E</longitude>
-                                <depth>60</depth>
-                            </coordinate>
-                        </point>
-                        <radiusTolerance>5</radiusTolerance>
-                    </basePoint>
-                    <duration>0</duration>
-                    <trajectory>
-                        <radius type="float">10</radius>
-                    </trajectory>
-                    <speed type="float" unit="RPM" tolerance="5">900</speed>
-                    <annotation>
-                        <documentation>Station Keeping</documentation>
-                        <implementation-class>pt.lsts.neptus.mp.maneuvers.StationKeeping</implementation-class>
-                    </annotation>
-            </StationKeeping>
-        </maneuver>
-        <maneuver>
-            <Elevator>
+		<maneuver>
+            <Sample kind="automatic">
                 <finalPoint type="pointType">
                     <point>
-                        <id>Elevator-Point</id>
+                        <id>SampleDestination</id>
+                        <name>SampleDestination</name>
                         <coordinate>
                             <latitude>0N</latitude>
                             <longitude>0E</longitude>
-                            <depth>0</depth>
+                            <height>2</height>
                         </coordinate>
                     </point>
-                    <radiusTolerance>0</radiusTolerance>
+                    <radiusTolerance>1</radiusTolerance>
                 </finalPoint>
-                <startZ>2</startZ>
-                <startZUnits>DEPTH</startZUnits>
-                <pitch>30</pitch>
-                <radius>10</radius>
-                <duration>0</duration>
-                <speed unit="RPM">1000.0</speed>
+                <velocity tolerance="10" type="float" unit="m/s">5</velocity>
+                <trajectoryTolerance>
+                    <radiusTolerance type="float">1</radiusTolerance>
+                </trajectoryTolerance>
                 <annotation>
-                    <documentation>No documentation available</documentation>
-                    <implementation-class>pt.lsts.neptus.mp.maneuvers.Elevator</implementation-class>
+                    <documentation>Move to a given point and start taking samples until the next sample WP.</documentation>
+                    <implementation-class>pt.lsts.neptus.mp.maneuvers.Sample</implementation-class>
                 </annotation>
-            </Elevator>
+            </Sample>
         </maneuver>
-
-        
+		<!--These are not implemented in the bridge-->
+        <!--<maneuver>-->
+            <!--<Loiter kind="automatic">-->
+                <!--<basePoint type="pointType">-->
+                    <!--<point>-->
+                        <!--<id>LoiterLoc</id>-->
+                        <!--<name>LoiterLoc</name>-->
+                        <!--<coordinate>-->
+                            <!--<latitude>0N</latitude>-->
+                            <!--<longitude>0E</longitude>-->
+                            <!--<depth>60</depth>-->
+                        <!--</coordinate>-->
+                    <!--</point>-->
+                    <!--<radiusTolerance>5</radiusTolerance>-->
+                <!--</basePoint>-->
+                <!--<duration>30</duration>-->
+                <!--<trajectory>-->
+                    <!--<radius type="float">10</radius>-->
+                    <!--<radiusTolerance type="float">5</radiusTolerance>-->
+                    <!--<type>Circular</type>-->
+                    <!--<length type="float">50</length>-->
+                    <!--<bearing type="float">0</bearing>-->
+                    <!--<direction>Clockwise</direction>-->
+                <!--</trajectory>-->
+                <!--<velocity type="float" unit="RPM" tolerance="5">900</velocity>-->
+                <!--<annotation>-->
+                    <!--<documentation>Loiter over a point</documentation>-->
+                    <!--<implementation-class>pt.lsts.neptus.mp.maneuvers.Loiter</implementation-class>-->
+                <!--</annotation>-->
+            <!--</Loiter>-->
+        <!--</maneuver>-->
+        <!--<maneuver>-->
+            <!--<StationKeeping kind="automatic">-->
+                    <!--<basePoint type="pointType">-->
+                        <!--<point>-->
+                            <!--<id>SKLoc</id>-->
+                            <!--<name>SKLoc</name>-->
+                            <!--<coordinate>-->
+                                <!--<latitude>0N</latitude>-->
+                                <!--<longitude>0E</longitude>-->
+                                <!--<depth>60</depth>-->
+                            <!--</coordinate>-->
+                        <!--</point>-->
+                        <!--<radiusTolerance>5</radiusTolerance>-->
+                    <!--</basePoint>-->
+                    <!--<duration>0</duration>-->
+                    <!--<trajectory>-->
+                        <!--<radius type="float">10</radius>-->
+                    <!--</trajectory>-->
+                    <!--<speed type="float" unit="RPM" tolerance="5">900</speed>-->
+                    <!--<annotation>-->
+                        <!--<documentation>Station Keeping</documentation>-->
+                        <!--<implementation-class>pt.lsts.neptus.mp.maneuvers.StationKeeping</implementation-class>-->
+                    <!--</annotation>-->
+            <!--</StationKeeping>-->
+        <!--</maneuver>-->
+        <!--<maneuver>-->
+            <!--<Elevator>-->
+                <!--<finalPoint type="pointType">-->
+                    <!--<point>-->
+                        <!--<id>Elevator-Point</id>-->
+                        <!--<coordinate>-->
+                            <!--<latitude>0N</latitude>-->
+                            <!--<longitude>0E</longitude>-->
+                            <!--<depth>0</depth>-->
+                        <!--</coordinate>-->
+                    <!--</point>-->
+                    <!--<radiusTolerance>0</radiusTolerance>-->
+                <!--</finalPoint>-->
+                <!--<startZ>2</startZ>-->
+                <!--<startZUnits>DEPTH</startZUnits>-->
+                <!--<pitch>30</pitch>-->
+                <!--<radius>10</radius>-->
+                <!--<duration>0</duration>-->
+                <!--<speed unit="RPM">1000.0</speed>-->
+                <!--<annotation>-->
+                    <!--<documentation>No documentation available</documentation>-->
+                    <!--<implementation-class>pt.lsts.neptus.mp.maneuvers.Elevator</implementation-class>-->
+                <!--</annotation>-->
+            <!--</Elevator>-->
+        <!--</maneuver>-->
     </feasibleManeuvers>
     <communication-means>
         <comm-mean>

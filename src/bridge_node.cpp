@@ -57,8 +57,10 @@ int main(int argc, char** argv)
     ros::param::param<std::string>("~bridge_addr", bridge_tcp_addr, "127.0.0.1");
     ros::param::param<std::string>("~bridge_port", bridge_tcp_port, "6002");
     ros::param::param<std::string>("~system_name", sys_name, "imc_ros_bridge");
-    ros::param::param<int>("~imc_id", imc_id, 30);
-	ros::param::param<int>("~imc_src", imc_src, 5);
+	// Neptus seems to have swapped these values for SOME REASON. so I swap here too...
+	// tldr: imc_id is the vehicle TYPE and imc_src is the SPECIFIC VEHICLE
+    ros::param::param<int>("~imc_id", imc_src, 30);
+	ros::param::param<int>("~imc_src", imc_id, 5);
 
     IMCHandle imc_handle(bridge_tcp_addr, bridge_tcp_port, neptus_addr, sys_name, imc_id, imc_src);
 
