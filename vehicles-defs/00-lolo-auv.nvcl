@@ -30,12 +30,12 @@
                         <coordinate>
                             <latitude>0N</latitude>
                             <longitude>0E</longitude>
-                            <depth>60</depth>
+                            <depth>-30</depth>
                         </coordinate>
                     </point>
                     <radiusTolerance>5</radiusTolerance>
                 </finalPoint>
-                <velocity tolerance="10" type="float" unit="m/s">1.0</velocity>
+                <velocity tolerance="10" type="float" unit="rpm">200</velocity>
                 <trajectoryTolerance>
                     <radiusTolerance type="float">1</radiusTolerance>
                 </trajectoryTolerance>
@@ -62,12 +62,12 @@
                         <coordinate>
                             <latitude>0N</latitude>
                             <longitude>0E</longitude>
-                            <height>2</height>
+							<depth>-30</depth>
                         </coordinate>
                     </point>
                     <radiusTolerance>1</radiusTolerance>
                 </finalPoint>
-                <velocity tolerance="10" type="float" unit="m/s">5</velocity>
+                <velocity tolerance="10" type="float" unit="rpm">200</velocity>
                 <trajectoryTolerance>
                     <radiusTolerance type="float">1</radiusTolerance>
                 </trajectoryTolerance>
