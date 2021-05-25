@@ -63,6 +63,7 @@ add_message_files(
   PlanDBState.msg
   PlanManeuver.msg
   Maneuver.msg
+  PolygonVertex.msg
 )
 
 ## Generate services in the 'srv' folder

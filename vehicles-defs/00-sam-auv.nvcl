@@ -45,6 +45,14 @@
                 </annotation>
             </Goto>
         </maneuver>
+        <maneuver>
+            <CoverArea kind="automatic">
+                <annotation>
+                    <documentation>Cover an area</documentation>
+                    <implementation-class>pt.lsts.neptus.mp.maneuvers.CoverArea</implementation-class>
+                </annotation>
+            </CoverArea>
+        </maneuver>
 		<maneuver>
             <Sample kind="automatic">
                 <finalPoint type="pointType">
