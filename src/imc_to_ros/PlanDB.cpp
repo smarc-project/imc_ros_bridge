@@ -17,6 +17,7 @@
 #include <imc_ros_bridge/imc_to_ros/PlanDB.h>
 #include <imc_ros_bridge/PlanSpecification.h>
 #include <imc_ros_bridge/PlanManeuver.h>
+#include <imc_ros_bridge/PolygonVertex.h>
 
 #include <IMC/Base/InlineMessage.hpp>
 #include <IMC/Base/Message.hpp>
@@ -27,6 +28,8 @@
 #include <IMC/Spec/PlanSpecification.hpp>
 #include <IMC/Spec/Goto.hpp>
 #include <IMC/Spec/Sample.hpp>
+#include <IMC/Spec/PolygonVertex.hpp>
+#include <IMC/Spec/CoverArea.hpp>
 
 namespace imc_to_ros {
 
@@ -162,6 +165,28 @@ bool convert(const IMC::PlanDB& imc_msg, imc_ros_bridge::PlanDB& ros_msg)
 						plan_maneuver.maneuver.syringe1 = sample_man->syringe1;
 						plan_maneuver.maneuver.syringe2 = sample_man->syringe2;
 						plan_maneuver.maneuver.custom_string = sample_man->custom;
+
+					}
+					//  473==CoverArea
+					else if(man_id==473){
+						IMC::CoverArea* cover_area = (IMC::CoverArea*) pm_data.get();
+						plan_maneuver.maneuver.maneuver_name = "cover_area";
+						plan_maneuver.maneuver.maneuver_imc_id = man_id;
+
+						plan_maneuver.maneuver.lat = cover_area->lat;
+						plan_maneuver.maneuver.lon = cover_area->lon;
+						plan_maneuver.maneuver.z = cover_area->z;
+						plan_maneuver.maneuver.z_units = cover_area->z_units;
+						plan_maneuver.maneuver.speed = cover_area->speed;
+						plan_maneuver.maneuver.speed_units = cover_area->speed_units;
+
+						// ros_msg.polygon = imc_msg.polygon
+						for(IMC::PolygonVertex* imc_pv : cover_area->polygon){
+							auto ros_pv = imc_ros_bridge::PolygonVertex();
+							ros_pv.lat = imc_pv->lat;
+							ros_pv.lon = imc_pv->lon;
+							plan_maneuver.maneuver.polygon.push_back(ros_pv);
+						}
 
 					}
 					else{
