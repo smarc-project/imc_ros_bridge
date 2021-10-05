@@ -25,6 +25,7 @@ jobs:
           path: '.'
       - name: Setup environment
         run: |
+          sudo apt update
           rosdep update
       - name: Install deps
         run: |
