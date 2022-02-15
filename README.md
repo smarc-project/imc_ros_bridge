@@ -15,6 +15,10 @@ roslaunch imc_ros_bridge bridge.launch server_addr:=127.0.0.1 server_port:=6002
 ```
 will launch the `imc_bridge` node.
 
+## ROS to IMC conversion and use on vehicles
+
+See the [vehicles documents](https://github.com/smarc-project/imc_ros_bridge/blob/noetic-devel/docs/vehicles.md).
+
 ## Trying with Neptus
 
 These instructions have been tested for Ubuntu 16.04, 18.04, 20.04. For 18.04 and 20.04, you
