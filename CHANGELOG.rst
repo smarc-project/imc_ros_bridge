@@ -2,8 +2,8 @@
 Changelog for package imc_ros_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.0.1 (2022-03-30)
+------------------
 * Update README.md
 * Add files via upload
 * Create vehicles.md
