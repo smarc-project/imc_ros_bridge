@@ -7,8 +7,8 @@ jobs:
       strategy:
         matrix:
           include:
-            - distro: melodic
-              ubuntu: bionic
+            #- distro: melodic
+            #  ubuntu: bionic
             - distro: noetic
               ubuntu: focal
       runs-on: ubuntu-latest
